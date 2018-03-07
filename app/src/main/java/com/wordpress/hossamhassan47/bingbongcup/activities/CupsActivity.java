@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,37 +13,40 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.adapters.CupAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.PlayerAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.AddCupFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddPlayerFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
 
 import java.util.List;
 
-public class PlayersActivity extends AppCompatActivity implements NoticeDialogListener {
+public class CupsActivity extends AppCompatActivity implements NoticeDialogListener {
+
     AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_players);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_cups);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         db = AppDatabase.getAppDatabase(this);
 
-        // Load Players
-        this.loadPlayers();
+        this.loadCups();
 
         // Add
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddPlayer");
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddCup");
                 if (prev != null) {
                     ft.remove(prev);
                 }
@@ -50,33 +54,36 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
 
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
-                bundle.putString("fullName", "");
-                bundle.putString("email", "");
                 bundle.putInt("id", -1);
+                bundle.putString("cupName", "");
+                bundle.putString("playersCount", "2");
+                bundle.putString("gamesCount", "1");
+                bundle.putInt("cupMode", 0);
 
-                AddPlayerFragment playerFragment = new AddPlayerFragment();
-                playerFragment.setArguments(bundle);
+                AddCupFragment fragment = new AddCupFragment();
+                fragment.setArguments(bundle);
 
-                playerFragment.show(ft, "dialog_AddPlayer");
+                fragment.show(ft, "dialog_AddCup");
             }
         });
     }
 
-    public void loadPlayers()
-    {
-        List<Player> palyerList = db.playerDao().loadAllPlayers();
+    public void loadCups() {
+        List<Cup> cupList = db.cupDao().loadAllCups();
 
-        PlayerAdapter itemsAdapter = new PlayerAdapter(this, palyerList);
+        CupAdapter itemsAdapter = new CupAdapter(this, cupList);
 
-        ListView listView = findViewById(R.id.lstPlayers);
+        ListView listView = findViewById(R.id.list_view_cups);
         listView.setAdapter(itemsAdapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Player playerItem = (Player) parent.getItemAtPosition(position);
+                Cup cup = (Cup) parent.getItemAtPosition(position);
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddPlayer");
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddCup");
+
                 if (prev != null) {
                     ft.remove(prev);
                 }
@@ -85,25 +92,28 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
 
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
-                bundle.putString("fullName", playerItem.fullName);
-                bundle.putString("email", playerItem.email);
-                bundle.putInt("id", playerItem.id);
+                bundle.putInt("id", cup.id);
+                bundle.putString("cupName", cup.name);
+                bundle.putString("playersCount", String.valueOf(cup.playersCount));
+                bundle.putString("gamesCount", String.valueOf(cup.gamesCount));
+                bundle.putInt("cupMode", cup.mode - 1);
 
-                AddPlayerFragment playerFragment = new AddPlayerFragment();
-                playerFragment.setArguments(bundle);
+                AddCupFragment fragment = new AddCupFragment();
+                fragment.setArguments(bundle);
 
-                playerFragment.show(ft, "dialog_AddPlayer");
+                fragment.show(ft, "dialog_AddCup");
             }
         });
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        loadPlayers();
+        loadCups();
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
 
     }
+
 }

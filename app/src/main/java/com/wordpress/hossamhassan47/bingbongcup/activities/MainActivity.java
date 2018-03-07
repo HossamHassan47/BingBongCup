@@ -16,17 +16,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // Players
+        // cups
         TextView family = (TextView) findViewById(R.id.cups);
         family.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, PlayersActivity.class);
+                Intent i = new Intent(MainActivity.this, CupsActivity.class);
                 startActivity(i);
             }
         });
 
-        // colors
+        // players
         TextView colors = (TextView) findViewById(R.id.players);
         colors.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // phrases
-        TextView phrases = (TextView) findViewById(R.id.teams);
-        phrases.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, PlayersActivity.class);
-                startActivity(i);
-            }
-        });
+//        // teams
+//        TextView phrases = (TextView) findViewById(R.id.teams);
+//        phrases.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(MainActivity.this, PlayersActivity.class);
+//                startActivity(i);
+//            }
+//        });
     }
 }

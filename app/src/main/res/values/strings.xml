@@ -6,4 +6,9 @@
     <string name="title_activity_players">Players</string>
     <string name="player_full_name">Full Name</string>
     <string name="player_email">Email</string>
+    <string name="title_activity_cups">Cups</string>
+    <string name="cup_name">Name</string>
+    <string name="best_of">Best of</string>
+    <string name="players_count">Players count</string>
+    <string name="cup_mode">Mode</string>
 </resources>

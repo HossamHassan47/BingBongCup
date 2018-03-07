@@ -7,27 +7,28 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 
 import java.util.List;
 
 /**
- * Created by Hossam on 3/3/2018.
+ * Created by Hossam on 3/7/2018.
  */
+
 @Dao
-public interface PlayerDao {
+public interface CupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertPlayer(Player player);
+    void insertCup(Cup cup);
 
     @Update
-    void updatePlayer(Player player);
+    void updateCup(Cup cup);
 
     @Delete
-    void deletePlayer(Player player);
+    void deleteCup(Cup cup);
 
-    @Query("SELECT * FROM Player ORDER BY fullName")
-    List<Player> loadAllPlayers();
+    @Query("SELECT * FROM Cup ORDER BY creationDate")
+    List<Cup> loadAllCups();
 
-    @Query("SELECT * FROM Player WHERE id = :id")
-    Player loadPlayerById(int id);
+    @Query("SELECT * FROM Cup WHERE id = :id")
+    Cup loadCupById(int id);
 }

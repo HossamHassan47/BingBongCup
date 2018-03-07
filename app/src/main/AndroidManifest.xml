@@ -19,6 +19,10 @@
         <activity
             android:name=".activities.PlayersActivity"
             android:label="@string/title_activity_players"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CupsActivity"
+            android:label="@string/title_activity_cups"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

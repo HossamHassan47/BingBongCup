@@ -21,12 +21,6 @@ import com.wordpress.hossamhassan47.bingbongcup.R;
 
 public class AddPlayerFragment extends DialogFragment {
 
-    public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-
-        public void onDialogNegativeClick(DialogFragment dialog);
-    }
-
     NoticeDialogListener mListener;
 
     @Override
