@@ -11,22 +11,39 @@
         style="@style/CategoryStyle"
         android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/cups"
-        style="@style/CategoryStyle"
-        android:background="@color/category_cup"
-        android:text="@string/cups" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/category_cup">
 
-    <TextView
-        android:id="@+id/players"
-        style="@style/CategoryStyle"
-        android:background="@color/category_players"
-        android:text="@string/players" />
+        <TextView
+            android:id="@+id/cups"
+            style="@style/CategoryStyle"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/cups" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/teams"
-        style="@style/CategoryStyle"
-        android:background="@color/category_teams"
-        android:text="@string/teams" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/category_players">
 
+        <TextView
+            android:id="@+id/players"
+            style="@style/CategoryStyle"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/players" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/category_teams">
+
+        <TextView
+            android:id="@+id/teams"
+            style="@style/CategoryStyle"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/teams" />
+    </FrameLayout>
 </LinearLayout>

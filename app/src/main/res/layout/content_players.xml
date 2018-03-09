@@ -7,8 +7,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.PlayersActivity"
     tools:showIn="@layout/activity_players">
-<ListView
-    android:id="@+id/lstPlayers"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"></ListView>
+
+    <ListView
+        android:id="@+id/lstPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="true"></ListView>
 </LinearLayout>

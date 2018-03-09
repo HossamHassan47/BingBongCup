@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/category_cup"
     android:minHeight="@dimen/list_item_height_cup"
-    android:orientation="horizontal"
-    android:descendantFocusability="blocksDescendants">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/btnDeleteCup"
@@ -17,8 +17,8 @@
     <LinearLayout
         android:id="@+id/text_container_cup"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:paddingLeft="16dp">
 
@@ -38,6 +38,7 @@
             android:layout_marginTop="4dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/white" />
+
         <TextView
             android:id="@+id/text_view_games_count"
             android:layout_width="match_parent"
@@ -45,6 +46,7 @@
             android:layout_marginTop="4dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/white" />
+
         <TextView
             android:id="@+id/text_view_cup_mode"
             android:layout_width="match_parent"
