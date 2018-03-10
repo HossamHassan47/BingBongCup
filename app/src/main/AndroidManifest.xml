@@ -23,6 +23,10 @@
         <activity
             android:name=".activities.CupsActivity"
             android:label="@string/title_activity_cups"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CupDetailsActivity"
+            android:label="@string/title_activity_cup_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

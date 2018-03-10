@@ -3,6 +3,7 @@ package com.wordpress.hossamhassan47.bingbongcup.activities;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -102,6 +103,16 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 fragment.setArguments(bundle);
 
                 fragment.show(ft, "dialog_AddCup");
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Cup cup = (Cup) parent.getItemAtPosition(position);
+                Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
+                startActivity(i);
+                return true;
             }
         });
     }
