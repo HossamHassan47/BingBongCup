@@ -2,6 +2,7 @@ package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -53,13 +54,14 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
         // Players Count
         TextView txtPlayersCount = listItemView.findViewById(R.id.text_view_players_count);
-        txtPlayersCount.setText(currentItem.playersCount + " Players");
+        txtPlayersCount.setText(currentItem.playersCount + "");
+
+        // Cup Mode
+        ImageView iconCupMode = listItemView.findViewById(R.id.iconCupMode);
+        iconCupMode.setImageResource(((currentItem.mode == 1) ? R.drawable.ic_person_white_24dp : R.drawable.ic_people_white_24dp));
 
         TextView txtGamesCount = listItemView.findViewById(R.id.text_view_games_count);
-        txtGamesCount.setText("Best of " + currentItem.gamesCount);
-
-        TextView txtCupMode = listItemView.findViewById(R.id.text_view_cup_mode);
-        txtCupMode.setText(((currentItem.mode == 1) ? "Single" : "Double"));
+        txtGamesCount.setText("" + currentItem.gamesCount);
 
         // Delete
         ImageView btnDelete = listItemView.findViewById(R.id.btnDeleteCup);

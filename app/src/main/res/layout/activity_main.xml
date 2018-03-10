@@ -8,42 +8,78 @@
     tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.MainActivity">
 
     <ImageView
-        style="@style/CategoryStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="24dp"
         android:src="@mipmap/ic_launcher" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/category_cup">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cups"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/cups" />
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/category_cup">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_players">
+            <LinearLayout
+                android:id="@+id/linear_layout_cups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/players"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/players" />
-    </FrameLayout>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/ic_cup_white_48dp" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_teams">
+                <TextView
+                    android:id="@+id/cups"
+                    style="@style/CategoryStyle"
+                    android:layout_marginLeft="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/cups" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/teams"
-            style="@style/CategoryStyle"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/teams" />
-    </FrameLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/category_players">
+
+            <LinearLayout
+                android:id="@+id/linear_layout_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/ic_face_white_48dp" />
+
+                <TextView
+                    android:id="@+id/players"
+                    style="@style/CategoryStyle"
+                    android:layout_marginLeft="8dp"
+
+                    android:text="@string/players" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
 </LinearLayout>

@@ -9,6 +9,6 @@
     <string name="title_activity_cups">Cups</string>
     <string name="cup_name">Name</string>
     <string name="best_of">Best of</string>
-    <string name="players_count">Players count</string>
+    <string name="players_count">Players</string>
     <string name="cup_mode">Mode</string>
 </resources>

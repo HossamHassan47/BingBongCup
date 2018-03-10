@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/category_players"
@@ -8,24 +8,23 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/btnDeletePlayer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@android:drawable/ic_delete" />
-
-    <!--<ImageView-->
-    <!--android:id="@+id/imgPlayerImage"-->
-    <!--android:layout_width="@dimen/list_item_height"-->
-    <!--android:layout_height="@dimen/list_item_height" />-->
+        android:id="@+id/imgPlayerIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/ic_face_white_48dp" />
 
     <LinearLayout
         android:id="@+id/text_container"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_item_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/imgPlayerIcon"
         android:orientation="vertical"
-        android:paddingLeft="16dp">
+        android:layout_marginLeft="8dp">
 
         <TextView
             android:id="@+id/txtFullName"
@@ -44,8 +43,18 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="top"
+            android:maxLines="1"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/btnDeletePlayer"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ic_delete_forever_white_24dp" />
+
+</RelativeLayout>
