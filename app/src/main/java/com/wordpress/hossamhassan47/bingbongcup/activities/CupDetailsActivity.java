@@ -11,22 +11,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.adapters.CupAdapter;
+import com.wordpress.hossamhassan47.bingbongcup.adapters.CupPlayerAdapter;
+import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+
+import java.util.List;
 
 public class CupDetailsActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+    private int cupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cup_details);
-        
+
         int numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
+
+        cupId = getIntent().getIntExtra("cupId", -1);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numberOfPages);
 
@@ -120,28 +131,41 @@ public class CupDetailsActivity extends AppCompatActivity {
 
     public static class PlaceholderFragment extends Fragment {
 
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        AppDatabase db;
+
+        static int _cupId;
 
         public PlaceholderFragment() {
+            db = AppDatabase.getAppDatabase(getActivity());
         }
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int cupId) {
+
             PlaceholderFragment fragment = new PlaceholderFragment();
+
+            _cupId = cupId;
+
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt("cupId", cupId);
             fragment.setArguments(args);
+
             return fragment;
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-
             // Cup Players fragment
             View rootView = inflater.inflate(R.layout.fragment_cup_details_players, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
+            //int cupId = savedInstanceState.getInt("cupId", -1);
+
+            List<Player> lstPlayers = db.cupPlayerDao().getPlayersByCupId(_cupId);
+
+            CupPlayerAdapter adapter = new CupPlayerAdapter(getContext(), lstPlayers);
+
+            ListView listView = rootView.findViewById(R.id.list_view_cup_players);
+            listView.setAdapter(adapter);
             return rootView;
         }
     }

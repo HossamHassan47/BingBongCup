@@ -17,10 +17,10 @@ import java.util.List;
 @Dao
 public interface MatchGameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMatchGame(MatchGame matchGame);
+    long insertMatchGame(MatchGame matchGame);
 
     @Update
-    void updateMatchGame(MatchGame matchGame);
+    int updateMatchGame(MatchGame matchGame);
 
     @Delete
     void deleteMatchGame(MatchGame matchGame);

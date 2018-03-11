@@ -17,10 +17,10 @@ import java.util.List;
 @Dao
 public interface CupRoundDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCupRound(CupRound cupRound);
+    long insertCupRound(CupRound cupRound);
 
     @Update
-    void updateCupRound(CupRound cupRound);
+    int updateCupRound(CupRound cupRound);
 
     @Delete
     void deleteCupRound(CupRound cupRound);

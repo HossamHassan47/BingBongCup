@@ -112,6 +112,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 Cup cup = (Cup) parent.getItemAtPosition(position);
                 Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
                 i.putExtra("numberOfPages", getNumberOfPages(cup.playersCount));
+                i.putExtra("cupId", cup.id);
 
                 startActivity(i);
                 return true;

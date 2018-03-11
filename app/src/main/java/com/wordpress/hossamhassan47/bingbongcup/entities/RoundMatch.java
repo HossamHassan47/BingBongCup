@@ -13,7 +13,7 @@ import java.util.Date;
 public class RoundMatch {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public int roundId;
+    public long roundId;
     public int player1Id;
     public int player2Id;
     public int winnerId;

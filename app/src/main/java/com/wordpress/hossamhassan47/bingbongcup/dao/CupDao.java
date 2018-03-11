@@ -18,10 +18,10 @@ import java.util.List;
 @Dao
 public interface CupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCup(Cup cup);
+    long insertCup(Cup cup);
 
     @Update
-    void updateCup(Cup cup);
+    int updateCup(Cup cup);
 
     @Delete
     void deleteCup(Cup cup);

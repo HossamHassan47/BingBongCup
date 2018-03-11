@@ -113,13 +113,14 @@ public class AddCupFragment extends DialogFragment {
                         if (cupId > 0) {
                             db.cupDao().updateCup(cup);
                         } else {
-                            db.cupDao().insertCup(cup);
+
+                            long cupId = db.cupDao().insertCup(cup);
 
                             // Prepare cup details
                             // 1. Players
                             for (int i = 0; i < cup.playersCount; i++) {
                                 CupPlayer cupPlayer = new CupPlayer();
-                                cupPlayer.cupId = cup.id;
+                                cupPlayer.cupId = cupId;
                                 cupPlayer.playerNo = i + 1;
                                 db.cupPlayerDao().insertCupPlayer(cupPlayer);
                             }
@@ -128,7 +129,7 @@ public class AddCupFragment extends DialogFragment {
                             int roundNo = cup.roundsCount;
                             while (roundNo >= 1) {
                                 CupRound cupRound = new CupRound();
-                                cupRound.cupId = cup.id;
+                                cupRound.cupId = cupId;
                                 cupRound.roundNo = roundNo;
 
                                 if (roundNo == 2) {
@@ -139,22 +140,22 @@ public class AddCupFragment extends DialogFragment {
                                     cupRound.roundName = "Round-" + roundNo;
                                 }
 
-                                db.cupRoundDao().insertCupRound(cupRound);
+                                long roundId = db.cupRoundDao().insertCupRound(cupRound);
 
                                 // 3. Matches
                                 for (int j = 1; j <= cupRound.roundNo / 2; j++) {
                                     RoundMatch roundMatch = new RoundMatch();
-                                    roundMatch.roundId = cupRound.id;
+                                    roundMatch.roundId = roundId;
                                     roundMatch.matchNo = j;
                                     roundMatch.numberOfGames = cup.gamesCount;
 
-                                    db.roundMatchDao().insertRoundMatch(roundMatch);
+                                   long matchId = db.roundMatchDao().insertRoundMatch(roundMatch);
 
                                     // 4. Games
                                     for (int i = 1; i <= roundMatch.numberOfGames; i++) {
                                         // Insert match game
                                         MatchGame matchGame = new MatchGame();
-                                        matchGame.roundMatchId = roundMatch.id;
+                                        matchGame.roundMatchId = matchId;
                                         matchGame.gameNo = i;
                                         matchGame.player1Score = 0;
                                         matchGame.player2Score = 0;

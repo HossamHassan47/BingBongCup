@@ -17,10 +17,10 @@ import java.util.List;
 @Dao
 public interface RoundMatchDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertRoundMatch(RoundMatch roundMatch);
+    long insertRoundMatch(RoundMatch roundMatch);
 
     @Update
-    void updateRoundMatch(RoundMatch roundMatch);
+    int updateRoundMatch(RoundMatch roundMatch);
 
     @Delete
     void deleteRoundMatch(RoundMatch roundMatch);

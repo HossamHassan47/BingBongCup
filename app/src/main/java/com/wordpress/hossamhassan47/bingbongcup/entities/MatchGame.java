@@ -10,7 +10,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class MatchGame {
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public int roundMatchId;
+    public long roundMatchId;
     public int gameNo;
     public int player1Id;
     public int player2Id;
