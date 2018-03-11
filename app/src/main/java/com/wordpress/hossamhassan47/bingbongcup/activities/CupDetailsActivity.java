@@ -25,9 +25,10 @@ public class CupDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cup_details);
+        
+        int numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
 
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numberOfPages);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.pagerCupDetails);
@@ -36,9 +37,12 @@ public class CupDetailsActivity extends AppCompatActivity {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private final int _numberOfPages;
+
+        public SectionsPagerAdapter(FragmentManager fm, int numberOfPages) {
 
             super(fm);
+            _numberOfPages = numberOfPages;
         }
 
         @Override
@@ -51,12 +55,66 @@ public class CupDetailsActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return _numberOfPages;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page#" + (position + 1);
+            if (position == 0) {
+                return "Players";
+            } else if (position == (_numberOfPages - 1)) {
+                return "Final";
+            } else if (position == (_numberOfPages - 2)) {
+                return "3rd";
+            } else {
+                return getRoundName(position);
+            }
+        }
+
+        private String getRoundName(int position) {
+            if (_numberOfPages == 8) {
+                if (position == 1) {
+                    return "Round(64)";
+                } else if (position == 2) {
+                    return "Round(32)";
+                } else if (position == 3) {
+                    return "Round(16)";
+                } else if (position == 4) {
+                    return "Round(08)";
+                } else if (position == 5) {
+                    return "Round(04)";
+                }
+            } else if (_numberOfPages == 7) {
+                if (position == 1) {
+                    return "Round(32)";
+                } else if (position == 2) {
+                    return "Round(16)";
+                } else if (position == 3) {
+                    return "Round(08)";
+                } else if (position == 4) {
+                    return "Round(04)";
+                }
+            } else if (_numberOfPages == 6) {
+                if (position == 1) {
+                    return "Round(16)";
+                } else if (position == 2) {
+                    return "Round(08)";
+                } else if (position == 3) {
+                    return "Round(04)";
+                }
+            } else if (_numberOfPages == 5) {
+                if (position == 1) {
+                    return "Round(08)";
+                } else if (position == 2) {
+                    return "Round(04)";
+                }
+            } else if (_numberOfPages == 4) {
+                if (position == 1) {
+                    return "Round(04)";
+                }
+            }
+
+            return "";
         }
     }
 

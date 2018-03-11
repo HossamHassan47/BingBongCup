@@ -16,6 +16,10 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
+import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGame;
+import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
 
 /**
  * Created by Hossam on 3/7/2018.
@@ -53,6 +57,8 @@ public class AddCupFragment extends DialogFragment {
 
         cupId = getArguments().getInt("id");
 
+        boolean addMode = cupId <= 0;
+
         txtCupName = view.findViewById(R.id.txtCupName);
         txtCupName.setText(getArguments().getString("cupName"));
 
@@ -64,6 +70,7 @@ public class AddCupFragment extends DialogFragment {
         spinnerPlayersCount.setAdapter(adapter);
 
         spinnerPlayersCount.setSelection(adapter.getPosition(getArguments().getString("playersCount")));
+        spinnerPlayersCount.setEnabled(addMode);
 
         // Games count spinner
         spinnerGamesCount = view.findViewById(R.id.spinner_games_count);
@@ -73,6 +80,8 @@ public class AddCupFragment extends DialogFragment {
         spinnerGamesCount.setAdapter(adapterGamesCount);
         spinnerGamesCount.setSelection(adapterGamesCount.getPosition(getArguments().getString("gamesCount")));
 
+        spinnerGamesCount.setEnabled(addMode);
+
         // Players Count Spinner
         spinnerCupMode = view.findViewById(R.id.spinner_cup_mode);
         ArrayAdapter<CharSequence> adapterCupMode = ArrayAdapter.createFromResource(getActivity(),
@@ -80,7 +89,7 @@ public class AddCupFragment extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCupMode.setAdapter(adapterCupMode);
         spinnerCupMode.setSelection(getArguments().getInt("cupMode"));
-
+        spinnerCupMode.setEnabled(addMode);
 
         builder.setTitle("Cup Details")
                 .setView(view)
@@ -105,6 +114,58 @@ public class AddCupFragment extends DialogFragment {
                             db.cupDao().updateCup(cup);
                         } else {
                             db.cupDao().insertCup(cup);
+
+                            // Prepare cup details
+                            // 1. Players
+                            for (int i = 0; i < cup.playersCount; i++) {
+                                CupPlayer cupPlayer = new CupPlayer();
+                                cupPlayer.cupId = cup.id;
+                                cupPlayer.playerNo = i + 1;
+                                db.cupPlayerDao().insertCupPlayer(cupPlayer);
+                            }
+
+                            // 2. Rounds
+                            int roundNo = cup.roundsCount;
+                            while (roundNo >= 1) {
+                                CupRound cupRound = new CupRound();
+                                cupRound.cupId = cup.id;
+                                cupRound.roundNo = roundNo;
+
+                                if (roundNo == 2) {
+                                    cupRound.roundName = "3rd";
+                                } else if (roundNo == 1) {
+                                    cupRound.roundName = "Final";
+                                } else {
+                                    cupRound.roundName = "Round-" + roundNo;
+                                }
+
+                                db.cupRoundDao().insertCupRound(cupRound);
+
+                                // 3. Matches
+                                for (int j = 1; j <= cupRound.roundNo / 2; j++) {
+                                    RoundMatch roundMatch = new RoundMatch();
+                                    roundMatch.roundId = cupRound.id;
+                                    roundMatch.matchNo = j;
+                                    roundMatch.numberOfGames = cup.gamesCount;
+
+                                    db.roundMatchDao().insertRoundMatch(roundMatch);
+
+                                    // 4. Games
+                                    for (int i = 1; i <= roundMatch.numberOfGames; i++) {
+                                        // Insert match game
+                                        MatchGame matchGame = new MatchGame();
+                                        matchGame.roundMatchId = roundMatch.id;
+                                        matchGame.gameNo = i;
+                                        matchGame.player1Score = 0;
+                                        matchGame.player2Score = 0;
+
+                                        db.matchGameDao().insertMatchGame(matchGame);
+                                    } // End Games
+
+                                } // End Matches
+
+                                roundNo = roundNo / 2;
+                            } // End Rounds
                         }
 
                         Toast.makeText(getActivity(), cup.name + " saved successfully.", Toast.LENGTH_SHORT)
