@@ -12,13 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
-import com.wordpress.hossamhassan47.bingbongcup.adapters.CupAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.CupPlayerAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 
 import java.util.List;
@@ -28,7 +25,6 @@ public class CupDetailsActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
-    private int cupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,35 +33,55 @@ public class CupDetailsActivity extends AppCompatActivity {
 
         int numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
 
-        cupId = getIntent().getIntExtra("cupId", -1);
+        int cupId = getIntent().getIntExtra("cupId", -1);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numberOfPages);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numberOfPages, cupId);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.pagerCupDetails);
         mViewPager.setAdapter(mSectionsPagerAdapter);
     }
 
+    // Pages Adapter
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private final int _numberOfPages;
+        private final int _cupId;
 
-        public SectionsPagerAdapter(FragmentManager fm, int numberOfPages) {
+        public SectionsPagerAdapter(FragmentManager fm, int numberOfPages, int cupId) {
 
             super(fm);
             _numberOfPages = numberOfPages;
+            _cupId = cupId;
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case 0:
+                    // Players
+                    return CupPlayersFragment.newInstance(position + 1, _cupId);
+                case 1:
+                    // Players
+                    //return CupPlayersFragment.newInstance(position + 1, _cupId);
+                case 2:
+                    //rootView = inflater.inflate(R.layout.fragment_obj_list, container, false);
+                    break;
+                case 3:
+                    //rootView = inflater.inflate(R.layout.fragment_obj_list, container, false);
+                    break;
+                case 4:
+                    //rootView = inflater.inflate(R.layout.fragment_about, container, false);
+                    break;
+                default:
+                    //rootView = inflater.inflate(R.layout.fragment_obj_list, container, false);
+            }
+
+            return new Fragment();
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return _numberOfPages;
         }
 
@@ -129,43 +145,42 @@ public class CupDetailsActivity extends AppCompatActivity {
         }
     }
 
-    public static class PlaceholderFragment extends Fragment {
+    // Page Fragment
+    public static class CupPlayersFragment extends Fragment {
 
-        AppDatabase db;
+        private static final String ARG_SECTION_NUMBER = "ARG_SECTION_NUMBER";
+        private static final String ARG_CUP_ID = "ARG_CUP_ID";
 
-        static int _cupId;
-
-        public PlaceholderFragment() {
-            db = AppDatabase.getAppDatabase(getActivity());
+        public CupPlayersFragment() {
         }
 
-        public static PlaceholderFragment newInstance(int cupId) {
-
-            PlaceholderFragment fragment = new PlaceholderFragment();
-
-            _cupId = cupId;
+        public static CupPlayersFragment newInstance(int sectionNumber, int cupId) {
+            CupPlayersFragment fragment = new CupPlayersFragment();
 
             Bundle args = new Bundle();
-            args.putInt("cupId", cupId);
-            fragment.setArguments(args);
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(ARG_CUP_ID, cupId);
 
+            fragment.setArguments(args);
             return fragment;
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            // Cup Players fragment
             View rootView = inflater.inflate(R.layout.fragment_cup_details_players, container, false);
 
-            //int cupId = savedInstanceState.getInt("cupId", -1);
+            int cupId = getArguments().getInt(ARG_CUP_ID);
 
-            List<Player> lstPlayers = db.cupPlayerDao().getPlayersByCupId(_cupId);
+            AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+
+            List<Player> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
 
             CupPlayerAdapter adapter = new CupPlayerAdapter(getContext(), lstPlayers);
 
             ListView listView = rootView.findViewById(R.id.list_view_cup_players);
             listView.setAdapter(adapter);
+
             return rootView;
         }
     }
