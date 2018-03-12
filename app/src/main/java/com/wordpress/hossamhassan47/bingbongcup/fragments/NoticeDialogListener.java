@@ -1,6 +1,6 @@
 package com.wordpress.hossamhassan47.bingbongcup.fragments;
 
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 
 /**
  * Created by Hossam on 3/7/2018.

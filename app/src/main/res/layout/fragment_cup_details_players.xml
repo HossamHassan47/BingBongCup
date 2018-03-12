@@ -3,7 +3,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity$PlaceholderFragment">
+    tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity$CupPlayersFragment">
 
     <ListView
         android:id="@+id/list_view_cup_players"

@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,13 +14,11 @@ import android.widget.ListView;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.CupAdapter;
-import com.wordpress.hossamhassan47.bingbongcup.adapters.PlayerAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddCupFragment;
-import com.wordpress.hossamhassan47.bingbongcup.fragments.AddPlayerFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
 import java.util.List;
 
@@ -46,13 +43,6 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
             @Override
             public void onClick(View view) {
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddCup");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                ft.addToBackStack(null);
-
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", -1);
@@ -64,7 +54,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 AddCupFragment fragment = new AddCupFragment();
                 fragment.setArguments(bundle);
 
-                fragment.show(ft, "dialog_AddCup");
+                fragment.show(getSupportFragmentManager(), "dialog_AddCup");
             }
         });
     }
@@ -82,15 +72,6 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cup cup = (Cup) parent.getItemAtPosition(position);
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddCup");
-
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-
-                ft.addToBackStack(null);
-
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", cup.id);
@@ -102,7 +83,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 AddCupFragment fragment = new AddCupFragment();
                 fragment.setArguments(bundle);
 
-                fragment.show(ft, "dialog_AddCup");
+                fragment.show(getSupportFragmentManager(), "dialog_AddCup");
             }
         });
 
@@ -135,15 +116,13 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
             return 2;
     }
 
-
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
         loadCups();
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
+    public void onDialogNegativeClick(android.support.v4.app.DialogFragment dialog) {
 
     }
-
 }

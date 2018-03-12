@@ -17,6 +17,7 @@ import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddPlayerFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
 import java.util.List;
 
@@ -41,13 +42,6 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
             @Override
             public void onClick(View view) {
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddPlayer");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                ft.addToBackStack(null);
-
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", "");
@@ -57,7 +51,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 AddPlayerFragment playerFragment = new AddPlayerFragment();
                 playerFragment.setArguments(bundle);
 
-                playerFragment.show(ft, "dialog_AddPlayer");
+                playerFragment.show(getSupportFragmentManager(), "dialog_AddPlayer");
             }
         });
     }
@@ -75,14 +69,6 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Player playerItem = (Player) parent.getItemAtPosition(position);
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                Fragment prev = getFragmentManager().findFragmentByTag("dialog_AddPlayer");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-
-                ft.addToBackStack(null);
-
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", playerItem.fullName);
@@ -92,18 +78,18 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 AddPlayerFragment playerFragment = new AddPlayerFragment();
                 playerFragment.setArguments(bundle);
 
-                playerFragment.show(ft, "dialog_AddPlayer");
+                playerFragment.show(getSupportFragmentManager(), "dialog_AddPlayer");
             }
         });
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(android.support.v4.app.DialogFragment dialog) {
         loadPlayers();
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
+    public void onDialogNegativeClick(android.support.v4.app.DialogFragment dialog) {
 
     }
 }

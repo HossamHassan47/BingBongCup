@@ -15,25 +15,16 @@ import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 
-/**
- * Created by Hossam on 3/3/2018.
- */
-
-public class AddPlayerFragment extends DialogFragment {
-
+public class SetCupPlayerFragment extends DialogFragment {
     NoticeDialogListener mListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
         try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             mListener = (NoticeDialogListener) activity;
         } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement NoticeDialogListener");
         }
     }
 
@@ -82,12 +73,12 @@ public class AddPlayerFragment extends DialogFragment {
                         Toast.makeText(getActivity(), player.fullName + " saved successfully.", Toast.LENGTH_SHORT)
                                 .show();
                         // Send the positive button event back to the host activity
-                        mListener.onDialogPositiveClick(AddPlayerFragment.this);
+                        mListener.onDialogPositiveClick(SetCupPlayerFragment.this);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddPlayerFragment.this.getDialog().cancel();
+                        SetCupPlayerFragment.this.getDialog().cancel();
                     }
                 });
 
