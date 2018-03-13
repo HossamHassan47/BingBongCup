@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -116,18 +117,20 @@ public class AddCupFragment extends DialogFragment {
 
                             int cupId = (int) db.cupDao().insertCup(cup);
 
+                            Log.i("AdcupFragment", "Cup Added with Id: " + cupId);
+
                             // Prepare cup details
                             // 1. Players
                             for (int i = 0; i < cup.playersCount; i++) {
                                 CupPlayer cupPlayer = new CupPlayer();
                                 cupPlayer.fk_cupId = cupId;
                                 cupPlayer.playerNo = i + 1;
-                                db.cupPlayerDao().insertCupPlayer(cupPlayer);
+                                int playerId = (int) db.cupPlayerDao().insertCupPlayer(cupPlayer);
+                                Log.i("AdcupFragment", "Player Added with Id: " + playerId);
                             }
 
                             // 2. Rounds
-                            int roundNo = cup.roundsCount;
-                            while (roundNo >= 1) {
+                            for (int roundNo = cup.playersCount; roundNo >= 1; roundNo = roundNo / 2) {
                                 CupRound cupRound = new CupRound();
                                 cupRound.fk_cupId = cupId;
                                 cupRound.roundNo = roundNo;
@@ -137,19 +140,22 @@ public class AddCupFragment extends DialogFragment {
                                 } else if (roundNo == 1) {
                                     cupRound.roundName = "Final";
                                 } else {
-                                    cupRound.roundName = "Round-" + roundNo;
+                                    cupRound.roundName = "Round#" + roundNo;
                                 }
 
                                 int roundId = (int) db.cupRoundDao().insertCupRound(cupRound);
+                                Log.i("AdcupFragment", "Round Added with Id: " + roundId);
 
                                 // 3. Matches
-                                for (int j = 1; j <= cupRound.roundNo / 2; j++) {
+                                int matchesNo = roundNo == 1 ? 1 : (roundNo / 2);
+                                for (int j = 1; j <= matchesNo; j++) {
                                     RoundMatch roundMatch = new RoundMatch();
                                     roundMatch.fk_roundId = roundId;
                                     roundMatch.matchNo = j;
                                     roundMatch.numberOfGames = cup.gamesCount;
-
-                                   int matchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
+                                    
+                                    int matchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
+                                    Log.i("AdcupFragment", "Match Added with Id: " + matchId);
 
                                     // 4. Games
                                     for (int i = 1; i <= roundMatch.numberOfGames; i++) {
@@ -160,12 +166,11 @@ public class AddCupFragment extends DialogFragment {
                                         matchGame.player1Score = 0;
                                         matchGame.player2Score = 0;
 
-                                        db.matchGameDao().insertMatchGame(matchGame);
+                                        int gameId = (int) db.matchGameDao().insertMatchGame(matchGame);
+                                        Log.i("AdcupFragment", "Game Added with Id: " + gameId);
                                     } // End Games
 
                                 } // End Matches
-
-                                roundNo = roundNo / 2;
                             } // End Rounds
                         }
 
@@ -183,5 +188,20 @@ public class AddCupFragment extends DialogFragment {
 
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    private int getRoundNo(int numberOfPlayers) {
+        if (numberOfPlayers == 64)
+            return 7;
+        else if (numberOfPlayers == 32)
+            return 6;
+        else if (numberOfPlayers == 16)
+            return 5;
+        else if (numberOfPlayers == 8)
+            return 4;
+        else if (numberOfPlayers == 4)
+            return 3;
+        else
+            return 1;
     }
 }

@@ -88,7 +88,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Cup cup = (Cup) parent.getItemAtPosition(position);
                 Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
-                i.putExtra("numberOfPages", getNumberOfPages(cup.playersCount));
+                //i.putExtra("numberOfPages", getNumberOfPages(cup.playersCount));
                 i.putExtra("fk_cupId", cup.cupId);
 
                 startActivity(i);

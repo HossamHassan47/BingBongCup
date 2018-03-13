@@ -25,9 +25,9 @@ public interface CupRoundDao {
     @Delete
     void deleteCupRound(CupRound cupRound);
 
-    @Query("SELECT * FROM CupRound ORDER BY roundNo")
-    List<CupRound> loadAllCupRounds();
+    @Query("SELECT * FROM CupRound Where fk_cupId = :cupId ORDER BY roundNo DESC")
+    List<CupRound> loadAllCupRounds(int cupId);
 
-    @Query("SELECT * FROM CupRound WHERE fk_cupId = :id")
+    @Query("SELECT * FROM CupRound WHERE cupRoundId = :id")
     CupRound loadCupRoundById(int id);
 }
