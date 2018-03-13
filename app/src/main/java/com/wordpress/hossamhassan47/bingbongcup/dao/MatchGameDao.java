@@ -28,6 +28,6 @@ public interface MatchGameDao {
     @Query("SELECT * FROM MatchGame ORDER BY gameNo")
     List<MatchGame> loadAllMatchGames();
 
-    @Query("SELECT * FROM MatchGame WHERE id = :id")
+    @Query("SELECT * FROM MatchGame WHERE matchGameId = :id")
     MatchGame loadMatchGameById(int id);
 }

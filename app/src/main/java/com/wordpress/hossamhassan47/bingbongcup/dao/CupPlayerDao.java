@@ -8,7 +8,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 
 import java.util.List;
 
@@ -29,9 +29,15 @@ public interface CupPlayerDao {
     @Query("SELECT * FROM CupPlayer ORDER BY playerNo")
     List<CupPlayer> loadAllCupPlayers();
 
-    @Query("SELECT * FROM CupPlayer WHERE id = :id")
+    @Query("SELECT * FROM CupPlayer WHERE fk_cupId = :cupId ORDER BY playerNo")
+    List<CupPlayer> loadAllCupPlayersByCupId(int cupId);
+
+    @Query("SELECT * FROM CupPlayer WHERE cupPlayerId = :id")
     CupPlayer loadCupPlayerById(int id);
 
-    @Query("SELECT Player.* FROM CupPlayer  LEFT OUTER JOIN Player ON Player.id = CupPlayer.playerId WHERE CupPlayer.cupId = :cupId")
-    List<Player> getPlayersByCupId(int cupId);
+    @Query("SELECT CupPlayer.*, Player.* " +
+            "FROM CupPlayer  " +
+            "LEFT OUTER JOIN Player ON Player.playerId = CupPlayer.fk_playerId " +
+            "WHERE CupPlayer.fk_cupId = :cupId")
+    List<CupPlayerDetails> getPlayersByCupId(int cupId);
 }

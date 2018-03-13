@@ -55,7 +55,7 @@ public class AddCupFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_cup, null);
 
-        cupId = getArguments().getInt("id");
+        cupId = getArguments().getInt("cupPlayerId");
 
         boolean addMode = cupId <= 0;
 
@@ -104,7 +104,7 @@ public class AddCupFragment extends DialogFragment {
                             cup = new Cup();
                         }
 
-                        cup.name = txtCupName.getText().toString();
+                        cup.cupName = txtCupName.getText().toString();
                         cup.playersCount = Integer.parseInt(spinnerPlayersCount.getSelectedItem().toString());
                         cup.gamesCount = Integer.parseInt(spinnerGamesCount.getSelectedItem().toString());
 
@@ -114,13 +114,13 @@ public class AddCupFragment extends DialogFragment {
                             db.cupDao().updateCup(cup);
                         } else {
 
-                            long cupId = db.cupDao().insertCup(cup);
+                            int cupId = (int) db.cupDao().insertCup(cup);
 
                             // Prepare cup details
                             // 1. Players
                             for (int i = 0; i < cup.playersCount; i++) {
                                 CupPlayer cupPlayer = new CupPlayer();
-                                cupPlayer.cupId = cupId;
+                                cupPlayer.fk_cupId = cupId;
                                 cupPlayer.playerNo = i + 1;
                                 db.cupPlayerDao().insertCupPlayer(cupPlayer);
                             }
@@ -129,7 +129,7 @@ public class AddCupFragment extends DialogFragment {
                             int roundNo = cup.roundsCount;
                             while (roundNo >= 1) {
                                 CupRound cupRound = new CupRound();
-                                cupRound.cupId = cupId;
+                                cupRound.fk_cupId = cupId;
                                 cupRound.roundNo = roundNo;
 
                                 if (roundNo == 2) {
@@ -140,22 +140,22 @@ public class AddCupFragment extends DialogFragment {
                                     cupRound.roundName = "Round-" + roundNo;
                                 }
 
-                                long roundId = db.cupRoundDao().insertCupRound(cupRound);
+                                int roundId = (int) db.cupRoundDao().insertCupRound(cupRound);
 
                                 // 3. Matches
                                 for (int j = 1; j <= cupRound.roundNo / 2; j++) {
                                     RoundMatch roundMatch = new RoundMatch();
-                                    roundMatch.roundId = roundId;
+                                    roundMatch.fk_roundId = roundId;
                                     roundMatch.matchNo = j;
                                     roundMatch.numberOfGames = cup.gamesCount;
 
-                                   long matchId = db.roundMatchDao().insertRoundMatch(roundMatch);
+                                   int matchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
 
                                     // 4. Games
                                     for (int i = 1; i <= roundMatch.numberOfGames; i++) {
                                         // Insert match game
                                         MatchGame matchGame = new MatchGame();
-                                        matchGame.roundMatchId = matchId;
+                                        matchGame.fk_roundMatchId = matchId;
                                         matchGame.gameNo = i;
                                         matchGame.player1Score = 0;
                                         matchGame.player2Score = 0;
@@ -169,7 +169,7 @@ public class AddCupFragment extends DialogFragment {
                             } // End Rounds
                         }
 
-                        Toast.makeText(getActivity(), cup.name + " saved successfully.", Toast.LENGTH_SHORT)
+                        Toast.makeText(getActivity(), cup.cupName + " saved successfully.", Toast.LENGTH_SHORT)
                                 .show();
                         // Send the positive button event back to the host activity
                         mListener.onDialogPositiveClick(AddCupFragment.this);

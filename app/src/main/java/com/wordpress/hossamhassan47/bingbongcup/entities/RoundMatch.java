@@ -12,8 +12,8 @@ import java.util.Date;
 @Entity
 public class RoundMatch {
     @PrimaryKey(autoGenerate = true)
-    public int id;
-    public long roundId;
+    public int roundMatchId;
+    public int fk_roundId;
     public int player1Id;
     public int player2Id;
     public int winnerId;

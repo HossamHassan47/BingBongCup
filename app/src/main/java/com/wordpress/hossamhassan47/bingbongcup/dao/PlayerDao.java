@@ -28,6 +28,6 @@ public interface PlayerDao {
     @Query("SELECT * FROM Player ORDER BY fullName")
     List<Player> loadAllPlayers();
 
-    @Query("SELECT * FROM Player WHERE id = :id")
+    @Query("SELECT * FROM Player WHERE playerId = :id")
     Player loadPlayerById(int id);
 }

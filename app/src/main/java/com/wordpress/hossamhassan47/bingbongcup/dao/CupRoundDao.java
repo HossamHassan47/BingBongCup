@@ -28,6 +28,6 @@ public interface CupRoundDao {
     @Query("SELECT * FROM CupRound ORDER BY roundNo")
     List<CupRound> loadAllCupRounds();
 
-    @Query("SELECT * FROM CupRound WHERE id = :id")
+    @Query("SELECT * FROM CupRound WHERE fk_cupId = :id")
     CupRound loadCupRoundById(int id);
 }

@@ -1,8 +1,5 @@
 package com.wordpress.hossamhassan47.bingbongcup.activities;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +14,6 @@ import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddPlayerFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
-import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
 import java.util.List;
 
@@ -46,7 +42,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", "");
                 bundle.putString("email", "");
-                bundle.putInt("id", -1);
+                bundle.putInt("cupPlayerId", -1);
 
                 AddPlayerFragment playerFragment = new AddPlayerFragment();
                 playerFragment.setArguments(bundle);
@@ -73,7 +69,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", playerItem.fullName);
                 bundle.putString("email", playerItem.email);
-                bundle.putInt("id", playerItem.id);
+                bundle.putInt("cupPlayerId", playerItem.playerId);
 
                 AddPlayerFragment playerFragment = new AddPlayerFragment();
                 playerFragment.setArguments(bundle);

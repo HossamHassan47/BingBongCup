@@ -55,7 +55,7 @@ public class AddPlayerFragment extends DialogFragment {
         txtFullName.setText(getArguments().getString("fullName"));
         txtEmail.setText(getArguments().getString("email"));
 
-        playerId = getArguments().getInt("id");
+        playerId = getArguments().getInt("cupPlayerId");
 
         builder.setTitle("Player Details")
                 .setView(view)

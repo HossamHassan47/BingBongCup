@@ -2,7 +2,6 @@ package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
         // Name
         TextView txtCupName = listItemView.findViewById(R.id.txtCupName);
-        txtCupName.setText(currentItem.name);
+        txtCupName.setText(currentItem.cupName);
 
         // Players Count
         TextView txtPlayersCount = listItemView.findViewById(R.id.text_view_players_count);
@@ -71,7 +69,7 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Confirm")
-                        .setMessage("Are you sure you want to delete " + currentItem.name + " cup?")
+                        .setMessage("Are you sure you want to delete " + currentItem.cupName + " cup?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
@@ -82,7 +80,7 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
                                 notifyDataSetChanged();
 
-                                Toast.makeText(getContext(), currentItem.name + " deleted successfully.", Toast.LENGTH_SHORT)
+                                Toast.makeText(getContext(), currentItem.cupName + " deleted successfully.", Toast.LENGTH_SHORT)
                                         .show();
                             }
                         })

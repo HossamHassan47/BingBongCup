@@ -1,8 +1,5 @@
 package com.wordpress.hossamhassan47.bingbongcup.activities;
 
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +15,6 @@ import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddCupFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
-import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
 import java.util.List;
 
@@ -45,7 +41,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
 
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", -1);
+                bundle.putInt("cupPlayerId", -1);
                 bundle.putString("cupName", "");
                 bundle.putString("playersCount", "2");
                 bundle.putString("gamesCount", "1");
@@ -74,8 +70,8 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
 
                 // Create and show the dialog.
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", cup.id);
-                bundle.putString("cupName", cup.name);
+                bundle.putInt("cupPlayerId", cup.cupId);
+                bundle.putString("cupName", cup.cupName);
                 bundle.putString("playersCount", String.valueOf(cup.playersCount));
                 bundle.putString("gamesCount", String.valueOf(cup.gamesCount));
                 bundle.putInt("cupMode", cup.mode - 1);
@@ -93,7 +89,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 Cup cup = (Cup) parent.getItemAtPosition(position);
                 Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
                 i.putExtra("numberOfPages", getNumberOfPages(cup.playersCount));
-                i.putExtra("cupId", cup.id);
+                i.putExtra("fk_cupId", cup.cupId);
 
                 startActivity(i);
                 return true;

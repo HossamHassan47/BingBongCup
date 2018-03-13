@@ -2,18 +2,20 @@ package com.wordpress.hossamhassan47.bingbongcup.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 
 public class SetCupPlayerFragment extends DialogFragment {
     NoticeDialogListener mListener;
@@ -28,8 +30,10 @@ public class SetCupPlayerFragment extends DialogFragment {
         }
     }
 
-    EditText txtFullName;
-    EditText txtEmail;
+    AppDatabase db;
+
+    Spinner spinnerCupPlayer;
+    int cupPlayerId = -1;
     int playerId = -1;
 
     @Override
@@ -38,40 +42,38 @@ public class SetCupPlayerFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_add_user, null);
+        View view = inflater.inflate(R.layout.dialog_set_cup_player, null);
 
-        txtFullName = (EditText) view.findViewById(R.id.txtFullName);
-        txtEmail = (EditText) view.findViewById(R.id.txtEmail);
+        spinnerCupPlayer = view.findViewById(R.id.spinner_cup_player);
 
-        txtFullName.setText(getArguments().getString("fullName"));
-        txtEmail.setText(getArguments().getString("email"));
+        cupPlayerId = getArguments().getInt("cupPlayerId");
+        playerId = getArguments().getInt("fk_playerId");
 
-        playerId = getArguments().getInt("id");
+        db = AppDatabase.getAppDatabase(getActivity());
+        ArrayAdapter<Player> adapter = new ArrayAdapter(getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                db.playerDao().loadAllPlayers());
 
-        builder.setTitle("Player Details")
+        spinnerCupPlayer.setAdapter(adapter);
+
+        builder.setTitle("Select Player")
                 .setView(view)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AppDatabase db = AppDatabase.getAppDatabase(getActivity());
 
-                        Player player;
-                        if (playerId > 0) {
-                            player = db.playerDao().loadPlayerById(playerId);
-                        } else {
-                            player = new Player();
+                        Player selectedPlayer = (Player) spinnerCupPlayer.getSelectedItem();
+
+                        db = AppDatabase.getAppDatabase(getActivity());
+                        CupPlayer cupPlayer = db.cupPlayerDao().loadCupPlayerById(cupPlayerId);
+                        cupPlayer.fk_playerId = selectedPlayer.playerId;
+
+                        if (cupPlayerId > 0) {
+                            db.cupPlayerDao().updateCupPlayer(cupPlayer);
                         }
 
-                        player.fullName = txtFullName.getText().toString();
-                        player.email = txtEmail.getText().toString();
-
-                        if (playerId > 0) {
-                            db.playerDao().updatePlayer(player);
-                        } else {
-                            db.playerDao().insertPlayer(player);
-                        }
-
-                        Toast.makeText(getActivity(), player.fullName + " saved successfully.", Toast.LENGTH_SHORT)
+                        Toast.makeText(getActivity(), selectedPlayer.fullName + " saved successfully.", Toast.LENGTH_SHORT)
                                 .show();
+
                         // Send the positive button event back to the host activity
                         mListener.onDialogPositiveClick(SetCupPlayerFragment.this);
                     }

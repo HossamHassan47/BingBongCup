@@ -16,7 +16,7 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
  * Created by Hossam on 3/3/2018.
  */
 @Database(entities = {Player.class, Cup.class, CupPlayer.class, CupRound.class, RoundMatch.class, MatchGame.class},
-        version = 5)
+        version = 9)
 public abstract class AppDatabase extends RoomDatabase{
     public abstract PlayerDao playerDao();
     public abstract CupDao cupDao();

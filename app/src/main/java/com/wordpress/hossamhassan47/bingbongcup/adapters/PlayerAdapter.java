@@ -53,7 +53,7 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
         TextView txtEmail = listItemView.findViewById(R.id.txtEmail);
         txtEmail.setText(currentItem.email);
 
-        //ImageView imgPlayerImage = (ImageView) listItemView.findViewById(R.id.imgPlayerImage);
+        //ImageView imgPlayerImage = (ImageView) listItemView.findViewById(R.cupPlayerId.imgPlayerImage);
         //imgPlayerImage.setImageResource(R.drawable.family_older_brother);
 
         // Delete

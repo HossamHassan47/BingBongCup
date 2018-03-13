@@ -13,8 +13,8 @@ import java.util.Date;
 @Entity
 public class Cup {
     @PrimaryKey(autoGenerate = true)
-    public int id;
-    public String name;
+    public int cupId;
+    public String cupName;
 
     @TypeConverters({TimestampConverter.class})
     public Date creationDate;

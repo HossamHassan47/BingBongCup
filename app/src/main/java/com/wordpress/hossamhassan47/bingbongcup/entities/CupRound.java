@@ -9,8 +9,8 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class CupRound {
     @PrimaryKey(autoGenerate = true)
-    public int id;
-    public long cupId;
+    public int cupRoundId;
+    public int fk_cupId;
     public int roundNo;
     public String roundName;
 

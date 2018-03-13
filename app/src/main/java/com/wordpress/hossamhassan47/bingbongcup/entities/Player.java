@@ -9,8 +9,13 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Player {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public int playerId;
     public String fullName;
     public String email;
     //public String imagePath;
+
+    public String toString()
+    {
+        return fullName;
+    }
 }

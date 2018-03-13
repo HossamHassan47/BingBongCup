@@ -29,6 +29,6 @@ public interface CupDao {
     @Query("SELECT * FROM Cup ORDER BY creationDate")
     List<Cup> loadAllCups();
 
-    @Query("SELECT * FROM Cup WHERE id = :id")
+    @Query("SELECT * FROM Cup WHERE cupId = :id")
     Cup loadCupById(int id);
 }

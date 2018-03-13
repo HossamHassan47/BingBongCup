@@ -28,6 +28,6 @@ public interface RoundMatchDao {
     @Query("SELECT * FROM RoundMatch ORDER BY matchNo")
     List<RoundMatch> loadAllRoundMatches();
 
-    @Query("SELECT * FROM RoundMatch WHERE id = :id")
+    @Query("SELECT * FROM RoundMatch WHERE roundMatchId = :id")
     RoundMatch loadRoundMatchById(int id);
 }

@@ -1,6 +1,7 @@
 package com.wordpress.hossamhassan47.bingbongcup.activities;
 
 //import android.app.DialogFragment;
+
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -19,7 +20,7 @@ import android.widget.ListView;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.CupPlayerAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
-import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
@@ -30,16 +31,21 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+    int numberOfPages;
+    int cupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cup_details);
 
-        int numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
+        numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
+        cupId = getIntent().getIntExtra("fk_cupId", -1);
 
-        int cupId = getIntent().getIntExtra("cupId", -1);
+        SetViewPager();
+    }
 
+    private void SetViewPager() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), numberOfPages, cupId);
 
         // Set up the ViewPager with the sections adapter.
@@ -49,7 +55,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-
+        SetViewPager();
     }
 
     @Override
@@ -189,22 +195,30 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
             int cupId = getArguments().getInt(ARG_CUP_ID);
 
+            // Load Players
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-            List<Player> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
+            List<CupPlayerDetails> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
 
             CupPlayerAdapter adapter = new CupPlayerAdapter(getContext(), lstPlayers);
 
+            // View players in list view
             listViewPlayers = rootView.findViewById(R.id.list_view_cup_players);
             listViewPlayers.setAdapter(adapter);
             listViewPlayers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Player playerItem = (Player) parent.getItemAtPosition(position);
+                    CupPlayerDetails playerItem = (CupPlayerDetails) parent.getItemAtPosition(position);
 
                     // Create and show the dialog.
                     Bundle bundle = new Bundle();
-                    bundle.putInt("cupPlayerId", playerItem.id);
-                    bundle.putInt("playerId", playerItem.id);
+                    bundle.putInt("cupPlayerId", playerItem.cupPlayer.cupPlayerId);
+
+                    if (playerItem.player != null) {
+                        bundle.putInt("fk_playerId", playerItem.player.playerId);
+                    } else {
+                        bundle.putInt("fk_playerId", -1);
+                    }
+
 
                     SetCupPlayerFragment setCupPlayerFragment = new SetCupPlayerFragment();
                     setCupPlayerFragment.setArguments(bundle);
