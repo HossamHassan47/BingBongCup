@@ -16,6 +16,7 @@ import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
+import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
 
 public class SetCupPlayerFragment extends DialogFragment {
     NoticeDialogListener mListener;
@@ -69,6 +70,25 @@ public class SetCupPlayerFragment extends DialogFragment {
 
                         if (cupPlayerId > 0) {
                             db.cupPlayerDao().updateCupPlayer(cupPlayer);
+
+                            int rootMatchNo;
+                            RoundMatch roundMatch;
+
+                            // Set match player Id
+                            if (cupPlayer.playerNo % 2 == 0) {
+                                // Even --> set player 2
+                                rootMatchNo = (cupPlayer.playerNo / 2);
+                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(rootMatchNo);
+                                roundMatch.player2Id = selectedPlayer.playerId;
+                            }
+                            else{
+                                // Odd --> set player 1
+                                rootMatchNo = ((cupPlayer.playerNo + 1) / 2);
+                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(rootMatchNo);
+                                roundMatch.player1Id = selectedPlayer.playerId;
+                            }
+
+                            db.roundMatchDao().updateRoundMatch(roundMatch);
                         }
 
                         Toast.makeText(getActivity(), selectedPlayer.fullName + " saved successfully.", Toast.LENGTH_SHORT)

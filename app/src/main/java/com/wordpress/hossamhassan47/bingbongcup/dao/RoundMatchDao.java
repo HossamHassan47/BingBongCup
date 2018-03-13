@@ -7,7 +7,9 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
+import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 
 import java.util.List;
 
@@ -30,4 +32,14 @@ public interface RoundMatchDao {
 
     @Query("SELECT * FROM RoundMatch WHERE roundMatchId = :id")
     RoundMatch loadRoundMatchById(int id);
+
+    @Query("SELECT * FROM RoundMatch WHERE parentRoundNo = 0 AND matchNo = :matchNo")
+    RoundMatch loadRootRoundMatchByMatchNo(int matchNo);
+
+    @Query("SELECT RoundMatch.*, player1.fullName as player1Name,  player2.fullName as player2Name " +
+            "FROM RoundMatch " +
+            "LEFT OUTER JOIN Player as player1 ON RoundMatch.player1Id = player1.playerId " +
+            "LEFT OUTER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
+            "WHERE RoundMatch.fk_roundId = :cupRoundId")
+    List<RoundMatchDetails> loadRoundMatchesById(int cupRoundId);
 }

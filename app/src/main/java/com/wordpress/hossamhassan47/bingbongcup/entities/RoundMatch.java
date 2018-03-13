@@ -18,8 +18,9 @@ public class RoundMatch {
     public int player2Id;
     public int winnerId;
     public int loserId;
-    public int player1PendingMatchId;
-    public int player2PendingMatchId;
+    public int parentRoundNo;
+    public int parentRoundMatchNo1;
+    public int parentRoundMatchNo2;
     public int matchNo;
     @TypeConverters({TimestampConverter.class})
     public Date matchDate;

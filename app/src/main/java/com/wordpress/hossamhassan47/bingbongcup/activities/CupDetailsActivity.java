@@ -20,9 +20,11 @@ import android.widget.ListView;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.CupPlayerAdapter;
+import com.wordpress.hossamhassan47.bingbongcup.adapters.RoundMatchAdapter;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
+import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
 
@@ -90,7 +92,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                 // Rounds
                 int roundId = _cupRoundList.get(position - 1).cupRoundId;
 
-                return CupRoundFragment.newInstance(_cupId, roundId);
+                return CupRoundFragment.newInstance(roundId);
             }
         }
 
@@ -175,20 +177,18 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
     // Cup Round Fragment
     public static class CupRoundFragment extends Fragment {
-        private static final String ARG_CUP_ID = "ARG_CUP_ID";
-        private static final String ARG_ROUND_ID = "ARG_ROUND_ID";
+        private static final String ARG_CUP_ROUND_ID = "ARG_CUP_ROUND_ID";
 
-        ListView listViewPlayers;
+        ListView listViewRoundMatches;
 
         public CupRoundFragment() {
         }
 
-        public static CupRoundFragment newInstance(int cupId, int roundId) {
+        public static CupRoundFragment newInstance(int roundId) {
             CupRoundFragment fragment = new CupRoundFragment();
 
             Bundle args = new Bundle();
-            args.putInt(ARG_CUP_ID, cupId);
-            args.putInt(ARG_ROUND_ID, roundId);
+            args.putInt(ARG_CUP_ROUND_ID, roundId);
 
             fragment.setArguments(args);
             return fragment;
@@ -197,40 +197,32 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_cup_details_players, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_cup_details_round_matches, container, false);
 
-            int cupId = getArguments().getInt(ARG_CUP_ID);
-            int roundId = getArguments().getInt(ARG_ROUND_ID);
+            int cupRoundId = getArguments().getInt(ARG_CUP_ROUND_ID);
 
             // Load Round Matches
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
-            List<CupPlayerDetails> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
+            List<RoundMatchDetails> lstRoundMatchDetails = db.roundMatchDao().loadRoundMatchesById(cupRoundId);
 
-            CupPlayerAdapter adapter = new CupPlayerAdapter(getContext(), lstPlayers);
+            RoundMatchAdapter adapter = new RoundMatchAdapter(getContext(), lstRoundMatchDetails);
 
             // View players in list view
-            listViewPlayers = rootView.findViewById(R.id.list_view_cup_players);
-            listViewPlayers.setAdapter(adapter);
-            listViewPlayers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listViewRoundMatches = rootView.findViewById(R.id.list_view_round_matches);
+            listViewRoundMatches.setAdapter(adapter);
+            listViewRoundMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    CupPlayerDetails playerItem = (CupPlayerDetails) parent.getItemAtPosition(position);
+                    RoundMatchDetails roundMatchDetails = (RoundMatchDetails) parent.getItemAtPosition(position);
 
                     // Create and show the dialog.
                     Bundle bundle = new Bundle();
-                    bundle.putInt("cupPlayerId", playerItem.cupPlayer.cupPlayerId);
+                    bundle.putInt("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
 
-                    if (playerItem.player != null) {
-                        bundle.putInt("fk_playerId", playerItem.player.playerId);
-                    } else {
-                        bundle.putInt("fk_playerId", -1);
-                    }
+                    //SetRoundMatchFragment setRoundMatchFragment = new SetRoundMatchFragment();
+                    //setRoundMatchFragment.setArguments(bundle);
 
-
-                    SetCupPlayerFragment setCupPlayerFragment = new SetCupPlayerFragment();
-                    setCupPlayerFragment.setArguments(bundle);
-
-                    setCupPlayerFragment.show(getFragmentManager(), "dialog_SetCupPlayer");
+                    //setRoundMatchFragment.show(getFragmentManager(), "dialog_SetRoundMatch");
                 }
             });
 

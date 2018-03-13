@@ -147,13 +147,25 @@ public class AddCupFragment extends DialogFragment {
                                 Log.i("AdcupFragment", "Round Added with Id: " + roundId);
 
                                 // 3. Matches
-                                int matchesNo = roundNo == 1 ? 1 : (roundNo / 2);
+                                boolean isRootMatch = (roundNo == cup.playersCount);
+                                int matchesNo = (roundNo == 1) ? 1 : (roundNo / 2);
+
                                 for (int j = 1; j <= matchesNo; j++) {
                                     RoundMatch roundMatch = new RoundMatch();
                                     roundMatch.fk_roundId = roundId;
                                     roundMatch.matchNo = j;
                                     roundMatch.numberOfGames = cup.gamesCount;
-                                    
+
+                                    if (isRootMatch) {
+                                        roundMatch.parentRoundNo = 0;
+                                        roundMatch.parentRoundMatchNo1 = 0;
+                                        roundMatch.parentRoundMatchNo2 = 0;
+                                    } else {
+                                        roundMatch.parentRoundNo = (roundId * 2);
+                                        roundMatch.parentRoundMatchNo1 = (j * 2) - 1;
+                                        roundMatch.parentRoundMatchNo2 = (j * 2);
+                                    }
+
                                     int matchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
                                     Log.i("AdcupFragment", "Match Added with Id: " + matchId);
 
