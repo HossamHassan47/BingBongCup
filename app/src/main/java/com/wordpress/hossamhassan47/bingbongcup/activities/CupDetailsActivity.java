@@ -155,6 +155,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     // Create and show the dialog.
                     Bundle bundle = new Bundle();
                     bundle.putInt("cupPlayerId", playerItem.cupPlayer.cupPlayerId);
+                    bundle.putInt("fk_cupId", playerItem.cupPlayer.fk_cupId);
 
                     if (playerItem.player != null) {
                         bundle.putInt("fk_playerId", playerItem.player.playerId);

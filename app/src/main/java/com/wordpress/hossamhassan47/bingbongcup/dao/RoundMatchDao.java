@@ -33,8 +33,12 @@ public interface RoundMatchDao {
     @Query("SELECT * FROM RoundMatch WHERE roundMatchId = :id")
     RoundMatch loadRoundMatchById(int id);
 
-    @Query("SELECT * FROM RoundMatch WHERE parentRoundNo = 0 AND matchNo = :matchNo")
-    RoundMatch loadRootRoundMatchByMatchNo(int matchNo);
+    @Query("SELECT RoundMatch.* " +
+            "FROM RoundMatch " +
+            "INNER JOIN CupRound ON RoundMatch.fk_roundId = CupRound.cupRoundId " +
+            "WHERE RoundMatch.parentRoundNo = 0 " +
+            "AND RoundMatch.matchNo = :matchNo AND CupRound.fk_cupId = :cupId")
+    RoundMatch loadRootRoundMatchByMatchNo(int cupId, int matchNo);
 
     @Query("SELECT RoundMatch.*, player1.fullName as player1Name,  player2.fullName as player2Name " +
             "FROM RoundMatch " +

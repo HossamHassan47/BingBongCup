@@ -18,6 +18,8 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
 
+import java.util.List;
+
 public class SetCupPlayerFragment extends DialogFragment {
     NoticeDialogListener mListener;
 
@@ -36,6 +38,7 @@ public class SetCupPlayerFragment extends DialogFragment {
     Spinner spinnerCupPlayer;
     int cupPlayerId = -1;
     int playerId = -1;
+    int cupId = -1;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -49,11 +52,18 @@ public class SetCupPlayerFragment extends DialogFragment {
 
         cupPlayerId = getArguments().getInt("cupPlayerId");
         playerId = getArguments().getInt("fk_playerId");
+        cupId = getArguments().getInt("fk_cupId");
 
         db = AppDatabase.getAppDatabase(getActivity());
+        List<Player> lstRemainingPlayers =db.playerDao().loadAllPlayersByCupId(cupId);
+        Player player = new Player();
+        player.playerId = 0;
+        player.fullName = "N/A";
+        lstRemainingPlayers.add(0, player);
+
         ArrayAdapter<Player> adapter = new ArrayAdapter(getContext(),
                 android.R.layout.simple_spinner_dropdown_item,
-                db.playerDao().loadAllPlayers());
+                lstRemainingPlayers);
 
         spinnerCupPlayer.setAdapter(adapter);
 
@@ -78,20 +88,19 @@ public class SetCupPlayerFragment extends DialogFragment {
                             if (cupPlayer.playerNo % 2 == 0) {
                                 // Even --> set player 2
                                 rootMatchNo = (cupPlayer.playerNo / 2);
-                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(rootMatchNo);
+                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(cupId, rootMatchNo);
                                 roundMatch.player2Id = selectedPlayer.playerId;
-                            }
-                            else{
+                            } else {
                                 // Odd --> set player 1
                                 rootMatchNo = ((cupPlayer.playerNo + 1) / 2);
-                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(rootMatchNo);
+                                roundMatch = db.roundMatchDao().loadRootRoundMatchByMatchNo(cupId, rootMatchNo);
                                 roundMatch.player1Id = selectedPlayer.playerId;
                             }
 
                             db.roundMatchDao().updateRoundMatch(roundMatch);
                         }
 
-                        Toast.makeText(getActivity(), selectedPlayer.fullName + " saved successfully.", Toast.LENGTH_SHORT)
+                        Toast.makeText(getActivity(), "Player saved successfully.", Toast.LENGTH_SHORT)
                                 .show();
 
                         // Send the positive button event back to the host activity
