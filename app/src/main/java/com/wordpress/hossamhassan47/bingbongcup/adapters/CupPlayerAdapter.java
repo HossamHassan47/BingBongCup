@@ -43,15 +43,15 @@ public class CupPlayerAdapter extends ArrayAdapter<CupPlayerDetails> {
         // Cup Player Number
         TextView txtPlayerNo = listItemView.findViewById(R.id.text_view_cup_player_no);
         txtPlayerNo.setText("#" + (position + 1));
+        TextView txtFullName = listItemView.findViewById(R.id.txtFullName);
+        TextView txtEmail = listItemView.findViewById(R.id.txtEmail);
 
         if (currentItem.player != null) {
-            // Player Name
-            TextView txtFullName = listItemView.findViewById(R.id.txtFullName);
             txtFullName.setText(currentItem.player.fullName);
-
-            // Player Email
-            TextView txtEmail = listItemView.findViewById(R.id.txtEmail);
             txtEmail.setText(currentItem.player.email);
+        } else {
+            txtFullName.setText("");
+            txtEmail.setText("");
         }
 
         return listItemView;
