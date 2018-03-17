@@ -1,10 +1,13 @@
 package com.wordpress.hossamhassan47.bingbongcup.entities;
 
 import android.arch.persistence.room.TypeConverter;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -12,7 +15,7 @@ import java.util.Date;
  */
 
 public class TimestampConverter {
-    static DateFormat df = new SimpleDateFormat(Constants.TIME_STAMP_FORMAT);
+    static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @TypeConverter
     public static Date fromTimestamp(String value) {
@@ -21,6 +24,7 @@ public class TimestampConverter {
                 return df.parse(value);
             } catch (ParseException e) {
                 e.printStackTrace();
+                Log.e("Date Parse Error:" , e.getMessage());
             }
             return null;
         } else {

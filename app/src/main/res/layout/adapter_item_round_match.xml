@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/category_match"
-    android:minHeight="@dimen/list_item_height">
+    android:minHeight="@dimen/list_item_height_match">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,8 +15,8 @@
         <TextView
             android:id="@+id/text_view_round_match_no"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/list_item_height"
-            android:background="#607D8B"
+            android:layout_height="@dimen/list_item_height_match"
+            android:background="#546E7A"
             android:gravity="center"
             android:padding="8dp"
             android:textAppearance="?android:textAppearanceLarge"
@@ -26,12 +26,45 @@
         <LinearLayout
             android:id="@+id/text_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height"
+            android:layout_height="@dimen/list_item_height_match"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/text_view_round_match_no"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#607D8B"
+                android:orientation="horizontal"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <View
+                    android:layout_width="50dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="8dp"
+                    android:background="#ffffff" />
+
+                <ImageView
+                    android:id="@+id/iconDateTime"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/ic_alarm_white_24dp" />
+
+                <TextView
+                    android:id="@+id/text_view_match_date_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/text_view_player1_name"
@@ -61,6 +94,7 @@
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
+
 
         </LinearLayout>
 

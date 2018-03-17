@@ -12,7 +12,10 @@ import android.widget.TextView;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
+import com.wordpress.hossamhassan47.bingbongcup.entities.TimestampConverter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -21,13 +24,13 @@ import java.util.List;
 
 public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
     List<RoundMatchDetails> lstRoundMatches;
+    DateFormat df = new SimpleDateFormat("E MMM dd,yyyy hh:mm a");
 
     public RoundMatchAdapter(@NonNull Context context, @NonNull List<RoundMatchDetails> objects) {
         super(context, R.layout.adapter_item_cup_player, objects);
 
         this.lstRoundMatches = objects;
     }
-
 
     @NonNull
     @Override
@@ -44,6 +47,14 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
         txtMatchNo.setText("#" + (position + 1));
+
+        TextView txtMatchDate = listItemView.findViewById(R.id.text_view_match_date_time);
+        if (currentItem.roundMatch.matchDate != null) {
+            txtMatchDate.setText(df.format(currentItem.roundMatch.matchDate));
+        } else {
+            txtMatchDate.setText("");
+        }
+
 
         TextView txtPlayer1Name = listItemView.findViewById(R.id.text_view_player1_name);
         txtPlayer1Name.setText(currentItem.player1Name);

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private int currentSelectedPage = 0;
     private ViewPager mViewPager;
     int cupId;
 
@@ -52,11 +55,28 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.pagerCupDetails);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                currentSelectedPage = position;
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         SetViewPager();
+
+        mViewPager.setCurrentItem(currentSelectedPage);
     }
 
     @Override
@@ -136,7 +156,6 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
             int cupId = getArguments().getInt(ARG_CUP_ID);
 
-            // Load Players
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
             List<CupPlayerDetails> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
 
@@ -169,6 +188,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                 }
             });
 
+
             return rootView;
         }
 
@@ -177,8 +197,6 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
     // Cup Round Fragment
     public static class CupRoundFragment extends Fragment {
         private static final String ARG_CUP_ROUND_ID = "ARG_CUP_ROUND_ID";
-
-        ListView listViewRoundMatches;
 
         public CupRoundFragment() {
         }
@@ -200,14 +218,14 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
             int cupRoundId = getArguments().getInt(ARG_CUP_ROUND_ID);
 
-            // Load Round Matches
+
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
             List<RoundMatchDetails> lstRoundMatchDetails = db.roundMatchDao().loadRoundMatchesById(cupRoundId);
 
             RoundMatchAdapter adapter = new RoundMatchAdapter(getContext(), lstRoundMatchDetails);
 
             // View players in list view
-            listViewRoundMatches = rootView.findViewById(R.id.list_view_round_matches);
+            ListView listViewRoundMatches = rootView.findViewById(R.id.list_view_round_matches);
             listViewRoundMatches.setAdapter(adapter);
             listViewRoundMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -218,10 +236,10 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     Bundle bundle = new Bundle();
                     bundle.putInt("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
 
-                    //SetRoundMatchFragment setRoundMatchFragment = new SetRoundMatchFragment();
-                    //setRoundMatchFragment.setArguments(bundle);
+                    SetMatchDateFragment setMatchDateFragment = new SetMatchDateFragment();
+                    setMatchDateFragment.setArguments(bundle);
 
-                    //setRoundMatchFragment.show(getFragmentManager(), "dialog_SetRoundMatch");
+                    setMatchDateFragment.show(getFragmentManager(), "dialog_SetRoundMatchDate");
                 }
             });
 
@@ -241,4 +259,5 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
             return rootView;
         }
     }
+
 }
