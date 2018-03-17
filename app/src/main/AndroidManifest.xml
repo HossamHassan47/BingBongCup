@@ -27,6 +27,10 @@
         <activity
             android:name=".activities.CupDetailsActivity"
             android:label="@string/title_activity_cup_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.MatchDetailsActivity"
+            android:label="@string/title_activity_match_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

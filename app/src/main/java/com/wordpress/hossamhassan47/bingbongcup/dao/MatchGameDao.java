@@ -25,8 +25,8 @@ public interface MatchGameDao {
     @Delete
     void deleteMatchGame(MatchGame matchGame);
 
-    @Query("SELECT * FROM MatchGame ORDER BY gameNo")
-    List<MatchGame> loadAllMatchGames();
+    @Query("SELECT * FROM MatchGame WHERE fk_roundMatchId = :roundMatchId ORDER BY gameNo")
+    List<MatchGame> loadAllMatchGames(int roundMatchId);
 
     @Query("SELECT * FROM MatchGame WHERE matchGameId = :id")
     MatchGame loadMatchGameById(int id);

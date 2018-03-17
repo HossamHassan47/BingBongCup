@@ -3,18 +3,17 @@ package com.wordpress.hossamhassan47.bingbongcup.activities;
 //import android.app.DialogFragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -42,7 +41,6 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cup_details);
 
-        //numberOfPages = getIntent().getIntExtra("numberOfPages", 2);
         cupId = getIntent().getIntExtra("fk_cupId", -1);
 
         SetViewPager();
@@ -224,6 +222,19 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     //setRoundMatchFragment.setArguments(bundle);
 
                     //setRoundMatchFragment.show(getFragmentManager(), "dialog_SetRoundMatch");
+                }
+            });
+
+            listViewRoundMatches.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    RoundMatchDetails roundMatchDetails = (RoundMatchDetails) parent.getItemAtPosition(position);
+                    Intent i = new Intent(getContext(), MatchDetailsActivity.class);
+
+                    i.putExtra("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
+
+                    startActivity(i);
+                    return true;
                 }
             });
 

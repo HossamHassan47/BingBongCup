@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/category_players"
     android:minHeight="@dimen/list_item_height"
-    android:orientation="horizontal">
+    android:background="@color/category_players">
 
-    <TextView
-        android:id="@+id/text_view_cup_player_no"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/list_item_height"
-        android:gravity="center"
-        android:padding="8dp"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:background="#0097A7"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/text_container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
-        android:paddingLeft="8dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/text_view_cup_player_no"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/txtFullName"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:textAppearance="?android:textAppearanceMedium"
+            android:id="@+id/text_view_cup_player_no"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/list_item_height"
+            android:background="#0097A7"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
-        <TextView
-            android:id="@+id/txtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="top"
-            android:maxLines="1"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
 
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/text_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_height"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/text_view_cup_player_no"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
+
+            <TextView
+                android:id="@+id/txtFullName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="top"
+                android:maxLines="1"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
