@@ -58,7 +58,10 @@ public class SetMatchTimeFragment extends DialogFragment implements TimePickerDi
         roundMatch.matchDate = TimestampConverter.fromTimestamp(matchDate);
 
         if(db.roundMatchDao().updateRoundMatch(roundMatch)>0){
-            // Send the positive button event back to the host activity
+
+            Log.e("Date: " , roundMatch.matchDate.toString());
+            Log.e("Date: " , matchDate);
+
             mListener.onDialogPositiveClick(SetMatchTimeFragment.this);
         }
     }

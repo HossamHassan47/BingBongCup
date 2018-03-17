@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -40,7 +41,8 @@ public class SetMatchDateFragment extends DialogFragment
         // Create and show the dialog.
         Bundle bundle = new Bundle();
         bundle.putInt("roundMatchId", roundMatchId);
-        bundle.putString("selectedDate", year + "-" + month + "-" + day);
+
+        bundle.putString("selectedDate", year + "-" + (month + 1) + "-" + day);
 
         SetMatchTimeFragment setMatchTimeFragment = new SetMatchTimeFragment();
         setMatchTimeFragment.setArguments(bundle);
