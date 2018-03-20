@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -235,6 +236,15 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     // Create and show the dialog.
                     Bundle bundle = new Bundle();
                     bundle.putInt("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
+                    if (roundMatchDetails.roundMatch.matchDate != null) {
+                        bundle.putString("matchDate_Day", (String) DateFormat.format("dd", roundMatchDetails.roundMatch.matchDate));
+                        bundle.putString("matchDate_Month", (String) DateFormat.format("MM", roundMatchDetails.roundMatch.matchDate));
+                        bundle.putString("matchDate_Year", (String) DateFormat.format("yyyy", roundMatchDetails.roundMatch.matchDate));
+                        bundle.putString("matchDate_Hours", (String) DateFormat.format("HH", roundMatchDetails.roundMatch.matchDate));
+                        bundle.putString("matchDate_Minutes", (String) DateFormat.format("mm", roundMatchDetails.roundMatch.matchDate));
+                    } else {
+                        bundle.putString("matchDate_Day", "-1");
+                    }
 
                     SetMatchDateFragment setMatchDateFragment = new SetMatchDateFragment();
                     setMatchDateFragment.setArguments(bundle);

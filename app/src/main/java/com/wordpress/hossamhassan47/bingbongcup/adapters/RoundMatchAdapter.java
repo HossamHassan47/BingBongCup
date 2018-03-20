@@ -24,7 +24,7 @@ import java.util.List;
 
 public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
     List<RoundMatchDetails> lstRoundMatches;
-    DateFormat df = new SimpleDateFormat("E MMM dd,yyyy hh:mm a");
+    DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
 
     public RoundMatchAdapter(@NonNull Context context, @NonNull List<RoundMatchDetails> objects) {
         super(context, R.layout.adapter_item_cup_player, objects);
@@ -46,7 +46,12 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
 
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
-        txtMatchNo.setText("#" + (position + 1));
+        if (position < 9) {
+            txtMatchNo.setText("#0" + (position + 1));
+        } else {
+            txtMatchNo.setText("#" + (position + 1));
+        }
+
 
         TextView txtMatchDate = listItemView.findViewById(R.id.text_view_match_date_time);
         if (currentItem.roundMatch.matchDate != null) {

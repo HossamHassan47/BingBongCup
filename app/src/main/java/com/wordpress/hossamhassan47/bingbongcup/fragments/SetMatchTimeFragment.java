@@ -43,6 +43,11 @@ public class SetMatchTimeFragment extends DialogFragment implements TimePickerDi
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
+        if (getArguments().getInt("matchDate_Hours") > 0) {
+            hour = getArguments().getInt("matchDate_Hours");
+            minute = getArguments().getInt("matchDate_Minutes");
+        }
+
         // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(), this, hour, minute,
                 DateFormat.is24HourFormat(getActivity()));

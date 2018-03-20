@@ -21,6 +21,8 @@ public class SetMatchDateFragment extends DialogFragment
 
     int roundMatchId;
 
+    int hours = -1, minutes = -1;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -32,6 +34,22 @@ public class SetMatchDateFragment extends DialogFragment
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        if (getArguments().getString("matchDate_Day") != "-1") {
+
+            day = Integer.parseInt(getArguments().getString("matchDate_Day"));
+            month = Integer.parseInt(getArguments().getString("matchDate_Month")) - 1;
+            year = Integer.parseInt(getArguments().getString("matchDate_Year"));
+
+            hours = Integer.parseInt(getArguments().getString("matchDate_Hours"));
+            minutes = Integer.parseInt(getArguments().getString("matchDate_Minutes"));
+        }
+
+        Log.e("day", day + "");
+        Log.e("month", month + "");
+        Log.e("year", year + "");
+        Log.e("hours", hours + "");
+        Log.e("minutes", minutes + "");
+
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
@@ -41,6 +59,8 @@ public class SetMatchDateFragment extends DialogFragment
         // Create and show the dialog.
         Bundle bundle = new Bundle();
         bundle.putInt("roundMatchId", roundMatchId);
+        bundle.putInt("matchDate_Hours", hours);
+        bundle.putInt("matchDate_Minutes", minutes);
 
         bundle.putString("selectedDate", year + "-" + (month + 1) + "-" + day);
 

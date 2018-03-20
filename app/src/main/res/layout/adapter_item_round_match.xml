@@ -41,18 +41,12 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp">
 
-                <View
-                    android:layout_width="50dp"
-                    android:layout_height="4dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="8dp"
-                    android:background="#ffffff" />
-
                 <ImageView
                     android:id="@+id/iconDateTime"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginLeft="4dp"
                     android:src="@drawable/ic_alarm_white_24dp" />
 
                 <TextView
