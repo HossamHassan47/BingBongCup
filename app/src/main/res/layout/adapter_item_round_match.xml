@@ -38,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:background="#607D8B"
                 android:orientation="horizontal"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp">
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp">
 
                 <ImageView
                     android:id="@+id/iconDateTime"
@@ -55,8 +55,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
-                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@android:color/white" />
+                <ImageView
+                    android:id="@+id/image_view_send_match_date_notification"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/ic_send_white_24dp" />
 
             </LinearLayout>
 

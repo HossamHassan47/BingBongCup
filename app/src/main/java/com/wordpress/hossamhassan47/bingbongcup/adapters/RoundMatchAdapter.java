@@ -1,15 +1,23 @@
 package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.TimestampConverter;
@@ -67,6 +75,54 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         TextView txtPlayer2Name = listItemView.findViewById(R.id.text_view_player2_name);
         txtPlayer2Name.setText(currentItem.player2Name);
 
+        ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_date_notification);
+        imageViewSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentItem.roundMatch.matchDate == null) {
+                    Toast.makeText(getContext(), "Please set match date first.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (currentItem.player1Name == null) {
+                    Toast.makeText(getContext(), "Player 1 is required.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (currentItem.player2Name == null) {
+                    Toast.makeText(getContext(), "Player 2 is required.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/html");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{currentItem.player1Email, currentItem.player2Email});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Bing Bong Cup - Scheduled Match");
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(GetEmailBody(currentItem)));
+
+                try {
+                    getContext().startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return listItemView;
+    }
+
+    private String GetEmailBody(RoundMatchDetails roundMatchDetails) {
+        String emailBody = "<strong>Hello,</strong><br><br>";
+        emailBody += "<p>Kindly be informed that you have a scheduled match on <strong>"
+                + roundMatchDetails.roundMatch.matchDate.toString() + "</strong></p>";
+        emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
+        emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
+        emailBody += "<strong>Round: </strong>#" + roundMatchDetails.roundNo + "<br>";
+        emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+        emailBody += "<strong>Player 1: </strong>" + roundMatchDetails.player1Name + "<br>";
+        emailBody += "<strong>Player 2: </strong>" + roundMatchDetails.player2Name + "<br><br>";
+        emailBody += "Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
+
+        return emailBody;
     }
 }
