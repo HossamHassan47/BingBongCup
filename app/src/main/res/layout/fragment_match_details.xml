@@ -34,8 +34,8 @@
                 android:id="@+id/linear_layout_player_1_winning_game_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:background="#00897B"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -94,6 +94,11 @@
                 android:background="#26A69A"
                 android:orientation="horizontal">
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
                 <ImageView
                     android:id="@+id/image_view_player1_neg_1"
                     android:layout_width="36dp"
@@ -109,6 +114,11 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="4dp"
                     android:src="@drawable/ic_add_circle_outline_white_36dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -135,7 +145,7 @@
                 android:id="@+id/linear_layout_player_2_winning_game_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:background="#00897B"
                 android:orientation="horizontal">
 
@@ -194,6 +204,11 @@
                 android:background="#26A69A"
                 android:orientation="horizontal">
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
                 <ImageView
                     android:id="@+id/image_view_player2_neg_1"
                     android:layout_width="36dp"
@@ -209,6 +224,11 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="4dp"
                     android:src="@drawable/ic_add_circle_outline_white_36dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -221,6 +241,11 @@
         android:layout_gravity="center"
         android:background="#4DB6AC"
         android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/image_view_game_over"
@@ -238,6 +263,11 @@
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
     </LinearLayout>
 
 
