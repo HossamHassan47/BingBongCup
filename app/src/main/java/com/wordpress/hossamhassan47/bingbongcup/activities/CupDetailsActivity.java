@@ -66,13 +66,20 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        mViewPager.setCurrentItem(currentSelectedPage);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        SetViewPager();
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         SetViewPager();
-
-        mViewPager.setCurrentItem(currentSelectedPage);
     }
 
     @Override

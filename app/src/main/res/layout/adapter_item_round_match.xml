@@ -15,7 +15,7 @@
         <TextView
             android:id="@+id/text_view_round_match_no"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/list_item_height_match"
+            android:layout_height="120dp"
             android:background="#00796B"
             android:gravity="center"
             android:padding="8dp"
@@ -26,7 +26,7 @@
         <LinearLayout
             android:id="@+id/text_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height_match"
+            android:layout_height="120dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
@@ -37,16 +37,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00897B"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:padding="2dp">
 
                 <ImageView
                     android:id="@+id/image_view_set_match_date"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="4dp"
                     android:background="?android:attr/selectableItemBackground"
+                    android:padding="4dp"
                     android:src="@drawable/ic_alarm_white_24dp" />
 
                 <TextView
@@ -57,53 +57,86 @@
                     android:layout_weight="1"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@android:color/white" />
+
                 <ImageView
                     android:id="@+id/image_view_set_match_done"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="4dp"
                     android:layout_marginRight="4dp"
                     android:background="?android:attr/selectableItemBackground"
+                    android:padding="4dp"
                     android:src="@drawable/ic_done_white_36dp" />
+
                 <ImageView
                     android:id="@+id/image_view_send_match_email"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:padding="4dp"
                     android:layout_marginRight="8dp"
                     android:background="?android:attr/selectableItemBackground"
+                    android:padding="4dp"
                     android:src="@drawable/ic_mail_outline_white_24dp" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_view_player1_name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_player1_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_player_1_winning_game_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="#ffffff" />
 
-            <TextView
-                android:id="@+id/text_view_player2_name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center|left"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/text_view_player2_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_player_2_winning_game_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

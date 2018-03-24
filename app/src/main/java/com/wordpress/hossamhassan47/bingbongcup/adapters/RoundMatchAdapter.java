@@ -2,6 +2,9 @@ package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
 import android.app.Activity;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,10 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
+import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGameDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
 
@@ -114,6 +120,39 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Winning Game Count
+        List<MatchGameDetails> lstMatchGameDetails = AppDatabase.getAppDatabase(getContext()).matchGameDao().loadMatchGameDetailsByRoundMatchId(currentItem.roundMatch.roundMatchId);
+
+        LinearLayout linearLayoutPlayer1WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_1_winning_game_count);
+        LinearLayout linearLayoutPlayer2WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_2_winning_game_count);
+
+        int player1Count = 0;
+        int player2Count = 0;
+        for (int i = 0; i < lstMatchGameDetails.size(); i++) {
+            ImageView imageView = new ImageView(getContext());
+            imageView.setImageResource(R.drawable.ic_star_border_white_24dp);
+
+            if (lstMatchGameDetails.get(i).matchGame.winnerId == currentItem.roundMatch.player1Id) {
+                linearLayoutPlayer1WinningGameCount.addView(imageView);
+                player1Count++;
+            } else if (lstMatchGameDetails.get(i).matchGame.winnerId == currentItem.roundMatch.player2Id) {
+                linearLayoutPlayer2WinningGameCount.addView(imageView);
+                player2Count++;
+            }
+        }
+
+        if (player1Count > player2Count) {
+            txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
+            txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else if (player2Count > player1Count) {
+            txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
+            txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+        else{
+            txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
+            txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
+        }
 
         // Send Match Email
         ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_email);
