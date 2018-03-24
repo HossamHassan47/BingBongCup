@@ -2,6 +2,7 @@ package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
 import android.app.Activity;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,10 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGameDetails;
+import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchTimeFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,6 +67,8 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         }
 
         final RoundMatchDetails currentItem = getItem(position);
+
+        boolean isDone = (currentItem.roundMatch.winnerId > 0);
 
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
@@ -112,20 +119,20 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             }
         });
 
-        // Set match done
-        ImageView imageViewSetMatchDone = listItemView.findViewById(R.id.image_view_set_match_done);
-        imageViewSetMatchDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         // Winning Game Count
         List<MatchGameDetails> lstMatchGameDetails = AppDatabase.getAppDatabase(getContext()).matchGameDao().loadMatchGameDetailsByRoundMatchId(currentItem.roundMatch.roundMatchId);
 
         LinearLayout linearLayoutPlayer1WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_1_winning_game_count);
         LinearLayout linearLayoutPlayer2WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_2_winning_game_count);
+
+        if(linearLayoutPlayer1WinningGameCount.getChildCount() > 0){
+            linearLayoutPlayer1WinningGameCount.removeAllViews();
+        }
+
+        if(linearLayoutPlayer2WinningGameCount.getChildCount() > 0){
+            linearLayoutPlayer2WinningGameCount.removeAllViews();
+        }
 
         int player1Count = 0;
         int player2Count = 0;
@@ -142,14 +149,17 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             }
         }
 
+        final int winnerId = (player1Count > player2Count) ? currentItem.roundMatch.player1Id : currentItem.roundMatch.player2Id;
+        final int loserId = (player1Count > player2Count) ? currentItem.roundMatch.player2Id : currentItem.roundMatch.player1Id;
+        final boolean isDraw = (player1Count == player2Count);
+
         if (player1Count > player2Count) {
             txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
             txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else if (player2Count > player1Count) {
             txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
             txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        else{
+        } else {
             txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
             txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
         }
@@ -187,6 +197,66 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                 }
             }
         });
+
+        // Set match done
+        ImageView imageViewSetMatchDone = listItemView.findViewById(R.id.image_view_set_match_done);
+        imageViewSetMatchDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isDraw) {
+                    Toast.makeText(getContext(), "Please set match winner then try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Confirm")
+                        .setMessage("Are you sure you want to mark this match Done? Note: You can't edit it anymore.")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Set match winner & loser
+                                AppDatabase db = AppDatabase.getAppDatabase(getContext());
+
+                                RoundMatch currentRoundMatch = db.roundMatchDao().loadRoundMatchById(currentItem.roundMatch.roundMatchId);
+                                currentRoundMatch.winnerId = winnerId;
+                                currentRoundMatch.loserId = loserId;
+
+                                db.roundMatchDao().updateRoundMatch(currentRoundMatch);
+
+                                // Set next round match player
+                                RoundMatch nextRoundMatch = db.roundMatchDao()
+                                        .loadNextRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
+
+                                if (currentItem.roundMatch.matchNo % 2 == 0) {
+                                    nextRoundMatch.player2Id = winnerId;
+                                } else {
+                                    nextRoundMatch.player1Id = winnerId;
+                                }
+
+                                db.roundMatchDao().updateRoundMatch(nextRoundMatch);
+
+                                ((CupDetailsActivity)getContext()).SetViewPager();
+
+                                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+
+        if (isDone) {
+            imageViewSetMatchDate.setVisibility(View.GONE);
+            imageViewSetMatchDone.setVisibility(View.GONE);
+        } else {
+            imageViewSetMatchDate.setVisibility(View.VISIBLE);
+            imageViewSetMatchDone.setVisibility(View.VISIBLE);
+        }
 
         return listItemView;
     }

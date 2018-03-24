@@ -42,6 +42,7 @@ public interface RoundMatchDao {
 
     @Query("SELECT RoundMatch.*, " +
             "Cup.cupName, " +
+            "Cup.cupId, " +
             "CupRound.roundNo, " +
             "player1.fullName as player1Name, " +
             "player2.fullName as player2Name, " +
@@ -54,4 +55,11 @@ public interface RoundMatchDao {
             "LEFT OUTER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
             "WHERE RoundMatch.fk_roundId = :cupRoundId")
     List<RoundMatchDetails> loadRoundMatchesById(int cupRoundId);
+
+    @Query("SELECT RoundMatch.* " +
+            "FROM RoundMatch " +
+            "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
+            "WHERE (parentRoundMatchNo1= :matchNo OR parentRoundMatchNo2= :matchNo) " +
+            "AND parentRoundNo = :roundNo AND CupRound.fk_cupId = :cupId")
+    RoundMatch loadNextRoundMatch(int cupId, int roundNo, int matchNo);
 }

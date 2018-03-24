@@ -161,7 +161,7 @@ public class AddCupFragment extends DialogFragment {
                                         roundMatch.parentRoundMatchNo1 = 0;
                                         roundMatch.parentRoundMatchNo2 = 0;
                                     } else {
-                                        roundMatch.parentRoundNo = (roundId * 2);
+                                        roundMatch.parentRoundNo = (roundNo * 2);
                                         roundMatch.parentRoundMatchNo1 = (j * 2) - 1;
                                         roundMatch.parentRoundMatchNo2 = (j * 2);
                                     }

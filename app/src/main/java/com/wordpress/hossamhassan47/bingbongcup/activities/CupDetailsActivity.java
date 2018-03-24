@@ -45,7 +45,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         SetViewPager();
     }
 
-    private void SetViewPager() {
+    public void SetViewPager() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, cupId);
 
         // Set up the ViewPager with the sections adapter.

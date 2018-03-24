@@ -15,6 +15,9 @@ public class RoundMatchDetails {
     public String player2Name;
     public String player1Email;
     public String player2Email;
+
+    public int cupId;
     public String cupName;
+
     public int roundNo;
 }
