@@ -189,11 +189,20 @@ public class MatchDetailsActivity extends AppCompatActivity {
             });
 
             // Save
-            LinearLayout save = rootView.findViewById(R.id.linear_layout_save_match_result);
-            save.setOnClickListener(new View.OnClickListener() {
+            LinearLayout saveResult = rootView.findViewById(R.id.linear_layout_save_result);
+            saveResult.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Player1: " + player1Score + " Player2: " + player2Score, Toast.LENGTH_SHORT)
+                    Toast.makeText(getContext(), "Save result.", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+
+            LinearLayout sendResult = rootView.findViewById(R.id.linear_layout_send_result);
+            sendResult.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "Send result.", Toast.LENGTH_SHORT)
                             .show();
                 }
             });

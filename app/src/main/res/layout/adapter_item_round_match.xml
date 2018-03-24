@@ -3,7 +3,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/category_match"
+    android:background="#009688"
     android:minHeight="@dimen/list_item_height_match">
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:id="@+id/text_view_round_match_no"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/list_item_height_match"
-            android:background="#546E7A"
+            android:background="#00796B"
             android:gravity="center"
             android:padding="8dp"
             android:textAppearance="?android:textAppearanceLarge"
@@ -36,7 +36,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#607D8B"
+                android:background="#00897B"
                 android:orientation="horizontal"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp">
@@ -63,7 +63,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginLeft="4dp"
-                    android:src="@drawable/ic_send_white_24dp" />
+                    android:src="@drawable/ic_mail_outline_white_24dp" />
 
             </LinearLayout>
 

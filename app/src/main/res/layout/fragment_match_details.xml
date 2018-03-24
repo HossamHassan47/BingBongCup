@@ -1,187 +1,202 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.MatchDetailsActivity$PlaceholderFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Player 1 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/text_view_player1_name"
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:background="#00796B"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="Player#01"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/linear_layout_player_1_winning_game_count"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="#00897B"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="#009688">
-
-                <TextView
-                    android:id="@+id/text_view_player_1_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="0"
-                    android:textColor="@android:color/white"
-                    android:textSize="96dp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="#009688">
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_player_1_neg"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_remove_circle_outline_white_36dp" />
-
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-
-        <!-- Player 2 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/text_view_player2_name"
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:background="#00796B"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="Player#02"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/linear_layout_player_2_winning_game_count"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="#00897B"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="#009688">
-
-                <TextView
-                    android:id="@+id/text_view_player_2_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="0"
-                    android:textColor="@android:color/white"
-                    android:textSize="96dp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="#009688">
-
-                <LinearLayout
-                    android:id="@+id/linear_layout_player_2_neg"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_remove_circle_outline_white_36dp" />
-
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Save -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#00897B">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear_layout_save_match_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Player 1 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view_player1_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="#00796B"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Player#01"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_player_1_winning_game_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="#00897B"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="#009688">
+
+                    <TextView
+                        android:id="@+id/text_view_player_1_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="96dp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#009688">
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_player_1_neg"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_remove_circle_outline_white_36dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Player 2 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view_player2_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="#00796B"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:text="Player#02"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_player_2_winning_game_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="#00897B"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="#009688">
+
+                    <TextView
+                        android:id="@+id/text_view_player_2_score"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="0"
+                        android:textColor="@android:color/white"
+                        android:textSize="96dp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#009688">
+
+                    <LinearLayout
+                        android:id="@+id/linear_layout_player_2_neg"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_remove_circle_outline_white_36dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linear_layout_send_match_result"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="#00897B"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_save_white_48dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:text="Save"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/linear_layout_save_result"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
 
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/ic_done_white_36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_send_result"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="16dp"
+                    android:src="@drawable/ic_mail_outline_white_36dp" />
+            </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

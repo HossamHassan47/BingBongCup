@@ -43,7 +43,6 @@
                     android:id="@+id/cups"
                     style="@style/CategoryStyle"
                     android:layout_marginLeft="8dp"
-                    android:background="?android:attr/selectableItemBackground"
                     android:text="@string/cups" />
             </LinearLayout>
 
