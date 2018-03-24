@@ -23,7 +23,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_view_player1_name"
+                    android:id="@+id/text_view_player_1_name"
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
                     android:background="#00796B"
@@ -92,7 +92,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_view_player2_name"
+                    android:id="@+id/text_view_player_2_name"
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
                     android:background="#00796B"
