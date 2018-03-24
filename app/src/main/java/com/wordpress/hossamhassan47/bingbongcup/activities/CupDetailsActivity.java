@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.NoticeDialogListener;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetCupPlayerFragment;
-import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
 
 import java.util.List;
 
@@ -229,37 +227,11 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     RoundMatchDetails roundMatchDetails = (RoundMatchDetails) parent.getItemAtPosition(position);
-
-                    // Create and show the dialog.
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
-                    if (roundMatchDetails.roundMatch.matchDate != null) {
-                        bundle.putString("matchDate_Day", (String) DateFormat.format("dd", roundMatchDetails.roundMatch.matchDate));
-                        bundle.putString("matchDate_Month", (String) DateFormat.format("MM", roundMatchDetails.roundMatch.matchDate));
-                        bundle.putString("matchDate_Year", (String) DateFormat.format("yyyy", roundMatchDetails.roundMatch.matchDate));
-                        bundle.putString("matchDate_Hours", (String) DateFormat.format("HH", roundMatchDetails.roundMatch.matchDate));
-                        bundle.putString("matchDate_Minutes", (String) DateFormat.format("mm", roundMatchDetails.roundMatch.matchDate));
-                    } else {
-                        bundle.putString("matchDate_Day", "-1");
-                    }
-
-                    SetMatchDateFragment setMatchDateFragment = new SetMatchDateFragment();
-                    setMatchDateFragment.setArguments(bundle);
-
-                    setMatchDateFragment.show(getFragmentManager(), "dialog_SetRoundMatchDate");
-                }
-            });
-
-            listViewRoundMatches.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    RoundMatchDetails roundMatchDetails = (RoundMatchDetails) parent.getItemAtPosition(position);
                     Intent i = new Intent(getContext(), MatchDetailsActivity.class);
 
                     i.putExtra("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
 
                     startActivity(i);
-                    return true;
                 }
             });
 

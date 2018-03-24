@@ -38,33 +38,41 @@
                 android:layout_height="wrap_content"
                 android:background="#00897B"
                 android:orientation="horizontal"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp">
+                android:gravity="center_vertical"
+                android:padding="2dp">
 
                 <ImageView
-                    android:id="@+id/iconDateTime"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="4dp"
+                    android:id="@+id/image_view_set_match_date"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="4dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:src="@drawable/ic_alarm_white_24dp" />
 
                 <TextView
                     android:id="@+id/text_view_match_date_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_weight="1"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@android:color/white" />
                 <ImageView
-                    android:id="@+id/image_view_send_match_date_notification"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:id="@+id/image_view_set_match_done"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="4dp"
+                    android:layout_marginRight="4dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/ic_done_white_36dp" />
+                <ImageView
+                    android:id="@+id/image_view_send_match_email"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="4dp"
                     android:layout_marginRight="8dp"
-                    android:layout_marginLeft="4dp"
+                    android:background="?android:attr/selectableItemBackground"
                     android:src="@drawable/ic_mail_outline_white_24dp" />
-
             </LinearLayout>
 
             <TextView

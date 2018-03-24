@@ -1,12 +1,19 @@
 package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
 import android.app.Activity;
+
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
-import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
-import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
-import com.wordpress.hossamhassan47.bingbongcup.entities.TimestampConverter;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,7 +65,7 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             txtMatchNo.setText("#" + (position + 1));
         }
 
-
+        // Match Date
         TextView txtMatchDate = listItemView.findViewById(R.id.text_view_match_date_time);
         if (currentItem.roundMatch.matchDate != null) {
             txtMatchDate.setText(df.format(currentItem.roundMatch.matchDate));
@@ -68,14 +73,50 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             txtMatchDate.setText("");
         }
 
-
+        // Player Name
         TextView txtPlayer1Name = listItemView.findViewById(R.id.text_view_player1_name);
         txtPlayer1Name.setText(currentItem.player1Name);
 
         TextView txtPlayer2Name = listItemView.findViewById(R.id.text_view_player2_name);
         txtPlayer2Name.setText(currentItem.player2Name);
 
-        ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_date_notification);
+        // Set match date
+        ImageView imageViewSetMatchDate = listItemView.findViewById(R.id.image_view_set_match_date);
+        imageViewSetMatchDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create and show the dialog.
+                Bundle bundle = new Bundle();
+                bundle.putInt("roundMatchId", currentItem.roundMatch.roundMatchId);
+                if (currentItem.roundMatch.matchDate != null) {
+                    bundle.putString("matchDate_Day", (String) android.text.format.DateFormat.format("dd", currentItem.roundMatch.matchDate));
+                    bundle.putString("matchDate_Month", (String) android.text.format.DateFormat.format("MM", currentItem.roundMatch.matchDate));
+                    bundle.putString("matchDate_Year", (String) android.text.format.DateFormat.format("yyyy", currentItem.roundMatch.matchDate));
+                    bundle.putString("matchDate_Hours", (String) android.text.format.DateFormat.format("HH", currentItem.roundMatch.matchDate));
+                    bundle.putString("matchDate_Minutes", (String) android.text.format.DateFormat.format("mm", currentItem.roundMatch.matchDate));
+                } else {
+                    bundle.putString("matchDate_Day", "-1");
+                }
+
+                SetMatchDateFragment setMatchDateFragment = new SetMatchDateFragment();
+                setMatchDateFragment.setArguments(bundle);
+
+                FragmentManager fm = ((FragmentActivity) getContext()).getSupportFragmentManager();
+                setMatchDateFragment.show(fm, "dialog_SetRoundMatchDate");
+            }
+        });
+
+        // Set match done
+        ImageView imageViewSetMatchDone = listItemView.findViewById(R.id.image_view_set_match_done);
+        imageViewSetMatchDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Send Match Email
+        ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_email);
         imageViewSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
