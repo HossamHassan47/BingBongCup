@@ -267,7 +267,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
             sendResult.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Send result.", Toast.LENGTH_SHORT)
+                    Toast.makeText(getContext(), "Send", Toast.LENGTH_SHORT)
                             .show();
                 }
             });
