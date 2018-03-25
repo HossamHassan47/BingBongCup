@@ -67,32 +67,11 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cup cup = (Cup) parent.getItemAtPosition(position);
-
-                // Create and show the dialog.
-                Bundle bundle = new Bundle();
-                bundle.putInt("cupPlayerId", cup.cupId);
-                bundle.putString("cupName", cup.cupName);
-                bundle.putString("playersCount", String.valueOf(cup.playersCount));
-                bundle.putString("gamesCount", String.valueOf(cup.gamesCount));
-                bundle.putInt("cupMode", cup.mode - 1);
-
-                AddCupFragment fragment = new AddCupFragment();
-                fragment.setArguments(bundle);
-
-                fragment.show(getSupportFragmentManager(), "dialog_AddCup");
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cup cup = (Cup) parent.getItemAtPosition(position);
                 Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
 
                 i.putExtra("fk_cupId", cup.cupId);
 
                 startActivity(i);
-                return true;
             }
         });
     }

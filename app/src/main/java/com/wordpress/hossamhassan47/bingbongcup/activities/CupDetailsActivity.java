@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.adapters.CupPlayerAdapter;
@@ -227,13 +228,23 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
             RoundMatchAdapter adapter = new RoundMatchAdapter(getContext(), lstRoundMatchDetails);
 
-            // View players in list view
             ListView listViewRoundMatches = rootView.findViewById(R.id.list_view_round_matches);
             listViewRoundMatches.setAdapter(adapter);
             listViewRoundMatches.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     RoundMatchDetails roundMatchDetails = (RoundMatchDetails) parent.getItemAtPosition(position);
+
+                    if (roundMatchDetails.player1Name == null) {
+                        Toast.makeText(getContext(), "Waiting for player#1", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (roundMatchDetails.player2Name == null) {
+                        Toast.makeText(getContext(), "Waiting for player#2", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     Intent i = new Intent(getContext(), MatchDetailsActivity.class);
 
                     i.putExtra("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);

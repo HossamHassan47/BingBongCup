@@ -164,14 +164,13 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-
             <LinearLayout
                 android:id="@+id/linear_layout_save_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackground"
-                android:gravity="right|center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -179,22 +178,6 @@
                     android:layout_height="36dp"
                     android:layout_marginRight="16dp"
                     android:src="@drawable/ic_done_white_36dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linear_layout_send_result"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="left|center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_mail_outline_white_36dp" />
             </LinearLayout>
         </LinearLayout>
 

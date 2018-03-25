@@ -285,16 +285,6 @@ public class MatchDetailsActivity extends AppCompatActivity {
                 player2Neg.setVisibility(View.INVISIBLE);
             }
 
-            // Send
-            LinearLayout sendResult = rootView.findViewById(R.id.linear_layout_send_result);
-            sendResult.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getContext(), "Send", Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
-
             return rootView;
         }
     }

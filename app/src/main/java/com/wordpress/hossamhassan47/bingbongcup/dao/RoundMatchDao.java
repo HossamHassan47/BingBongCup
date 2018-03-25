@@ -44,6 +44,7 @@ public interface RoundMatchDao {
             "Cup.cupName, " +
             "Cup.cupId, " +
             "CupRound.roundNo, " +
+
             "player1.fullName as player1Name, " +
             "player2.fullName as player2Name, " +
             "player1.email as player1Email, " +
