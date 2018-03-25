@@ -157,9 +157,15 @@ public class AddCupFragment extends DialogFragment {
                                     roundMatch.numberOfGames = cup.gamesCount;
 
                                     if (isRootMatch) {
+                                        // Root
                                         roundMatch.parentRoundNo = 0;
                                         roundMatch.parentRoundMatchNo1 = 0;
                                         roundMatch.parentRoundMatchNo2 = 0;
+                                    } else if (roundNo == 2 || roundNo == 1) {
+                                        // 3rd place || Final
+                                        roundMatch.parentRoundNo = 4;
+                                        roundMatch.parentRoundMatchNo1 = 1;
+                                        roundMatch.parentRoundMatchNo2 = 2;
                                     } else {
                                         roundMatch.parentRoundNo = (roundNo * 2);
                                         roundMatch.parentRoundMatchNo1 = (j * 2) - 1;
@@ -186,17 +192,23 @@ public class AddCupFragment extends DialogFragment {
                             } // End Rounds
                         }
 
-                        Toast.makeText(getActivity(), cup.cupName + " saved successfully.", Toast.LENGTH_SHORT)
-                                .show();
+                        Toast.makeText(
+
+                                getActivity(), cup.cupName + " saved successfully.", Toast.LENGTH_SHORT)
+                                .
+
+                                        show();
                         // Send the positive button event back to the host activity
                         mListener.onDialogPositiveClick(AddCupFragment.this);
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        AddCupFragment.this.getDialog().cancel();
-                    }
-                });
+                .
+
+                        setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                AddCupFragment.this.getDialog().cancel();
+                            }
+                        });
 
         // Create the AlertDialog object and return it
         return builder.create();

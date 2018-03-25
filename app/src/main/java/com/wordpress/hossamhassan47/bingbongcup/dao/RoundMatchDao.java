@@ -59,7 +59,18 @@ public interface RoundMatchDao {
     @Query("SELECT RoundMatch.* " +
             "FROM RoundMatch " +
             "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
-            "WHERE (parentRoundMatchNo1= :matchNo OR parentRoundMatchNo2= :matchNo) " +
-            "AND parentRoundNo = :roundNo AND CupRound.fk_cupId = :cupId")
+            "WHERE CupRound.roundNo <> 2 " +
+            "AND (parentRoundMatchNo1= :matchNo OR parentRoundMatchNo2= :matchNo) " +
+            "AND parentRoundNo = :roundNo " +
+            "AND CupRound.fk_cupId = :cupId")
     RoundMatch loadNextRoundMatch(int cupId, int roundNo, int matchNo);
+
+    @Query("SELECT RoundMatch.* " +
+            "FROM RoundMatch " +
+            "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
+            "WHERE CupRound.roundNo = 2 " +
+            "AND (parentRoundMatchNo1= :matchNo OR parentRoundMatchNo2= :matchNo) " +
+            "AND parentRoundNo = :roundNo " +
+            "AND CupRound.fk_cupId = :cupId")
+    RoundMatch load3rdRoundMatch(int cupId, int roundNo, int matchNo);
 }

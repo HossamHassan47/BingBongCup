@@ -126,11 +126,11 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         LinearLayout linearLayoutPlayer1WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_1_winning_game_count);
         LinearLayout linearLayoutPlayer2WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_2_winning_game_count);
 
-        if(linearLayoutPlayer1WinningGameCount.getChildCount() > 0){
+        if (linearLayoutPlayer1WinningGameCount.getChildCount() > 0) {
             linearLayoutPlayer1WinningGameCount.removeAllViews();
         }
 
-        if(linearLayoutPlayer2WinningGameCount.getChildCount() > 0){
+        if (linearLayoutPlayer2WinningGameCount.getChildCount() > 0) {
             linearLayoutPlayer2WinningGameCount.removeAllViews();
         }
 
@@ -227,15 +227,33 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                                 RoundMatch nextRoundMatch = db.roundMatchDao()
                                         .loadNextRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
 
-                                if (currentItem.roundMatch.matchNo % 2 == 0) {
-                                    nextRoundMatch.player2Id = winnerId;
-                                } else {
-                                    nextRoundMatch.player1Id = winnerId;
+                                if (nextRoundMatch != null) {
+                                    if (currentItem.roundMatch.matchNo % 2 == 0) {
+                                        nextRoundMatch.player2Id = winnerId;
+                                    } else {
+                                        nextRoundMatch.player1Id = winnerId;
+                                    }
+
+                                    db.roundMatchDao().updateRoundMatch(nextRoundMatch);
                                 }
 
-                                db.roundMatchDao().updateRoundMatch(nextRoundMatch);
+                                if (currentItem.roundNo == 4) {
+                                    // Set 3rd place match for losers
+                                    RoundMatch roundMatch3rd = db.roundMatchDao()
+                                            .load3rdRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
 
-                                ((CupDetailsActivity)getContext()).SetViewPager();
+                                    if (roundMatch3rd != null) {
+                                        if (currentItem.roundMatch.matchNo % 2 == 0) {
+                                            roundMatch3rd.player2Id = loserId;
+                                        } else {
+                                            roundMatch3rd.player1Id = loserId;
+                                        }
+
+                                        db.roundMatchDao().updateRoundMatch(roundMatch3rd);
+                                    }
+                                }
+
+                                ((CupDetailsActivity) getContext()).SetViewPager();
 
                                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                             }
