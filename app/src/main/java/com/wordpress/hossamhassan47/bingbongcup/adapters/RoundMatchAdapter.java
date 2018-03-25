@@ -164,39 +164,6 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
         }
 
-        // Send Match Email
-        ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_email);
-        imageViewSendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentItem.roundMatch.matchDate == null) {
-                    Toast.makeText(getContext(), "Please set match date first.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (currentItem.player1Name == null) {
-                    Toast.makeText(getContext(), "Player 1 is required.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (currentItem.player2Name == null) {
-                    Toast.makeText(getContext(), "Player 2 is required.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("text/html");
-                i.putExtra(Intent.EXTRA_EMAIL, new String[]{currentItem.player1Email, currentItem.player2Email});
-                i.putExtra(Intent.EXTRA_SUBJECT, "Bing Bong Cup - Scheduled Match");
-                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(GetEmailBody(currentItem)));
-
-                try {
-                    getContext().startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         // Set match done
         ImageView imageViewSetMatchDone = listItemView.findViewById(R.id.image_view_set_match_done);
@@ -276,13 +243,67 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             imageViewSetMatchDone.setVisibility(View.VISIBLE);
         }
 
+        // Send Match Email
+        ImageView imageViewSendEmail = listItemView.findViewById(R.id.image_view_send_match_email);
+        imageViewSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (currentItem.player1Name == null) {
+                    Toast.makeText(getContext(), "Player 1 is required.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (currentItem.player2Name == null) {
+                    Toast.makeText(getContext(), "Player 2 is required.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String emailSubject = "";
+                String emailBody = "";
+                String title = "";
+
+                if (currentItem.roundMatch.winnerId > 0) {
+                    // Send Result
+                    title = "Send match result...";
+                    emailSubject = "Bing Bong Cup - Match Result";
+                    emailBody = getMatchResultEmailBody(currentItem);
+
+                } else {
+                    if (currentItem.roundMatch.matchDate == null) {
+                        Toast.makeText(getContext(), "Please set match date first.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Send Schedule
+                    title = "Send match schedule...";
+                    emailSubject = "Bing Bong Cup - Match Schedule";
+                    emailBody = getMatchScheduleEmailBody(currentItem);
+                }
+
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/html");
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{currentItem.player1Email, currentItem.player2Email});
+                i.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+                i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(emailBody));
+
+                try {
+                    getContext().startActivity(Intent.createChooser(i, title));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return listItemView;
     }
 
-    private String GetEmailBody(RoundMatchDetails roundMatchDetails) {
+    private String getMatchScheduleEmailBody(RoundMatchDetails roundMatchDetails) {
+        DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
+
         String emailBody = "<strong>Hello,</strong><br><br>";
         emailBody += "<p>Kindly be informed that you have a scheduled match on <strong>"
-                + roundMatchDetails.roundMatch.matchDate.toString() + "</strong></p>";
+                + df.format(roundMatchDetails.roundMatch.matchDate) + "</strong></p>";
         emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
         emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
         emailBody += "<strong>Round: </strong>#" + roundMatchDetails.roundNo + "<br>";
@@ -290,6 +311,79 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         emailBody += "<strong>Player 1: </strong>" + roundMatchDetails.player1Name + "<br>";
         emailBody += "<strong>Player 2: </strong>" + roundMatchDetails.player2Name + "<br><br>";
         emailBody += "Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
+
+        return emailBody;
+    }
+
+    private String getMatchResultEmailBody(RoundMatchDetails roundMatchDetails) {
+        DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
+
+        // Result Details
+        List<MatchGameDetails> lstMatchGameDetails = AppDatabase.getAppDatabase(getContext()).matchGameDao()
+                .loadMatchGameDetailsByRoundMatchId(roundMatchDetails.roundMatch.roundMatchId);
+
+        String resultDetails = "<strong><u>:: Result Details ::</u></strong><br>";
+
+        int countPlayer1 = 0;
+        int countPlayer2 = 0;
+        for (int i = 0; i < lstMatchGameDetails.size(); i++) {
+            MatchGameDetails matchGameDetails = lstMatchGameDetails.get(i);
+            if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
+                countPlayer1++;
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                        + "<strong>" + matchGameDetails.player1Name + " (<font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font>)</strong>, "
+                        + matchGameDetails.player2Name + " (<font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font>)<br>";
+
+            } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
+                countPlayer2++;
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                        + matchGameDetails.player1Name + " (<font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font>), "
+                        + "<strong>" + matchGameDetails.player2Name + " (<font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font>)</strong><br>";
+
+            } else {
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                        + matchGameDetails.player1Name + " (" + matchGameDetails.matchGame.player1Score + "), "
+                        + matchGameDetails.player2Name + " (" + matchGameDetails.matchGame.player2Score + ")<br>";
+            }
+
+        }
+
+        String emailBody = "<strong>Hello,</strong><br><br>";
+        emailBody += "<p>Kindly find below your match final result.</p>";
+
+        emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
+
+        emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
+
+        String roundNo = "";
+        if (roundMatchDetails.roundNo == 2) {
+            roundNo = "3rd";
+        } else if (roundMatchDetails.roundNo == 1) {
+            roundNo = "Final";
+        } else {
+            roundNo = "#" + roundMatchDetails.roundNo;
+        }
+
+        emailBody += "<strong>Round: </strong>" + roundNo + "<br>";
+        if (roundMatchDetails.roundNo > 2) {
+            emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+        }
+
+        if (roundMatchDetails.roundMatch.matchDate != null) {
+            emailBody += "<strong>Match Date: </strong>" + df.format(roundMatchDetails.roundMatch.matchDate) + "<br>";
+        }
+
+        if (countPlayer1 > countPlayer2) {
+            emailBody += "<strong>Player 1: </strong>" + roundMatchDetails.player1Name + "<strong><font color='#33691E'> (Winner)</font></strong><br>";
+            emailBody += "<strong>Player 2: </strong>" + roundMatchDetails.player2Name + "<br><br>";
+        } else {
+            emailBody += "<strong>Player 1: </strong>" + roundMatchDetails.player1Name + "<br>";
+            emailBody += "<strong>Player 2: </strong>" + roundMatchDetails.player2Name + "<strong><font color='#33691E'> (Winner)</font></strong><br><br>";
+        }
+
+        emailBody += resultDetails;
+
+        emailBody += "<br><br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
 
         return emailBody;
     }

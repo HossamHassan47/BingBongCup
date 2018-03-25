@@ -41,6 +41,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
 
     private int currentSelectedPage = 0;
     int roundMatchId;
+    int winnerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +49,13 @@ public class MatchDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_match_details);
 
         roundMatchId = getIntent().getIntExtra("roundMatchId", -1);
+        winnerId = getIntent().getIntExtra("winnerId", -1);
 
         SetViewPager();
     }
 
     public void SetViewPager() {
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, roundMatchId);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, roundMatchId, winnerId);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -81,8 +83,9 @@ public class MatchDetailsActivity extends AppCompatActivity {
         private List<MatchGame> _matchGameList;
         private final int _numberOfPages;
         private final int _roundMatchId;
+        private final int _winnerId;
 
-        public SectionsPagerAdapter(FragmentManager fm, Context c, int roundMatchId) {
+        public SectionsPagerAdapter(FragmentManager fm, Context c, int roundMatchId, int winnerId) {
             super(fm);
 
             AppDatabase db = AppDatabase.getAppDatabase(c);
@@ -90,13 +93,14 @@ public class MatchDetailsActivity extends AppCompatActivity {
 
             _numberOfPages = _matchGameList.size();
             _roundMatchId = roundMatchId;
+            _winnerId = winnerId;
         }
 
         @Override
         public Fragment getItem(int position) {
             int matchGameId = _matchGameList.get(position).matchGameId;
 
-            return PlaceholderFragment.newInstance(matchGameId);
+            return PlaceholderFragment.newInstance(matchGameId, _winnerId);
         }
 
         @Override
@@ -113,6 +117,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
 
         private static final String ARG_MATCH_GAME_ID = "match_game_Id";
+        private static final String ARG_MATCH_WINNER_ID = "match_winner_Id";
 
         private int matchGameId = 0;
         private int roundMatchId = 0;
@@ -129,10 +134,11 @@ public class MatchDetailsActivity extends AppCompatActivity {
         public PlaceholderFragment() {
         }
 
-        public static PlaceholderFragment newInstance(int matchGameId) {
+        public static PlaceholderFragment newInstance(int matchGameId, int winnerId) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_MATCH_GAME_ID, matchGameId);
+            args.putInt(ARG_MATCH_WINNER_ID, winnerId);
             fragment.setArguments(args);
             return fragment;
         }
@@ -144,6 +150,7 @@ public class MatchDetailsActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_match_details, container, false);
 
             matchGameId = getArguments().getInt(ARG_MATCH_GAME_ID);
+            int winnerId = getArguments().getInt(ARG_MATCH_WINNER_ID);
 
             db = AppDatabase.getAppDatabase(getActivity());
             MatchGameDetails matchGameDetails = db.matchGameDao().loadMatchGameDetailsById(matchGameId);
@@ -181,86 +188,102 @@ public class MatchDetailsActivity extends AppCompatActivity {
             txtPlayer1Score = rootView.findViewById(R.id.text_view_player_1_score);
             player1Score = matchGameDetails.matchGame.player1Score;
             txtPlayer1Score.setText(player1Score + "");
-            txtPlayer1Score.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (player1Score < maximumScore) {
-                        player1Score += 1;
-                    }
+            if (winnerId <= 0) {
+                txtPlayer1Score.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player1Score < maximumScore) {
+                            player1Score += 1;
+                        }
 
-                    txtPlayer1Score.setText(player1Score + "");
-                }
-            });
+                        txtPlayer1Score.setText(player1Score + "");
+                    }
+                });
+            }
 
             txtPlayer2Score = rootView.findViewById(R.id.text_view_player_2_score);
             player2Score = matchGameDetails.matchGame.player2Score;
             txtPlayer2Score.setText(player2Score + "");
-            txtPlayer2Score.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (player2Score < maximumScore) {
-                        player2Score += 1;
-                    }
+            if (winnerId <= 0) {
+                txtPlayer2Score.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player2Score < maximumScore) {
+                            player2Score += 1;
+                        }
 
-                    txtPlayer2Score.setText(player2Score + "");
-                }
-            });
+                        txtPlayer2Score.setText(player2Score + "");
+                    }
+                });
+            }
 
             // Negative
             LinearLayout player1Neg = rootView.findViewById(R.id.linear_layout_player_1_neg);
-            player1Neg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (player1Score > 0) {
-                        player1Score -= 1;
-                    }
+            if (winnerId <= 0) {
+                player1Neg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player1Score > 0) {
+                            player1Score -= 1;
+                        }
 
-                    txtPlayer1Score.setText(player1Score + "");
-                }
-            });
+                        txtPlayer1Score.setText(player1Score + "");
+                    }
+                });
+            }
 
             LinearLayout player2Neg = rootView.findViewById(R.id.linear_layout_player_2_neg);
-            player2Neg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (player2Score > 0) {
-                        player2Score -= 1;
-                    }
+            if (winnerId <= 0) {
+                player2Neg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (player2Score > 0) {
+                            player2Score -= 1;
+                        }
 
-                    txtPlayer2Score.setText(player2Score + "");
-                }
-            });
+                        txtPlayer2Score.setText(player2Score + "");
+                    }
+                });
+            }
 
             // Save
             LinearLayout saveResult = rootView.findViewById(R.id.linear_layout_save_result);
-            saveResult.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            if (winnerId <= 0) {
+                saveResult.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                    MatchGame matchGame = db.matchGameDao().loadMatchGameById(matchGameId);
-                    matchGame.player1Id = player1Id;
-                    matchGame.player2Id = player2Id;
-                    matchGame.player1Score = player1Score;
-                    matchGame.player2Score = player2Score;
+                        MatchGame matchGame = db.matchGameDao().loadMatchGameById(matchGameId);
+                        matchGame.player1Id = player1Id;
+                        matchGame.player2Id = player2Id;
+                        matchGame.player1Score = player1Score;
+                        matchGame.player2Score = player2Score;
 
-                    if (player1Score > player2Score) {
-                        matchGame.winnerId = player1Id;
-                    } else if (player2Score > player1Score) {
-                        matchGame.winnerId = player2Id;
-                    } else {
-                        matchGame.winnerId = 0;
+                        if (player1Score > player2Score) {
+                            matchGame.winnerId = player1Id;
+                        } else if (player2Score > player1Score) {
+                            matchGame.winnerId = player2Id;
+                        } else {
+                            matchGame.winnerId = 0;
+                        }
+
+                        int count = db.matchGameDao().updateMatchGame(matchGame);
+                        if (count > 0) {
+                            ((MatchDetailsActivity) getActivity()).SetViewPager();
+                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+                });
+            }
 
-                    int count = db.matchGameDao().updateMatchGame(matchGame);
-                    if (count > 0) {
-                        ((MatchDetailsActivity)getActivity()).SetViewPager();
-                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            });
+            if (winnerId > 0) {
+                saveResult.setVisibility(View.INVISIBLE);
+                player1Neg.setVisibility(View.INVISIBLE);
+                player2Neg.setVisibility(View.INVISIBLE);
+            }
 
             // Send
             LinearLayout sendResult = rootView.findViewById(R.id.linear_layout_send_result);

@@ -237,6 +237,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     Intent i = new Intent(getContext(), MatchDetailsActivity.class);
 
                     i.putExtra("roundMatchId", roundMatchDetails.roundMatch.roundMatchId);
+                    i.putExtra("winnerId", roundMatchDetails.roundMatch.winnerId);
 
                     startActivity(i);
                 }
