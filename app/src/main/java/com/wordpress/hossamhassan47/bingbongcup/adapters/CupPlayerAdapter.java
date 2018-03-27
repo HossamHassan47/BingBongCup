@@ -43,9 +43,9 @@ public class CupPlayerAdapter extends ArrayAdapter<CupPlayerDetails> {
         // Cup Player Number
         TextView txtPlayerNo = listItemView.findViewById(R.id.text_view_cup_player_no);
         if (position < 9) {
-            txtPlayerNo.setText("#0" + (position + 1));
+            txtPlayerNo.setText("0" + (position + 1));
         } else {
-            txtPlayerNo.setText("#" + (position + 1));
+            txtPlayerNo.setText("" + (position + 1));
         }
 
         TextView txtFullName = listItemView.findViewById(R.id.txtFullName);

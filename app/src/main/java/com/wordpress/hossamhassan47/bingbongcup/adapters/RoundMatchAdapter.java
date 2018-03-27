@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity;
+import com.wordpress.hossamhassan47.bingbongcup.activities.FriendlyMatchesActivity;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGameDetails;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
@@ -51,7 +52,7 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
     DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
 
     public RoundMatchAdapter(@NonNull Context context, @NonNull List<RoundMatchDetails> objects) {
-        super(context, R.layout.adapter_item_cup_player, objects);
+        super(context, R.layout.adapter_item_round_match, objects);
 
         this.lstRoundMatches = objects;
     }
@@ -73,9 +74,9 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
         if (position < 9) {
-            txtMatchNo.setText("#0" + (position + 1));
+            txtMatchNo.setText("0" + (position + 1));
         } else {
-            txtMatchNo.setText("#" + (position + 1));
+            txtMatchNo.setText("" + (position + 1));
         }
 
         // Match Date
@@ -121,7 +122,10 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
 
 
         // Winning Game Count
-        List<MatchGameDetails> lstMatchGameDetails = AppDatabase.getAppDatabase(getContext()).matchGameDao().loadMatchGameDetailsByRoundMatchId(currentItem.roundMatch.roundMatchId);
+        List<MatchGameDetails> lstMatchGameDetails = AppDatabase
+                .getAppDatabase(getContext())
+                .matchGameDao()
+                .loadMatchGameDetailsByRoundMatchId(currentItem.roundMatch.roundMatchId);
 
         LinearLayout linearLayoutPlayer1WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_1_winning_game_count);
         LinearLayout linearLayoutPlayer2WinningGameCount = listItemView.findViewById(R.id.linear_layout_player_2_winning_game_count);
@@ -184,43 +188,51 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                                 // Set match winner & loser
                                 AppDatabase db = AppDatabase.getAppDatabase(getContext());
 
-                                RoundMatch currentRoundMatch = db.roundMatchDao().loadRoundMatchById(currentItem.roundMatch.roundMatchId);
+                                RoundMatch currentRoundMatch = db.roundMatchDao()
+                                        .loadRoundMatchById(currentItem.roundMatch.roundMatchId);
                                 currentRoundMatch.winnerId = winnerId;
                                 currentRoundMatch.loserId = loserId;
 
                                 db.roundMatchDao().updateRoundMatch(currentRoundMatch);
 
-                                // Set next round match player
-                                RoundMatch nextRoundMatch = db.roundMatchDao()
-                                        .loadNextRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
+                                if (currentItem.roundMatch.fk_roundId > 0) {
+                                    // Not Friendly
+                                    // Set next round match player
+                                    RoundMatch nextRoundMatch = db.roundMatchDao()
+                                            .loadNextRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
 
-                                if (nextRoundMatch != null) {
-                                    if (currentItem.roundMatch.matchNo % 2 == 0) {
-                                        nextRoundMatch.player2Id = winnerId;
-                                    } else {
-                                        nextRoundMatch.player1Id = winnerId;
-                                    }
-
-                                    db.roundMatchDao().updateRoundMatch(nextRoundMatch);
-                                }
-
-                                if (currentItem.roundNo == 4) {
-                                    // Set 3rd place match for losers
-                                    RoundMatch roundMatch3rd = db.roundMatchDao()
-                                            .load3rdRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
-
-                                    if (roundMatch3rd != null) {
+                                    if (nextRoundMatch != null) {
                                         if (currentItem.roundMatch.matchNo % 2 == 0) {
-                                            roundMatch3rd.player2Id = loserId;
+                                            nextRoundMatch.player2Id = winnerId;
                                         } else {
-                                            roundMatch3rd.player1Id = loserId;
+                                            nextRoundMatch.player1Id = winnerId;
                                         }
 
-                                        db.roundMatchDao().updateRoundMatch(roundMatch3rd);
+                                        db.roundMatchDao().updateRoundMatch(nextRoundMatch);
+                                    }
+
+                                    if (currentItem.roundNo == 4) {
+                                        // Set 3rd place match for losers
+                                        RoundMatch roundMatch3rd = db.roundMatchDao()
+                                                .load3rdRoundMatch(currentItem.cupId, currentItem.roundNo, currentItem.roundMatch.matchNo);
+
+                                        if (roundMatch3rd != null) {
+                                            if (currentItem.roundMatch.matchNo % 2 == 0) {
+                                                roundMatch3rd.player2Id = loserId;
+                                            } else {
+                                                roundMatch3rd.player1Id = loserId;
+                                            }
+
+                                            db.roundMatchDao().updateRoundMatch(roundMatch3rd);
+                                        }
                                     }
                                 }
 
-                                ((CupDetailsActivity) getContext()).SetViewPager();
+                                if (currentItem.roundMatch.fk_roundId > 0) {
+                                    ((CupDetailsActivity) getContext()).SetViewPager();
+                                } else {
+                                    ((FriendlyMatchesActivity) getContext()).loadFriendlyMatches();
+                                }
 
                                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                             }
@@ -259,14 +271,19 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                     return;
                 }
 
-                String emailSubject = "";
-                String emailBody = "";
-                String title = "";
+                String emailSubject;
+                String emailBody;
+                String title;
 
                 if (currentItem.roundMatch.winnerId > 0) {
                     // Send Result
                     title = "Send match result...";
-                    emailSubject = "Bing Bong Cup - Match Result";
+                    if (currentItem.roundMatch.fk_roundId > 0) {
+                        emailSubject = "Bing Bong Cup - Match Result";
+                    } else {
+                        emailSubject = "Bing Bong Cup - Friendly Match Result";
+                    }
+
                     emailBody = getMatchResultEmailBody(currentItem);
 
                 } else {
@@ -277,7 +294,12 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
 
                     // Send Schedule
                     title = "Send match schedule...";
-                    emailSubject = "Bing Bong Cup - Match Schedule";
+                    if (currentItem.roundMatch.fk_roundId > 0) {
+                        emailSubject = "Bing Bong Cup - Match Schedule";
+                    }else{
+                        emailSubject = "Bing Bong Cup - Friendly Match Schedule";
+                    }
+
                     emailBody = getMatchScheduleEmailBody(currentItem);
                 }
 
@@ -302,12 +324,21 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
 
         String emailBody = "<strong>Hello,</strong><br><br>";
-        emailBody += "<p>Kindly be informed that you have a scheduled match on <strong>"
-                + df.format(roundMatchDetails.roundMatch.matchDate) + "</strong></p>";
-        emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
-        emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
-        emailBody += "<strong>Round: </strong>#" + roundMatchDetails.roundNo + "<br>";
-        emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+
+        if (roundMatchDetails.roundMatch.fk_roundId > 0) {
+            // Not friendly
+            emailBody += "<p>Kindly be informed that you have a scheduled match on <strong>"
+                    + df.format(roundMatchDetails.roundMatch.matchDate) + "</strong></p>";
+
+            emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
+            emailBody += "<strong>Round: </strong>#" + roundMatchDetails.roundNo + "<br>";
+            emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+        } else {
+            emailBody += "<p>Kindly be informed that you have a scheduled friendly match on <strong>"
+                    + df.format(roundMatchDetails.roundMatch.matchDate) + "</strong></p>";
+
+        }
+
         emailBody += "<strong>Player 1: </strong>" + roundMatchDetails.player1Name + "<br>";
         emailBody += "<strong>Player 2: </strong>" + roundMatchDetails.player2Name + "<br><br>";
         emailBody += "Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
@@ -349,24 +380,31 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         }
 
         String emailBody = "<strong>Hello,</strong><br><br>";
-        emailBody += "<p>Kindly find below your match final result.</p>";
 
-        emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
 
-        emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
+        if (roundMatchDetails.roundMatch.fk_roundId > 0) {
+            emailBody += "<p>Kindly find below your match final result.</p>";
 
-        String roundNo = "";
-        if (roundMatchDetails.roundNo == 2) {
-            roundNo = "3rd";
-        } else if (roundMatchDetails.roundNo == 1) {
-            roundNo = "Final";
+            emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
+
+            emailBody += "<strong>Cup Name: </strong>" + roundMatchDetails.cupName + "<br>";
+
+            String roundNo = "";
+            if (roundMatchDetails.roundNo == 2) {
+                roundNo = "3rd";
+            } else if (roundMatchDetails.roundNo == 1) {
+                roundNo = "Final";
+            } else {
+                roundNo = "#" + roundMatchDetails.roundNo;
+            }
+
+            emailBody += "<strong>Round: </strong>" + roundNo + "<br>";
+            if (roundMatchDetails.roundNo > 2) {
+                emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+            }
         } else {
-            roundNo = "#" + roundMatchDetails.roundNo;
-        }
-
-        emailBody += "<strong>Round: </strong>" + roundNo + "<br>";
-        if (roundMatchDetails.roundNo > 2) {
-            emailBody += "<strong>Match: </strong>#" + roundMatchDetails.roundMatch.matchNo + "<br>";
+            emailBody += "<p>Kindly find below your friendly match final result.</p>";
+            emailBody += "<strong><u>:: Match Details ::</u></strong><br>";
         }
 
         if (roundMatchDetails.roundMatch.matchDate != null) {

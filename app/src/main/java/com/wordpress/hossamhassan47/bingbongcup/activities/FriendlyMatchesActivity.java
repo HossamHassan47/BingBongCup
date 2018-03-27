@@ -83,4 +83,10 @@ public class FriendlyMatchesActivity extends AppCompatActivity implements Notice
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        loadFriendlyMatches();
+    }
 }

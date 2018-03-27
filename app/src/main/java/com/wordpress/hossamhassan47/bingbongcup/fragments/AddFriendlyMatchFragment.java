@@ -97,6 +97,11 @@ public class AddFriendlyMatchFragment extends DialogFragment {
                         Player selectedPlayer1 = (Player) spinnerPlayer1.getSelectedItem();
                         Player selectedPlayer2 = (Player) spinnerPlayer2.getSelectedItem();
 
+                        if (selectedPlayer1.playerId == selectedPlayer2.playerId) {
+                            Toast.makeText(getActivity(), "Players should be different, try again.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         roundMatch.player1Id = selectedPlayer1.playerId;
                         roundMatch.player2Id = selectedPlayer2.playerId;
                         roundMatch.numberOfGames = Integer.parseInt(spinnerGamesCount.getSelectedItem().toString());

@@ -42,10 +42,10 @@ public interface MatchGameDao {
             "player2.fullName as player2Name " +
             "FROM MatchGame " +
             "INNER JOIN RoundMatch ON RoundMatch.roundMatchId = MatchGame.fk_roundMatchId " +
-            "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
-            "INNER JOIN Cup on  Cup.cupId = CupRound.fk_cupId " +
             "INNER JOIN Player as player1 ON RoundMatch.player1Id = player1.playerId " +
             "INNER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
+            "LEFT OUTER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
+            "LEFT OUTER JOIN Cup on  Cup.cupId = CupRound.fk_cupId " +
             "WHERE MatchGame.fk_roundMatchId = :roundMatchId")
     List<MatchGameDetails> loadMatchGameDetailsByRoundMatchId(int roundMatchId);
 
@@ -58,10 +58,10 @@ public interface MatchGameDao {
             "player2.fullName as player2Name " +
             "FROM MatchGame " +
             "INNER JOIN RoundMatch ON RoundMatch.roundMatchId = MatchGame.fk_roundMatchId " +
-            "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
-            "INNER JOIN Cup on  Cup.cupId = CupRound.fk_cupId " +
             "INNER JOIN Player as player1 ON RoundMatch.player1Id = player1.playerId " +
             "INNER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
+            "LEFT OUTER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +
+            "LEFT OUTER JOIN Cup on  Cup.cupId = CupRound.fk_cupId " +
             "WHERE MatchGame.matchGameId = :matchGameId")
     MatchGameDetails loadMatchGameDetailsById(int matchGameId);
 }
