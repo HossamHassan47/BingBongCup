@@ -57,6 +57,20 @@ public interface RoundMatchDao {
             "WHERE RoundMatch.fk_roundId = :cupRoundId")
     List<RoundMatchDetails> loadRoundMatchesById(int cupRoundId);
 
+    @Query("SELECT RoundMatch.*, " +
+            "0 AS cupId, " +
+            "0 AS roundNo, "+
+            "player1.fullName as player1Name, " +
+            "player2.fullName as player2Name, " +
+            "player1.email as player1Email, " +
+            "player2.email as player2Email " +
+            "FROM RoundMatch " +
+            "INNER JOIN Player as player1 ON RoundMatch.player1Id = player1.playerId " +
+            "INNER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
+            "WHERE RoundMatch.fk_roundId = 0")
+    List<RoundMatchDetails> loadFriendlyMatches();
+
+
     @Query("SELECT RoundMatch.* " +
             "FROM RoundMatch " +
             "INNER JOIN CupRound on  CupRound.cupRoundId = RoundMatch.fk_roundId " +

@@ -16,7 +16,10 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGame;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
+
+import java.util.List;
 
 /**
  * Created by Hossam on 3/27/2018.
@@ -41,7 +44,6 @@ public class AddFriendlyMatchFragment extends DialogFragment {
     Spinner spinnerPlayer2;
     Spinner spinnerGamesCount;
     Spinner spinnerMode;
-    int matchId = -1;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -51,25 +53,23 @@ public class AddFriendlyMatchFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_friendly_match, null);
 
-        matchId = getArguments().getInt("matchId");
+        // Players Adapter
+        AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+        List<Player> lstRemainingPlayers = db.playerDao().loadAllPlayers();
 
-        boolean addMode = matchId <= 0;
+        ArrayAdapter<Player> adapterPlayers = new ArrayAdapter(getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                lstRemainingPlayers);
 
-        // Players Count Spinner
-        ArrayAdapter<CharSequence> adapterPlayers = ArrayAdapter.createFromResource(getActivity(),
-                R.array.players_count, android.R.layout.simple_spinner_item);
         adapterPlayers.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        // Player 1
         spinnerPlayer1 = view.findViewById(R.id.spinner_player_1);
         spinnerPlayer1.setAdapter(adapterPlayers);
-        spinnerPlayer1.setSelection(adapterPlayers.getPosition(getArguments().getString("player1")));
-        spinnerPlayer1.setEnabled(addMode);
 
         // Player 2
-        spinnerPlayer2 = view.findViewById(R.id.spinner_cup_mode);
+        spinnerPlayer2 = view.findViewById(R.id.spinner_player_2);
         spinnerPlayer2.setAdapter(adapterPlayers);
-        spinnerPlayer2.setSelection(adapterPlayers.getPosition(getArguments().getString("player2")));
-        spinnerPlayer2.setEnabled(addMode);
 
         // Games count spinner
         spinnerGamesCount = view.findViewById(R.id.spinner_games_count);
@@ -77,9 +77,6 @@ public class AddFriendlyMatchFragment extends DialogFragment {
                 R.array.games_count, android.R.layout.simple_spinner_item);
         adapterGamesCount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGamesCount.setAdapter(adapterGamesCount);
-        spinnerGamesCount.setSelection(adapterGamesCount.getPosition(getArguments().getString("gamesCount")));
-
-        spinnerGamesCount.setEnabled(addMode);
 
         // Mode
         spinnerMode = view.findViewById(R.id.spinner_cup_mode);
@@ -88,47 +85,38 @@ public class AddFriendlyMatchFragment extends DialogFragment {
         adapterMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMode.setAdapter(adapterMode);
 
-        spinnerMode.setSelection(getArguments().getInt("mode"));
-        spinnerMode.setEnabled(addMode);
-
         builder.setTitle("Match Details")
                 .setView(view)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         AppDatabase db = AppDatabase.getAppDatabase(getActivity());
 
-                        RoundMatch roundMatch;
-                        if (matchId > 0) {
-                            roundMatch = db.roundMatchDao().loadRoundMatchById(matchId);
-                        } else {
-                            roundMatch = new RoundMatch();
-                        }
+                        RoundMatch roundMatch = new RoundMatch();
 
-                        roundMatch.player1Id = Integer.parseInt(spinnerPlayer1.getSelectedItem().toString());
-                        roundMatch.player2Id = Integer.parseInt(spinnerPlayer2.getSelectedItem().toString());
+                        roundMatch.fk_roundId = 0;
+                        Player selectedPlayer1 = (Player) spinnerPlayer1.getSelectedItem();
+                        Player selectedPlayer2 = (Player) spinnerPlayer2.getSelectedItem();
+
+                        roundMatch.player1Id = selectedPlayer1.playerId;
+                        roundMatch.player2Id = selectedPlayer2.playerId;
                         roundMatch.numberOfGames = Integer.parseInt(spinnerGamesCount.getSelectedItem().toString());
 
-                        if (matchId > 0) {
-                            db.roundMatchDao().updateRoundMatch(roundMatch);
-                        } else {
+                        int roundMatchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
 
-                            int roundMatchId = (int) db.roundMatchDao().insertRoundMatch(roundMatch);
+                        for (int i = 1; i <= roundMatch.numberOfGames; i++) {
+                            // Insert match game
+                            MatchGame matchGame = new MatchGame();
+                            matchGame.fk_roundMatchId = roundMatchId;
+                            matchGame.gameNo = i;
+                            matchGame.player1Score = 0;
+                            matchGame.player2Score = 0;
 
-                            for (int i = 1; i <= roundMatch.numberOfGames; i++) {
-                                // Insert match game
-                                MatchGame matchGame = new MatchGame();
-                                matchGame.fk_roundMatchId = roundMatchId;
-                                matchGame.gameNo = i;
-                                matchGame.player1Score = 0;
-                                matchGame.player2Score = 0;
-
-                                int gameId = (int) db.matchGameDao().insertMatchGame(matchGame);
-                                Log.i("AddMatchFragment", "Game Added with Id: " + gameId);
-                            }
+                            int gameId = (int) db.matchGameDao().insertMatchGame(matchGame);
+                            Log.i("AddMatchFragment", "Game Added with Id: " + gameId);
                         }
 
                         // Send the positive button event back to the host activity
-                        Toast.makeText(getActivity(), "Save done", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
 
                         mListener.onDialogPositiveClick(AddFriendlyMatchFragment.this);
                     }
