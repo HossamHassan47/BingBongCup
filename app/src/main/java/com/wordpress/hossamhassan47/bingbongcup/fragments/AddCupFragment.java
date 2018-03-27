@@ -77,7 +77,7 @@ public class AddCupFragment extends DialogFragment {
         spinnerGamesCount = view.findViewById(R.id.spinner_games_count);
         ArrayAdapter<CharSequence> adapterGamesCount = ArrayAdapter.createFromResource(getActivity(),
                 R.array.games_count, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterGamesCount.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGamesCount.setAdapter(adapterGamesCount);
         spinnerGamesCount.setSelection(adapterGamesCount.getPosition(getArguments().getString("gamesCount")));
 
@@ -87,7 +87,7 @@ public class AddCupFragment extends DialogFragment {
         spinnerCupMode = view.findViewById(R.id.spinner_cup_mode);
         ArrayAdapter<CharSequence> adapterCupMode = ArrayAdapter.createFromResource(getActivity(),
                 R.array.cup_mode, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterCupMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCupMode.setAdapter(adapterCupMode);
         spinnerCupMode.setSelection(getArguments().getInt("cupMode"));
         spinnerCupMode.setEnabled(addMode);

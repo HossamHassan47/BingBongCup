@@ -37,5 +37,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Friendly Matches
+        LinearLayout friendlyMatches = findViewById(R.id.linear_layout_friendly_matches);
+        friendlyMatches.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, FriendlyMatchesActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 }

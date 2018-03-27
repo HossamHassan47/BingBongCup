@@ -13,71 +13,93 @@
         android:padding="8dp"
         android:src="@drawable/ic_launcher" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/category_players">
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:id="@+id/linear_layout_players"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/category_cup">
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/linear_layout_cups"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_face_white_48dp" />
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_cup_white_48dp" />
+            <TextView
+                android:id="@+id/players"
+                style="@style/CategoryStyle"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/players" />
 
-                <TextView
-                    android:id="@+id/cups"
-                    style="@style/CategoryStyle"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/cups" />
-            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 
-        </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/category_cup">
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:id="@+id/linear_layout_cups"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/category_players">
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/linear_layout_players"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:orientation="horizontal">
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_cup_white_48dp" />
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:src="@drawable/ic_face_white_48dp" />
+            <TextView
+                android:id="@+id/cups"
+                style="@style/CategoryStyle"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/cups" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/players"
-                    style="@style/CategoryStyle"
-                    android:layout_marginLeft="8dp"
+    </FrameLayout>
 
-                    android:text="@string/players" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/category_match">
 
-            </LinearLayout>
-        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/linear_layout_friendly_matches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_group_white_48dp" />
+
+            <TextView
+                android:id="@+id/text_view_friendly_matches"
+                style="@style/CategoryStyle"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                android:text="Friendly Matches" />
+
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
