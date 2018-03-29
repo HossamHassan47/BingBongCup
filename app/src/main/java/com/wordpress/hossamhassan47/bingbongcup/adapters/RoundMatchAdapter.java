@@ -74,9 +74,9 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
         if (position < 9) {
-            txtMatchNo.setText("0" + (position + 1));
+            txtMatchNo.setText("0" + (position + 1) );
         } else {
-            txtMatchNo.setText("" + (position + 1));
+            txtMatchNo.setText("" + (position + 1) );
         }
 
         // Match Date
@@ -120,6 +120,37 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             }
         });
 
+        // Delete
+        ImageView btnDelete = listItemView.findViewById(R.id.image_view_delete_match);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Confirm")
+                        .setMessage("Are you sure you want to delete this match?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                AppDatabase db = AppDatabase.getAppDatabase(getContext());
+                                db.roundMatchDao().deleteRoundMatch(currentItem.roundMatch);
+
+                                lstRoundMatches.remove(position);
+
+                                notifyDataSetChanged();
+
+                                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
 
         // Winning Game Count
         List<MatchGameDetails> lstMatchGameDetails = AppDatabase
@@ -296,7 +327,7 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                     title = "Send match schedule...";
                     if (currentItem.roundMatch.fk_roundId > 0) {
                         emailSubject = "Bing Bong Cup - Match Schedule";
-                    }else{
+                    } else {
                         emailSubject = "Bing Bong Cup - Friendly Match Schedule";
                     }
 
@@ -361,18 +392,18 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             MatchGameDetails matchGameDetails = lstMatchGameDetails.get(i);
             if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
                 countPlayer1++;
-                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ". </strong>"
                         + "<strong>" + matchGameDetails.player1Name + " (<font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font>)</strong>, "
                         + matchGameDetails.player2Name + " (<font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font>)<br>";
 
             } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
                 countPlayer2++;
-                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ". </strong>"
                         + matchGameDetails.player1Name + " (<font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font>), "
                         + "<strong>" + matchGameDetails.player2Name + " (<font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font>)</strong><br>";
 
             } else {
-                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ": </strong>"
+                resultDetails += "<strong>Game#" + matchGameDetails.matchGame.gameNo + ". </strong>"
                         + matchGameDetails.player1Name + " (" + matchGameDetails.matchGame.player1Score + "), "
                         + matchGameDetails.player2Name + " (" + matchGameDetails.matchGame.player2Score + ")<br>";
             }

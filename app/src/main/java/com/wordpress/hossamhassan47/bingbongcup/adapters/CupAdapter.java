@@ -59,6 +59,14 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
         final Cup currentItem = getItem(position);
 
+        // Round Match Number
+        TextView txtCupNo = listItemView.findViewById(R.id.text_view_round_cup_no);
+        if (position < 9) {
+            txtCupNo.setText("0" + (position + 1));
+        } else {
+            txtCupNo.setText("" + (position + 1));
+        }
+
         // Name
         TextView txtCupName = listItemView.findViewById(R.id.txtCupName);
         txtCupName.setText(currentItem.cupName);
@@ -157,11 +165,11 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
                     if (cupPlayer.player != null) {
                         playerEmails[i] = cupPlayer.player.email;
-                        playersDetails += "<strong>" + playerNo + ": " + cupPlayer.player.fullName + "</strong> \""
+                        playersDetails += "<strong>" + playerNo + ". " + cupPlayer.player.fullName + "</strong> \""
                                 + cupPlayer.player.email + "\"<br>";
                     } else {
                         playerEmails[i] = "";
-                        playersDetails += "<strong>" + playerNo + ": [TBD]</strong><br>";
+                        playersDetails += "<strong>" + playerNo + ". [TBD]</strong><br>";
                     }
                 }
 
@@ -184,21 +192,21 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
                         //roundMatchDetails.roundMatch.winnerId
                         if (roundMatchDetails.player1Name == null || roundMatchDetails.player2Name == null) {
-                            emailBody += "<strong>" + matchNo + ": </strong>" +
+                            emailBody += "<strong>" + matchNo + ". </strong>" +
                                     (roundMatchDetails.player1Name == null ? "[TBD]" : roundMatchDetails.player1Name) + " vs. " +
                                     (roundMatchDetails.player2Name == null ? "[TBD]" : roundMatchDetails.player2Name) + "<br>";
                         } else if (roundMatchDetails.roundMatch.player1Id == roundMatchDetails.roundMatch.winnerId) {
                             // Player 1 Winner
-                            emailBody += "<strong>" + matchNo + ": </strong>" +
+                            emailBody += "<strong>" + matchNo + ". </strong>" +
                                     "<strong>" + roundMatchDetails.player1Name + "<font color='#33691E'> (Winner)</font></strong> vs. " +
                                     "<strike>" + roundMatchDetails.player2Name + "</strike><br>";
                         } else if (roundMatchDetails.roundMatch.player2Id == roundMatchDetails.roundMatch.winnerId) {
                             // Player 1 Winner
-                            emailBody += "<strong>" + matchNo + ": </strong>" +
+                            emailBody += "<strong>" + matchNo + ". </strong>" +
                                     "<strike>" +roundMatchDetails.player1Name + "</strike> vs. " +
                                     "<strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong><br>";
                         } else {
-                            emailBody += "<strong>" + matchNo + ": </strong>" +
+                            emailBody += "<strong>" + matchNo + ". </strong>" +
                                     roundMatchDetails.player1Name + " vs. " + roundMatchDetails.player2Name + "<br>";
                         }
 

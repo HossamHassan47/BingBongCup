@@ -13,6 +13,22 @@
         android:orientation="horizontal"
         android:padding="2dp">
 
+        <TextView
+            android:id="@+id/text_view_round_cup_no"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="4dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ffffff" />
+
         <ImageView
             android:id="@+id/image_view_send_cup_summary"
             android:layout_width="30dp"

@@ -20,6 +20,22 @@
             android:orientation="horizontal"
             android:padding="2dp">
 
+            <TextView
+                android:id="@+id/text_view_round_match_no"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="4dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#ffffff" />
+
             <ImageView
                 android:id="@+id/image_view_set_match_date"
                 android:layout_width="30dp"
@@ -54,98 +70,84 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:padding="4dp"
                 android:src="@drawable/ic_mail_outline_white_24dp" />
+            <ImageView
+                android:id="@+id/image_view_delete_match"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:padding="4dp"
+                android:src="@drawable/ic_delete_forever_white_24dp" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/text_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_view_round_match_no"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_player1_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:id="@+id/linear_layout_player_1_winning_game_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+            </LinearLayout>
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
                 android:background="#ffffff" />
 
             <LinearLayout
-                android:id="@+id/text_container"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:orientation="vertical">
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_view_player2_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:paddingLeft="8dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
+                    android:id="@+id/linear_layout_player_2_winning_game_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/text_view_player1_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:maxLines="1"
-                        android:paddingLeft="8dp"
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@android:color/white" />
-
-                    <LinearLayout
-                        android:id="@+id/linear_layout_player_1_winning_game_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                    </LinearLayout>
                 </LinearLayout>
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:background="#ffffff" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/text_view_player2_name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:maxLines="1"
-                        android:paddingLeft="8dp"
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@android:color/white" />
-
-                    <LinearLayout
-                        android:id="@+id/linear_layout_player_2_winning_game_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                    </LinearLayout>
-                </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 </FrameLayout>
