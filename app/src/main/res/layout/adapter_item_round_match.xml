@@ -24,9 +24,9 @@
                 android:id="@+id/text_view_round_match_no"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:gravity="center"
-                android:layout_marginRight="8dp"
                 android:layout_marginLeft="4dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
@@ -66,10 +66,10 @@
                 android:id="@+id/image_view_send_match_email"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginRight="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:padding="4dp"
                 android:src="@drawable/ic_mail_outline_white_24dp" />
+
             <ImageView
                 android:id="@+id/image_view_delete_match"
                 android:layout_width="30dp"
@@ -101,7 +101,8 @@
                     android:maxLines="1"
                     android:paddingLeft="8dp"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/linear_layout_player_1_winning_game_count"
@@ -134,7 +135,8 @@
                     android:maxLines="1"
                     android:paddingLeft="8dp"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/linear_layout_player_2_winning_game_count"

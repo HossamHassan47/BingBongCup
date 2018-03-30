@@ -74,9 +74,9 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
         if (position < 9) {
-            txtMatchNo.setText("0" + (position + 1) );
+            txtMatchNo.setText("0" + (position + 1));
         } else {
-            txtMatchNo.setText("" + (position + 1) );
+            txtMatchNo.setText("" + (position + 1));
         }
 
         // Match Date
@@ -152,6 +152,10 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             }
         });
 
+        if (currentItem.roundMatch.fk_roundId > 0) {
+            btnDelete.setVisibility(View.GONE);
+        }
+
         // Winning Game Count
         List<MatchGameDetails> lstMatchGameDetails = AppDatabase
                 .getAppDatabase(getContext())
@@ -188,15 +192,26 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         final int loserId = (player1Count > player2Count) ? currentItem.roundMatch.player2Id : currentItem.roundMatch.player1Id;
         final boolean isDraw = (player1Count == player2Count);
 
+        int defaultColor = Color.parseColor("#FFFFFF");
+        int winnerColor = Color.parseColor("#C6FF00");
         if (player1Count > player2Count) {
-            txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
+            txtPlayer1Name.setTextColor(winnerColor);
+            txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
+            txtPlayer2Name.setTextColor(defaultColor);
             txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else if (player2Count > player1Count) {
-            txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
+            txtPlayer2Name.setTextColor(winnerColor);
+            txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
+            txtPlayer1Name.setTextColor(defaultColor);
             txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            txtPlayer1Name.setTypeface(txtPlayer1Name.getTypeface(), Typeface.BOLD);
-            txtPlayer2Name.setTypeface(txtPlayer2Name.getTypeface(), Typeface.BOLD);
+            txtPlayer2Name.setTextColor(defaultColor);
+            txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+
+            txtPlayer1Name.setTextColor(defaultColor);
+            txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
 
 
