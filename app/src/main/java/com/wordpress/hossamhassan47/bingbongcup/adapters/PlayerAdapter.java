@@ -1,7 +1,12 @@
 package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +24,9 @@ import com.wordpress.hossamhassan47.bingbongcup.R;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+
 /**
  * Created by Hossam on 3/3/2018.
  */
@@ -26,6 +34,8 @@ import java.util.List;
 public class PlayerAdapter extends ArrayAdapter<Player> {
 
     List<Player> lstPlayers;
+    private static final int CAMERA_REQUEST = 1888;
+    ImageView imgPlayerImage;
 
     public PlayerAdapter(@NonNull Context context, @NonNull List<Player> objects) {
         super(context, R.layout.adapter_item_player, objects);
@@ -53,8 +63,14 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
         TextView txtEmail = listItemView.findViewById(R.id.txtEmail);
         txtEmail.setText(currentItem.email);
 
-        //ImageView imgPlayerImage = (ImageView) listItemView.findViewById(R.cupPlayerId.imgPlayerImage);
-        //imgPlayerImage.setImageResource(R.drawable.family_older_brother);
+        imgPlayerImage = listItemView.findViewById(R.id.image_view_player_icon);
+        imgPlayerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                ((Activity) getContext()).startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
 
         // Delete
         ImageView btnDelete = listItemView.findViewById(R.id.btnDeletePlayer);
