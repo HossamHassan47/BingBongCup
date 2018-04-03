@@ -30,7 +30,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
         db = AppDatabase.getAppDatabase(this);
 
         // Load Players
-        this.loadPlayers();
+        //this.loadPlayers();
 
         // Add
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -62,6 +62,12 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
 
         ListView listView = findViewById(R.id.lstPlayers);
         listView.setAdapter(itemsAdapter);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        loadPlayers();
     }
 
     @Override
