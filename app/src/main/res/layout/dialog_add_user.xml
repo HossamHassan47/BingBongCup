@@ -6,23 +6,41 @@
 
     <EditText
         android:id="@+id/txtFullName"
-        android:inputType="textCapWords"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:hint="@string/player_full_name" />
+        android:layout_marginTop="16dp"
+        android:hint="@string/player_full_name"
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/txtEmail"
-        android:inputType="textEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/player_email"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/text_view_mobile_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:hint="@string/player_email" />
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:digits="0123456789+"
+        android:hint="Mobile"
+        android:inputType="phone" />
+
+    <Spinner
+        android:id="@+id/spinner_player_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

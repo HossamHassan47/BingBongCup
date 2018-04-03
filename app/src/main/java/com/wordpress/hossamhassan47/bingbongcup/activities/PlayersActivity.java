@@ -42,6 +42,8 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", "");
                 bundle.putString("email", "");
+                bundle.putString("mobileNo", "");
+                bundle.putBoolean("isTeam", false);
                 bundle.putInt("cupPlayerId", -1);
 
                 AddPlayerFragment playerFragment = new AddPlayerFragment();
@@ -69,6 +71,8 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
                 Bundle bundle = new Bundle();
                 bundle.putString("fullName", playerItem.fullName);
                 bundle.putString("email", playerItem.email);
+                bundle.putString("mobileNo", playerItem.mobileNo);
+                bundle.putInt("playerMode", playerItem.playerMode - 1);
                 bundle.putInt("cupPlayerId", playerItem.playerId);
 
                 AddPlayerFragment playerFragment = new AddPlayerFragment();

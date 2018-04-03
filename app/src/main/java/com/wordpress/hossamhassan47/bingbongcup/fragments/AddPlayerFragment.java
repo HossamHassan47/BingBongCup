@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
@@ -39,6 +42,8 @@ public class AddPlayerFragment extends DialogFragment {
 
     EditText txtFullName;
     EditText txtEmail;
+    EditText txtMobile;
+    Spinner playerMode;
     int playerId = -1;
 
     @Override
@@ -49,12 +54,20 @@ public class AddPlayerFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_add_user, null);
 
-        txtFullName = (EditText) view.findViewById(R.id.txtFullName);
-        txtEmail = (EditText) view.findViewById(R.id.txtEmail);
+        txtFullName = view.findViewById(R.id.txtFullName);
+        txtEmail = view.findViewById(R.id.txtEmail);
+        txtMobile = view.findViewById(R.id.text_view_mobile_no);
+
+        playerMode= view.findViewById(R.id.spinner_player_mode);
+        ArrayAdapter<CharSequence> adapterCupMode = ArrayAdapter.createFromResource(getActivity(),
+                R.array.cup_mode, android.R.layout.simple_spinner_item);
+        adapterCupMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        playerMode.setAdapter(adapterCupMode);
 
         txtFullName.setText(getArguments().getString("fullName"));
         txtEmail.setText(getArguments().getString("email"));
-
+        txtMobile.setText(getArguments().getString("mobileNo"));
+        playerMode.setSelection(getArguments().getInt("playerMode"));
         playerId = getArguments().getInt("cupPlayerId");
 
         builder.setTitle("Player Details")
@@ -72,6 +85,8 @@ public class AddPlayerFragment extends DialogFragment {
 
                         player.fullName = txtFullName.getText().toString();
                         player.email = txtEmail.getText().toString();
+                        player.mobileNo = txtMobile.getText().toString();
+                        player.playerMode = playerMode.getSelectedItemPosition() + 1;
 
                         if (playerId > 0) {
                             db.playerDao().updatePlayer(player);

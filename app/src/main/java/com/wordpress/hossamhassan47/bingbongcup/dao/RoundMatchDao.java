@@ -67,7 +67,7 @@ public interface RoundMatchDao {
             "FROM RoundMatch " +
             "INNER JOIN Player as player1 ON RoundMatch.player1Id = player1.playerId " +
             "INNER JOIN Player as player2 ON RoundMatch.player2Id = player2.playerId " +
-            "WHERE RoundMatch.fk_roundId = 0")
+            "WHERE RoundMatch.fk_roundId = 0 ORDER BY RoundMatch.roundMatchId DESC")
     List<RoundMatchDetails> loadFriendlyMatches();
 
 

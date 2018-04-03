@@ -70,14 +70,26 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         final RoundMatchDetails currentItem = getItem(position);
 
         boolean isDone = (currentItem.roundMatch.winnerId > 0);
+        boolean isFriendly = (currentItem.roundMatch.fk_roundId <= 0);
 
         // Round Match Number
         TextView txtMatchNo = listItemView.findViewById(R.id.text_view_round_match_no);
-        if (position < 9) {
-            txtMatchNo.setText("0" + (position + 1));
+
+        if (isFriendly) {
+            int matchNo = lstRoundMatches.size() - position;
+            if (matchNo < 9) {
+                txtMatchNo.setText("0" + matchNo);
+            } else {
+                txtMatchNo.setText("" + matchNo);
+            }
         } else {
-            txtMatchNo.setText("" + (position + 1));
+            if (position < 9) {
+                txtMatchNo.setText("0" + (position + 1));
+            } else {
+                txtMatchNo.setText("" + (position + 1));
+            }
         }
+
 
         // Match Date
         TextView txtMatchDate = listItemView.findViewById(R.id.text_view_match_date_time);
@@ -152,7 +164,7 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             }
         });
 
-        if (currentItem.roundMatch.fk_roundId > 0) {
+        if (!isFriendly) {
             btnDelete.setVisibility(View.GONE);
         }
 
@@ -195,13 +207,13 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
         int defaultColor = Color.parseColor("#FFFFFF");
         int winnerColor = Color.parseColor("#C6FF00");
         if (player1Count > player2Count) {
-            txtPlayer1Name.setTextColor(winnerColor);
+            txtPlayer1Name.setTextColor(isDone ? winnerColor : defaultColor);
             txtPlayer1Name.setPaintFlags(txtPlayer1Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
             txtPlayer2Name.setTextColor(defaultColor);
             txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else if (player2Count > player1Count) {
-            txtPlayer2Name.setTextColor(winnerColor);
+            txtPlayer2Name.setTextColor(isDone ? winnerColor : defaultColor);
             txtPlayer2Name.setPaintFlags(txtPlayer2Name.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
 
             txtPlayer1Name.setTextColor(defaultColor);
