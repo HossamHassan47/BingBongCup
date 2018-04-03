@@ -12,7 +12,7 @@ public class Player {
     public int playerId;
     public String fullName;
     public String email;
-    public String imageٍSrc;
+    public String imageSrc;
     public String mobileNo;
     public int playerMode; // 1 for single 2 for double
 

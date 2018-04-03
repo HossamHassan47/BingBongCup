@@ -20,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wordpress.hossamhassan47.bingbongcup.activities.MainActivity;
+import com.wordpress.hossamhassan47.bingbongcup.activities.PlayerImageActivity;
+import com.wordpress.hossamhassan47.bingbongcup.activities.PlayersActivity;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.R;
@@ -38,7 +41,6 @@ import static android.support.v4.app.ActivityCompat.startActivityForResult;
 public class PlayerAdapter extends ArrayAdapter<Player> {
 
     List<Player> lstPlayers;
-    private static final int CAMERA_REQUEST = 1888;
     ImageView imgPlayerImage;
 
     public PlayerAdapter(@NonNull Context context, @NonNull List<Player> objects) {
@@ -84,8 +86,11 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
         imgPlayerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                ((Activity) getContext()).startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                Intent i = new Intent(getContext(), PlayerImageActivity.class);
+                i.putExtra("playerId", currentItem.playerId);
+                i.putExtra("imageSrc", currentItem.imageSrc);
+
+                getContext().startActivity(i);
             }
         });
 
