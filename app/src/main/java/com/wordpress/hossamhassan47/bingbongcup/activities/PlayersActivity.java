@@ -24,7 +24,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         db = AppDatabase.getAppDatabase(this);
@@ -33,7 +33,7 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
         this.loadPlayers();
 
         // Add
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,31 +56,12 @@ public class PlayersActivity extends AppCompatActivity implements NoticeDialogLi
 
     public void loadPlayers()
     {
-        List<Player> palyerList = db.playerDao().loadAllPlayers();
+        List<Player> lstPlayers = db.playerDao().loadAllPlayers();
 
-        PlayerAdapter itemsAdapter = new PlayerAdapter(this, palyerList);
+        PlayerAdapter itemsAdapter = new PlayerAdapter(this, lstPlayers);
 
         ListView listView = findViewById(R.id.lstPlayers);
         listView.setAdapter(itemsAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Player playerItem = (Player) parent.getItemAtPosition(position);
-
-                // Create and show the dialog.
-                Bundle bundle = new Bundle();
-                bundle.putString("fullName", playerItem.fullName);
-                bundle.putString("email", playerItem.email);
-                bundle.putString("mobileNo", playerItem.mobileNo);
-                bundle.putInt("playerMode", playerItem.playerMode - 1);
-                bundle.putInt("cupPlayerId", playerItem.playerId);
-
-                AddPlayerFragment playerFragment = new AddPlayerFragment();
-                playerFragment.setArguments(bundle);
-
-                playerFragment.show(getSupportFragmentManager(), "dialog_AddPlayer");
-            }
-        });
     }
 
     @Override

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.Toast;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.AddCupFragment;
+import com.wordpress.hossamhassan47.bingbongcup.fragments.AddPlayerFragment;
 
 import java.util.List;
 
@@ -56,12 +60,25 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
         }
 
         final Player currentItem = getItem(position);
+        TextView txtPlayerNo = listItemView.findViewById(R.id.text_view_player_no);
+        if (position < 9) {
+            txtPlayerNo.setText("0" + (position + 1));
+        } else {
+            txtPlayerNo.setText("" + (position + 1));
+        }
+
+        ImageView iconPlayerMode = listItemView.findViewById(R.id.image_view_player_mode);
+        iconPlayerMode.setImageResource(((currentItem.playerMode == 1) ? R.drawable.ic_person_white_24dp
+                : R.drawable.ic_people_white_24dp));
 
         TextView txtFullName = listItemView.findViewById(R.id.txtFullName);
         txtFullName.setText(currentItem.fullName);
 
         TextView txtEmail = listItemView.findViewById(R.id.txtEmail);
         txtEmail.setText(currentItem.email);
+
+        TextView txtMobileNo = listItemView.findViewById(R.id.text_view_mobile_no);
+        txtMobileNo.setText(currentItem.mobileNo);
 
         imgPlayerImage = listItemView.findViewById(R.id.image_view_player_icon);
         imgPlayerImage.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +89,29 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
             }
         });
 
+        // Edit
+        ImageView btnEditPlayer = listItemView.findViewById(R.id.image_view_edit_player);
+        btnEditPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Create and show the dialog.
+                Bundle bundle = new Bundle();
+                bundle.putString("fullName", currentItem.fullName);
+                bundle.putString("email", currentItem.email);
+                bundle.putString("mobileNo", currentItem.mobileNo);
+                bundle.putInt("playerMode", currentItem.playerMode - 1);
+                bundle.putInt("cupPlayerId", currentItem.playerId);
+
+                AddPlayerFragment playerFragment = new AddPlayerFragment();
+                playerFragment.setArguments(bundle);
+
+                playerFragment.show(((FragmentActivity) getContext()).getSupportFragmentManager(), "dialog_AddPlayer");
+            }
+        });
+
         // Delete
-        ImageView btnDelete = listItemView.findViewById(R.id.btnDeletePlayer);
+        ImageView btnDelete = listItemView.findViewById(R.id.image_view_delete_player);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
