@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -58,7 +59,7 @@ public class AddPlayerFragment extends DialogFragment {
         txtEmail = view.findViewById(R.id.txtEmail);
         txtMobile = view.findViewById(R.id.text_view_mobile_no);
 
-        playerMode= view.findViewById(R.id.spinner_player_mode);
+        playerMode = view.findViewById(R.id.spinner_player_mode);
         ArrayAdapter<CharSequence> adapterCupMode = ArrayAdapter.createFromResource(getActivity(),
                 R.array.cup_mode, android.R.layout.simple_spinner_item);
         adapterCupMode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -74,7 +75,28 @@ public class AddPlayerFragment extends DialogFragment {
                 .setView(view)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        String playerName = txtFullName.getText().toString();
+                        if (TextUtils.isEmpty(playerName)) {
+                            Toast.makeText(getActivity(), "Please enter player name.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
+
                         AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+
+                        Player isAlreadyExist;
+                        if (playerId > 0) {
+                            isAlreadyExist = db.playerDao().isPlayerExist(playerName, playerId);
+                        } else {
+                            isAlreadyExist = db.playerDao().isPlayerExist(playerName);
+                        }
+
+                        if (isAlreadyExist != null) {
+                            Toast.makeText(getActivity(), "Name already exists.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
 
                         Player player;
                         if (playerId > 0) {
@@ -88,13 +110,14 @@ public class AddPlayerFragment extends DialogFragment {
                         player.mobileNo = txtMobile.getText().toString();
                         player.playerMode = playerMode.getSelectedItemPosition() + 1;
 
+
                         if (playerId > 0) {
                             db.playerDao().updatePlayer(player);
                         } else {
                             db.playerDao().insertPlayer(player);
                         }
 
-                        Toast.makeText(getActivity(), player.fullName + " saved successfully.", Toast.LENGTH_SHORT)
+                        Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT)
                                 .show();
                         // Send the positive button event back to the host activity
                         mListener.onDialogPositiveClick(AddPlayerFragment.this);

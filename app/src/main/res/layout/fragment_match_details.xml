@@ -1,13 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.wordpress.hossamhassan47.bingbongcup.activities.MatchDetailsActivity$PlaceholderFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -28,12 +25,12 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center"
-                    android:layout_margin="4dp" />
+                    android:layout_marginTop="8dp" />
 
                 <TextView
                     android:id="@+id/text_view_player_1_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="64dp"
                     android:background="#00796B"
                     android:gravity="center"
                     android:padding="4dp"
@@ -105,12 +102,12 @@
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_gravity="center"
-                    android:layout_margin="4dp" />
+                    android:layout_marginTop="8dp" />
 
                 <TextView
                     android:id="@+id/text_view_player_2_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="64dp"
                     android:background="#00796B"
                     android:gravity="center"
                     android:padding="4dp"

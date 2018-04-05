@@ -36,4 +36,10 @@ public interface PlayerDao {
 
     @Query("SELECT * FROM Player WHERE playerId = :id")
     Player loadPlayerById(int id);
+
+    @Query("SELECT * FROM Player WHERE fullName = :playerName")
+    Player isPlayerExist(String playerName);
+
+    @Query("SELECT * FROM Player WHERE fullName = :playerName AND playerId != :id")
+    Player isPlayerExist(String playerName, int id);
 }
