@@ -1,58 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="@dimen/list_item_height"
-    android:background="@color/category_players">
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="#00ACC1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <TextView
             android:id="@+id/text_view_cup_player_no"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/list_item_height"
-            android:background="#0097A7"
+            android:layout_height="24dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="8dp"
             android:gravity="center"
-            android:padding="8dp"
-            android:textAppearance="?android:textAppearanceLarge"
+            android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/text_container"
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ffffff" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/category_players">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/list_item_height"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/text_view_cup_player_no"
-            android:orientation="vertical"
-            android:paddingLeft="8dp">
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:minHeight="88dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtFullName"
+            <ImageView
+                android:id="@+id/image_view_player_image"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_face_white_48dp" />
+
+            <LinearLayout
+                android:id="@+id/text_container"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_height="@dimen/list_item_height"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/image_view_player_image"
+                android:orientation="vertical"
+                android:paddingLeft="8dp">
 
-            <TextView
-                android:id="@+id/txtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="top"
-                android:maxLines="1"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/txtFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
 
-    </RelativeLayout>
-</FrameLayout>
+                <TextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:maxLines="1"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+                <TextView
+                    android:id="@+id/text_view_mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:maxLines="1"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </FrameLayout>
+</LinearLayout>

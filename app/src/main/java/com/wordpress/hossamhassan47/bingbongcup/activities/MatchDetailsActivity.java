@@ -2,6 +2,8 @@ package com.wordpress.hossamhassan47.bingbongcup.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wordpress.hossamhassan47.bingbongcup.Helper.RoundImage;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
@@ -129,6 +132,10 @@ public class MatchDetailsActivity extends AppCompatActivity {
 
         TextView txtPlayer1Score;
         TextView txtPlayer2Score;
+
+        RoundImage roundedImage1;
+        RoundImage roundedImage2;
+
         AppDatabase db;
 
         public PlaceholderFragment() {
@@ -166,6 +173,24 @@ public class MatchDetailsActivity extends AppCompatActivity {
 
             TextView txtPlayer2Name = rootView.findViewById(R.id.text_view_player_2_name);
             txtPlayer2Name.setText(matchGameDetails.player2Name);
+
+            ImageView imgPlayer1Image = rootView.findViewById(R.id.image_view_player_1_image);
+            if (matchGameDetails.player1ImageSrc != null) {
+                Bitmap bm = BitmapFactory.decodeFile(matchGameDetails.player1ImageSrc);
+                roundedImage1 = new RoundImage(bm);
+                imgPlayer1Image.setImageDrawable(roundedImage1);
+            }else{
+                imgPlayer1Image.setVisibility(View.INVISIBLE);
+            }
+
+            ImageView imgPlayer2Image = rootView.findViewById(R.id.image_view_player_2_image);
+            if (matchGameDetails.player2ImageSrc != null) {
+                Bitmap bm = BitmapFactory.decodeFile(matchGameDetails.player2ImageSrc);
+                roundedImage2 = new RoundImage(bm);
+                imgPlayer2Image.setImageDrawable(roundedImage2);
+            }else {
+                imgPlayer2Image.setVisibility(View.INVISIBLE);
+            }
 
             // Winning Game Count
             List<MatchGameDetails> lstMatchGameDetails = db.matchGameDao().loadMatchGameDetailsByRoundMatchId(roundMatchId);

@@ -47,6 +47,8 @@ public interface RoundMatchDao {
 
             "player1.fullName as player1Name, " +
             "player2.fullName as player2Name, " +
+            "player1.imageSrc as player1ImageSrc, " +
+            "player2.imageSrc as player2ImageSrc, " +
             "player1.email as player1Email, " +
             "player2.email as player2Email " +
             "FROM RoundMatch " +
@@ -60,6 +62,10 @@ public interface RoundMatchDao {
     @Query("SELECT RoundMatch.*, " +
             "0 AS cupId, " +
             "0 AS roundNo, "+
+
+            "player1.imageSrc as player1ImageSrc, " +
+            "player2.imageSrc as player2ImageSrc, " +
+
             "player1.fullName as player1Name, " +
             "player2.fullName as player2Name, " +
             "player1.email as player1Email, " +

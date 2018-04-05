@@ -20,12 +20,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#00796B"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/image_view_player_1_image"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp" />
 
                 <TextView
                     android:id="@+id/text_view_player_1_name"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
+                    android:layout_height="wrap_content"
                     android:background="#00796B"
                     android:gravity="center"
                     android:padding="4dp"
@@ -89,12 +97,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#00796B"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/image_view_player_2_image"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp" />
 
                 <TextView
                     android:id="@+id/text_view_player_2_name"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
+                    android:layout_height="wrap_content"
                     android:background="#00796B"
                     android:gravity="center"
                     android:padding="4dp"

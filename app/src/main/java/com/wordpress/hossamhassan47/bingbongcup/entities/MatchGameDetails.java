@@ -14,6 +14,9 @@ public class MatchGameDetails {
     public int matchPlayer2Id;
     public String player1Name;
     public String player2Name;
+    public String player1ImageSrc;
+    public String player2ImageSrc;
+
     public String cupName;
     public int roundNo;
 }

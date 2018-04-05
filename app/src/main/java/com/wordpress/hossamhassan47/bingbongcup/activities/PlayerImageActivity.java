@@ -3,6 +3,7 @@ package com.wordpress.hossamhassan47.bingbongcup.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.wordpress.hossamhassan47.bingbongcup.Helper.RoundImage;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
@@ -47,7 +49,9 @@ public class PlayerImageActivity extends AppCompatActivity {
 
         imgPlayerImage = findViewById(R.id.image_view_player_image);
         if (currentImageSrc != null) {
-            imgPlayerImage.setImageURI(Uri.parse(currentImageSrc));
+            Bitmap bm = BitmapFactory.decodeFile(currentImageSrc);
+            RoundImage roundedImage = new RoundImage(bm);
+            imgPlayerImage.setImageDrawable(roundedImage);
         }
 
         ImageView btnSave = findViewById(R.id.image_view_save_player_image);
@@ -61,6 +65,7 @@ public class PlayerImageActivity extends AppCompatActivity {
                 int id = db.playerDao().updatePlayer(player);
                 if (id > 0) {
                     Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });
@@ -96,9 +101,6 @@ public class PlayerImageActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-
-                imgPlayerImage.setImageURI(photoURI);
-
                 // Perform Crop
                 performCrop(photoURI);
 
@@ -125,6 +127,9 @@ public class PlayerImageActivity extends AppCompatActivity {
                         imageFileOS.write(image);
                         imageFileOS.flush();
                         imageFileOS.close();
+
+
+
                     } catch (FileNotFoundException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -133,7 +138,9 @@ public class PlayerImageActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    imgPlayerImage.setImageBitmap(selectedBitmap);
+                    Bitmap bm = BitmapFactory.decodeFile(currentImageSrc);
+                    RoundImage roundedImage = new RoundImage(bm);
+                    imgPlayerImage.setImageDrawable(roundedImage);
                 }
             }
         }

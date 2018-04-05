@@ -38,6 +38,8 @@ public interface MatchGameDao {
             "CupRound.roundNo, " +
             "player1.playerId as matchPlayer1Id, " +
             "player1.fullName as player1Name, " +
+            "player1.imageSrc as player1ImageSrc, " +
+            "player2.imageSrc as player2ImageSrc, " +
             "player2.playerId as matchPlayer2Id, " +
             "player2.fullName as player2Name " +
             "FROM MatchGame " +
@@ -54,6 +56,8 @@ public interface MatchGameDao {
             "CupRound.roundNo, " +
             "player1.playerId as matchPlayer1Id, " +
             "player1.fullName as player1Name, " +
+            "player1.imageSrc as player1ImageSrc, " +
+            "player2.imageSrc as player2ImageSrc, " +
             "player2.playerId as matchPlayer2Id, " +
             "player2.fullName as player2Name " +
             "FROM MatchGame " +

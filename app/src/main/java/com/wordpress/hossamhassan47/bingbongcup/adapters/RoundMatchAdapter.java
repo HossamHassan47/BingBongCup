@@ -3,6 +3,8 @@ package com.wordpress.hossamhassan47.bingbongcup.adapters;
 import android.app.Activity;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -29,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wordpress.hossamhassan47.bingbongcup.Helper.RoundImage;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity;
 import com.wordpress.hossamhassan47.bingbongcup.activities.FriendlyMatchesActivity;
@@ -50,6 +53,8 @@ import java.util.List;
 public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
     List<RoundMatchDetails> lstRoundMatches;
     DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
+    RoundImage roundedImage1;
+    RoundImage roundedImage2;
 
     public RoundMatchAdapter(@NonNull Context context, @NonNull List<RoundMatchDetails> objects) {
         super(context, R.layout.adapter_item_round_match, objects);
@@ -105,6 +110,24 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
 
         TextView txtPlayer2Name = listItemView.findViewById(R.id.text_view_player2_name);
         txtPlayer2Name.setText(currentItem.player2Name);
+
+        ImageView imgPlayer1Image = listItemView.findViewById(R.id.image_view_player_1_image);
+        if (currentItem.player1ImageSrc != null) {
+            Bitmap bm = BitmapFactory.decodeFile(currentItem.player1ImageSrc);
+            roundedImage1 = new RoundImage(bm);
+            imgPlayer1Image.setImageDrawable(roundedImage1);
+        }else{
+            imgPlayer1Image.setVisibility(View.INVISIBLE);
+        }
+
+        ImageView imgPlayer2Image = listItemView.findViewById(R.id.image_view_player_2_image);
+        if (currentItem.player2ImageSrc != null) {
+            Bitmap bm = BitmapFactory.decodeFile(currentItem.player2ImageSrc);
+            roundedImage2 = new RoundImage(bm);
+            imgPlayer2Image.setImageDrawable(roundedImage2);
+        }else {
+            imgPlayer2Image.setVisibility(View.INVISIBLE);
+        }
 
         // Set match date
         ImageView imageViewSetMatchDate = listItemView.findViewById(R.id.image_view_set_match_date);
