@@ -13,93 +13,111 @@
         android:padding="8dp"
         android:src="@drawable/ic_launcher" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_players">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_players"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@color/category_players">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_face_white_48dp" />
+            <LinearLayout
+                android:id="@+id/linear_layout_players"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="4dp">
 
-            <TextView
-                android:id="@+id/players"
-                style="@style/CategoryStyle"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_vertical"
-                android:text="@string/players" />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_face_white_48dp" />
 
-        </LinearLayout>
-    </FrameLayout>
+                <TextView
+                    android:id="@+id/players"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/players"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_cup">
+            </LinearLayout>
+        </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_layout_cups"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@color/category_cup">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_cup_white_48dp" />
+            <LinearLayout
+                android:id="@+id/linear_layout_cups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="4dp">
 
-            <TextView
-                android:id="@+id/cups"
-                style="@style/CategoryStyle"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_vertical"
-                android:text="@string/cups" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_cup_white_48dp" />
 
-    </FrameLayout>
+                <TextView
+                    android:id="@+id/cups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="@string/cups"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_match">
+        </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_layout_friendly_matches"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:background="@color/category_match">
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_friendly_48" />
+            <LinearLayout
+                android:id="@+id/linear_layout_friendly_matches"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="4dp">
 
-            <TextView
-                android:id="@+id/text_view_friendly_matches"
-                style="@style/CategoryStyle"
-                android:layout_marginLeft="8dp"
-                android:gravity="center_vertical"
-                android:text="Friendly Matches" />
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_friendly_48" />
 
-        </LinearLayout>
-    </FrameLayout>
+                <TextView
+                    android:id="@+id/text_view_friendly_matches"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:text="Friendly"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>
