@@ -70,6 +70,8 @@ public class CupPlayerAdapter extends ArrayAdapter<CupPlayerDetails> {
                 Bitmap bm = BitmapFactory.decodeFile(currentItem.player.imageSrc);
                 roundedImage = new RoundImage(bm);
                 imgPlayerImage.setImageDrawable(roundedImage);
+            } else {
+                imgPlayerImage.setImageResource(R.drawable.ic_face_white_48dp);
             }
         } else {
             txtFullName.setText("");

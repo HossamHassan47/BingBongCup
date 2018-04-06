@@ -116,8 +116,8 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             Bitmap bm = BitmapFactory.decodeFile(currentItem.player1ImageSrc);
             roundedImage1 = new RoundImage(bm);
             imgPlayer1Image.setImageDrawable(roundedImage1);
-        }else{
-            imgPlayer1Image.setVisibility(View.INVISIBLE);
+        }else {
+            imgPlayer1Image.setImageResource(R.drawable.ic_face_white_48dp);
         }
 
         ImageView imgPlayer2Image = listItemView.findViewById(R.id.image_view_player_2_image);
@@ -126,7 +126,7 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
             roundedImage2 = new RoundImage(bm);
             imgPlayer2Image.setImageDrawable(roundedImage2);
         }else {
-            imgPlayer2Image.setVisibility(View.INVISIBLE);
+            imgPlayer2Image.setImageResource(R.drawable.ic_face_white_48dp);
         }
 
         // Set match date

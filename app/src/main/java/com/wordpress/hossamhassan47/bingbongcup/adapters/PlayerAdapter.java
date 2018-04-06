@@ -103,6 +103,8 @@ public class PlayerAdapter extends ArrayAdapter<Player> {
             Bitmap bm = BitmapFactory.decodeFile(currentItem.imageSrc);
             roundedImage = new RoundImage(bm);
             imgPlayerImage.setImageDrawable(roundedImage);
+        } else {
+            imgPlayerImage.setImageResource(R.drawable.ic_face_white_48dp);
         }
 
         // Edit
