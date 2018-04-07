@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayer;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupRound;
 import com.wordpress.hossamhassan47.bingbongcup.entities.MatchGame;
+import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatch;
 
 /**
@@ -97,6 +99,26 @@ public class AddCupFragment extends DialogFragment {
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         AppDatabase db = AppDatabase.getAppDatabase(getActivity());
+
+                        String cupName = txtCupName.getText().toString();
+                        if (TextUtils.isEmpty(cupName)) {
+                            Toast.makeText(getActivity(), "Please enter cup name.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
+
+                        Cup isAlreadyExist;
+                        if (cupId > 0) {
+                            isAlreadyExist = db.cupDao().isCupExist(cupName, cupId);
+                        } else {
+                            isAlreadyExist = db.cupDao().isCupExist(cupName);
+                        }
+
+                        if (isAlreadyExist != null) {
+                            Toast.makeText(getActivity(), "Name already exists.", Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
 
                         Cup cup;
                         if (cupId > 0) {

@@ -31,4 +31,10 @@ public interface CupDao {
 
     @Query("SELECT * FROM Cup WHERE cupId = :id")
     Cup loadCupById(int id);
+
+    @Query("SELECT * FROM Cup WHERE cupName = :cupName")
+    Cup isCupExist(String cupName);
+
+    @Query("SELECT * FROM Cup WHERE cupName = :cupName AND cupId != :id")
+    Cup isCupExist(String cupName, int id);
 }
