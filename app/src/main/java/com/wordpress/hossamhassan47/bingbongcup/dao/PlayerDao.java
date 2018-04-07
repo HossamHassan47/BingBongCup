@@ -28,8 +28,11 @@ public interface PlayerDao {
     @Query("SELECT * FROM Player ORDER BY fullName")
     List<Player> loadAllPlayers();
 
-    @Query("SELECT * FROM Player where playerId not in (select fk_playerId from cupplayer where fk_cupId = :cupId) ORDER BY fullName")
-    List<Player> loadAllPlayersByCupId(int cupId);
+    @Query("SELECT * " +
+            "FROM Player " +
+            "WHERE playerMode = :mode " +
+            "AND playerId not in (select fk_playerId from cupplayer where fk_cupId = :cupId) ORDER BY fullName")
+    List<Player> loadPlayersListForCup(int cupId, int mode);
 
     @Query("SELECT * FROM Player where playerId IN (select fk_playerId from cupplayer where fk_cupId = :cupId) ORDER BY fullName")
     List<Player> loadCupPlayersList(int cupId);

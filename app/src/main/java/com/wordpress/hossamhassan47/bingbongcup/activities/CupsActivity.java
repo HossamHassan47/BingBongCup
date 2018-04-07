@@ -70,6 +70,7 @@ public class CupsActivity extends AppCompatActivity implements NoticeDialogListe
                 Intent i = new Intent(CupsActivity.this, CupDetailsActivity.class);
 
                 i.putExtra("fk_cupId", cup.cupId);
+                i.putExtra("cupMode", cup.mode);
 
                 startActivity(i);
             }

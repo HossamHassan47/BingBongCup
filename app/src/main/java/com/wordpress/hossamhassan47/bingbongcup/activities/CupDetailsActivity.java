@@ -35,6 +35,8 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
     private int currentSelectedPage = 0;
     private ViewPager mViewPager;
     int cupId;
+    int cupMode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,13 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         setContentView(R.layout.activity_cup_details);
 
         cupId = getIntent().getIntExtra("fk_cupId", -1);
+        cupMode = getIntent().getIntExtra("cupMode", 1);
 
         SetViewPager();
     }
 
     public void SetViewPager() {
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, cupId);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this, cupId, cupMode);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.pagerCupDetails);
@@ -94,8 +97,9 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
         private List<CupRound> _cupRoundList;
         private final int _numberOfPages;
         private final int _cupId;
+        private final int _cupMode;
 
-        public SectionsPagerAdapter(FragmentManager fm, Context c, int cupId) {
+        public SectionsPagerAdapter(FragmentManager fm, Context c, int cupId, int cupMode) {
 
             super(fm);
             AppDatabase db = AppDatabase.getAppDatabase(c);
@@ -103,13 +107,14 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
 
             _numberOfPages = _cupRoundList.size() + 1;
             _cupId = cupId;
+            _cupMode = cupMode;
         }
 
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
                 // Players
-                return CupPlayersFragment.newInstance(_cupId);
+                return CupPlayersFragment.newInstance(_cupId, _cupMode);
             } else {
                 // Rounds
                 int roundId = _cupRoundList.get(position - 1).cupRoundId;
@@ -137,17 +142,19 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
     public static class CupPlayersFragment extends Fragment {
 
         private static final String ARG_CUP_ID = "ARG_CUP_ID";
+        private static final String ARG_CUP_MODE = "ARG_CUP_MODE";
 
         ListView listViewPlayers;
 
         public CupPlayersFragment() {
         }
 
-        public static CupPlayersFragment newInstance(int cupId) {
+        public static CupPlayersFragment newInstance(int cupId, int cupMode) {
             CupPlayersFragment fragment = new CupPlayersFragment();
 
             Bundle args = new Bundle();
             args.putInt(ARG_CUP_ID, cupId);
+            args.putInt(ARG_CUP_MODE, cupMode);
 
             fragment.setArguments(args);
             return fragment;
@@ -159,6 +166,7 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
             View rootView = inflater.inflate(R.layout.fragment_cup_details_players, container, false);
 
             int cupId = getArguments().getInt(ARG_CUP_ID);
+            final int cupMode = getArguments().getInt(ARG_CUP_MODE);
 
             AppDatabase db = AppDatabase.getAppDatabase(getActivity());
             List<CupPlayerDetails> lstPlayers = db.cupPlayerDao().getPlayersByCupId(cupId);
@@ -177,13 +185,13 @@ public class CupDetailsActivity extends AppCompatActivity implements NoticeDialo
                     Bundle bundle = new Bundle();
                     bundle.putInt("cupPlayerId", playerItem.cupPlayer.cupPlayerId);
                     bundle.putInt("fk_cupId", playerItem.cupPlayer.fk_cupId);
+                    bundle.putInt("mode", cupMode);
 
                     if (playerItem.player != null) {
                         bundle.putInt("fk_playerId", playerItem.player.playerId);
                     } else {
                         bundle.putInt("fk_playerId", -1);
                     }
-
 
                     SetCupPlayerFragment setCupPlayerFragment = new SetCupPlayerFragment();
                     setCupPlayerFragment.setArguments(bundle);

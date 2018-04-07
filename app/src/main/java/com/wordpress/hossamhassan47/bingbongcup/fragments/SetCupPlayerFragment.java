@@ -39,6 +39,7 @@ public class SetCupPlayerFragment extends DialogFragment {
     int cupPlayerId = -1;
     int playerId = -1;
     int cupId = -1;
+    int cupMode = 1;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,9 +54,10 @@ public class SetCupPlayerFragment extends DialogFragment {
         cupPlayerId = getArguments().getInt("cupPlayerId");
         playerId = getArguments().getInt("fk_playerId");
         cupId = getArguments().getInt("fk_cupId");
+        cupMode = getArguments().getInt("mode", 1);
 
         db = AppDatabase.getAppDatabase(getActivity());
-        List<Player> lstRemainingPlayers =db.playerDao().loadAllPlayersByCupId(cupId);
+        List<Player> lstRemainingPlayers = db.playerDao().loadPlayersListForCup(cupId, cupMode);
         Player player = new Player();
         player.playerId = 0;
         player.fullName = "N/A";
