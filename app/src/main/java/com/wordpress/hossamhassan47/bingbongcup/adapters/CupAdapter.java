@@ -1,15 +1,25 @@
 package com.wordpress.hossamhassan47.bingbongcup.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.print.PdfConverter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +38,9 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.Player;
 import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.AddCupFragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -190,6 +203,26 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                         RoundMatchDetails roundMatchDetails = lstRoundMatches.get(j);
                         String matchNo = (j < 9) ? "0" + (j + 1) : "" + (j + 1);
 
+                        // Get Result Details
+                        List<MatchGameDetails> lstMatchGameDetails = db.matchGameDao()
+                                .loadMatchGameDetailsByRoundMatchId(roundMatchDetails.roundMatch.roundMatchId);
+                        String resultDetails = " | ";
+                        for (int m = 0; m < lstMatchGameDetails.size(); m++) {
+                            MatchGameDetails matchGameDetails = lstMatchGameDetails.get(m);
+                            if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
+                                resultDetails += "(<strong><font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font></strong>, "
+                                        + " <font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font>) ";
+
+                            } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
+                                resultDetails += "(<font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font>, "
+                                        + "<strong><font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font></strong>) ";
+
+                            } else {
+                                resultDetails += "(" + matchGameDetails.matchGame.player1Score
+                                        + ", " + matchGameDetails.matchGame.player2Score + ") ";
+                            }
+                        }
+
                         //roundMatchDetails.roundMatch.winnerId
                         if (roundMatchDetails.player1Name == null || roundMatchDetails.player2Name == null) {
                             emailBody += "<strong>" + matchNo + ". </strong>" +
@@ -199,18 +232,19 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                             // Player 1 Winner
                             emailBody += "<strong>" + matchNo + ". </strong>" +
                                     "<strong>" + roundMatchDetails.player1Name + "<font color='#33691E'> (Winner)</font></strong> vs. " +
-                                    "<strike>" + roundMatchDetails.player2Name + "</strike><br>";
+                                    "<strike>" + roundMatchDetails.player2Name + "</strike>"
+                                    + resultDetails + "<br>";
                         } else if (roundMatchDetails.roundMatch.player2Id == roundMatchDetails.roundMatch.winnerId) {
                             // Player 1 Winner
                             emailBody += "<strong>" + matchNo + ". </strong>" +
                                     "<strike>" +roundMatchDetails.player1Name + "</strike> vs. " +
-                                    "<strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong><br>";
+                                    "<strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong>"
+                                    + resultDetails+ "<br>";
                         } else {
                             emailBody += "<strong>" + matchNo + ". </strong>" +
-                                    roundMatchDetails.player1Name + " vs. " + roundMatchDetails.player2Name + "<br>";
+                                    roundMatchDetails.player1Name + " vs. " + roundMatchDetails.player2Name
+                                    + resultDetails+ "<br>";
                         }
-
-
                     }
                 }
 
@@ -225,6 +259,20 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                 i.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
                 i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(emailBody));
 
+
+                PdfConverter converter = PdfConverter.getInstance();
+                File file = new File(pdfSummaryPath);
+                String htmlString = Html.fromHtml(emailBody).toString();
+                converter.convert(getContext(), htmlString, file);
+// By now the pdf has been printed in the fil
+                i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:/"+pdfSummaryPath));
+
+                //if(createPdf()){
+                  //  i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:/"+pdfSummaryPath));
+
+                    Log.i("pdf", "file:/"+pdfSummaryPath);
+                //}
+
                 try {
                     getContext().startActivity(Intent.createChooser(i, title));
                 } catch (android.content.ActivityNotFoundException ex) {
@@ -235,4 +283,59 @@ public class CupAdapter extends ArrayAdapter<Cup> {
 
         return listItemView;
     }
+
+    String pdfSummaryPath = getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)+"/BingBongCupSummary.pdf";
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private boolean createPdf(){
+        // create a new document
+        PdfDocument document = new PdfDocument();
+
+        // crate a page description
+        PdfDocument.PageInfo pageInfo =
+                new PdfDocument.PageInfo.Builder(100, 100, 1).create();
+
+        // start a page
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        Canvas canvas = page.getCanvas();
+
+        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+
+        canvas.drawCircle(50, 50, 30, paint);
+
+        // finish the page
+        document.finishPage(page);
+
+        // Create Page 2
+        pageInfo = new PdfDocument.PageInfo.Builder(500, 500, 2).create();
+        page = document.startPage(pageInfo);
+        canvas = page.getCanvas();
+        paint = new Paint();
+        paint.setColor(Color.BLUE);
+        canvas.drawCircle(200, 200, 100, paint);
+        document.finishPage(page);
+
+        // write the document content
+        String targetPdf = pdfSummaryPath;
+        File filePath = new File(targetPdf);
+        try {
+            filePath.createNewFile(); // if file already exists will do nothing
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            document.writeTo(new FileOutputStream(filePath, false));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            // close the document
+            document.close();
+        }
+        return true;
+    }
+
 }
