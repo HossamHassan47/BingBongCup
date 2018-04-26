@@ -185,13 +185,12 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                 // Generate PDF
                 PdfConverter converter = PdfConverter.getInstance();
                 String pdfSummaryPath = getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-                        + "/" + emailSubject + ".pdf";
-                File file = new File(pdfSummaryPath);
+                        + "/" + currentItem.cupName + ".pdf";
+                File pdfFile = new File(pdfSummaryPath);
                 String htmlString = HtmlHelper.GetCupSummaryForPDF(getContext(), currentItem);
-                converter.convert(getContext(), htmlString, file);
+                converter.convert(getContext(), htmlString, pdfFile);
 
-                Log.i("pdf", htmlString);
-                i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file:/" + pdfSummaryPath));
+                i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
 
                 Log.i("pdf", "file:/" + pdfSummaryPath);
 

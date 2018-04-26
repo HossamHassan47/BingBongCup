@@ -195,7 +195,6 @@ public class HtmlHelper {
             }
         }
 
-
         html += "<br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
         html += "</body></html>";
         return html;
