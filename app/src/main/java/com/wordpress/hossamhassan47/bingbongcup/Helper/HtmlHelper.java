@@ -14,12 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class HtmlHelper {
-    public static String GetCupSummaryForEmailBody(Context context, Cup currentItem)
-    {
+    public static String GetCupSummaryForEmailBody(Context context, Cup currentItem) {
         AppDatabase db = AppDatabase.getAppDatabase(context);
 
         // Cup Details
-        String html = "<strong>Hello All,</strong><br><br>";
+        String html = "<html><body>";
+        html += "<strong>Hello All,</strong><br><br>";
         html += "<strong><u>:: Cup Details ::</u></strong><br>";
         html += "<strong>Name: </strong>" + currentItem.cupName + "<br>";
         html += "<strong>Players: </strong>" + currentItem.playersCount + "<br>";
@@ -97,18 +97,107 @@ public class HtmlHelper {
                 } else if (roundMatchDetails.roundMatch.player2Id == roundMatchDetails.roundMatch.winnerId) {
                     // Player 1 Winner
                     html += "<strong>" + matchNo + ". </strong>" +
-                            "<strike>" +roundMatchDetails.player1Name + "</strike> vs. " +
+                            "<strike>" + roundMatchDetails.player1Name + "</strike> vs. " +
                             "<strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong>"
-                            + resultDetails+ "<br>";
+                            + resultDetails + "<br>";
                 } else {
                     html += "<strong>" + matchNo + ". </strong>" +
                             roundMatchDetails.player1Name + " vs. " + roundMatchDetails.player2Name
-                            + resultDetails+ "<br>";
+                            + resultDetails + "<br>";
                 }
             }
         }
 
         html += "<br><br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
+        html += "</body></html>";
+        return html;
+    }
+
+    public static String GetCupSummaryForPDF(Context context, Cup currentItem) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+
+        // Cup Details
+        String html = "<html><body>";
+        html += "<h2>Bing Bong Cup - " + currentItem.cupName + " Summary</h2>";
+        html += "<h3>:: Cup Info ::</h3>";
+        html += "<ul><li>Name: " + currentItem.cupName + "</li>";
+        html += "<li>Players: " + currentItem.playersCount + "</li>";
+        html += "<li>Best of: " + currentItem.gamesCount + "</li>";
+        html += "<li>Mode: " + (currentItem.mode == 1 ? "Single" : "Double") + "</li></ul>";
+
+        // Player Details
+        List<CupPlayerDetails> lstPlayers = db.cupPlayerDao().getPlayersByCupId(currentItem.cupId);
+
+        html += "<h3>:: Cup Players ::</h3>";
+        html += "<ol>";
+        for (int i = 0; i < lstPlayers.size(); i++) {
+            CupPlayerDetails cupPlayer = lstPlayers.get(i);
+            if (cupPlayer.player != null) {
+                html += "<li>" + cupPlayer.player.fullName + " \"" + cupPlayer.player.email + "\"</li>";
+            } else {
+                html += "<li>[TBD]</li>";
+            }
+        }
+        html += "</ol>";
+
+        List<CupRound> lstCupRounds = db.cupRoundDao().loadAllCupRounds(currentItem.cupId);
+        for (int i = 0; i < lstCupRounds.size(); i++) {
+            CupRound cupRound = lstCupRounds.get(i);
+
+            html += "<h3>:: " + cupRound.roundName + " ::</h3>";
+
+            List<RoundMatchDetails> lstRoundMatches = db.roundMatchDao().loadRoundMatchesById(cupRound.cupRoundId);
+
+            String styleTd = " style='padding:4px; border: 1px solid black;'";
+            for (int j = 0; j < lstRoundMatches.size(); j++) {
+                RoundMatchDetails roundMatchDetails = lstRoundMatches.get(j);
+                List<MatchGameDetails> lstMatchGameDetails = db.matchGameDao()
+                        .loadMatchGameDetailsByRoundMatchId(roundMatchDetails.roundMatch.roundMatchId);
+
+                String dr1 = "<tr><td rowspan='2' " + styleTd + ">" + roundMatchDetails.roundMatch.matchNo + "</td>";
+                String dr2 = "<tr>";
+
+                if (roundMatchDetails.player1Name == null || roundMatchDetails.player2Name == null) {
+                    dr1 += "<td " + styleTd + ">" + (roundMatchDetails.player1Name == null ? "[TBD]" : roundMatchDetails.player1Name) + "</td>";
+                    dr2 += "<td " + styleTd + ">" + (roundMatchDetails.player2Name == null ? "[TBD]" : roundMatchDetails.player2Name) + "</td>";
+                } else if (roundMatchDetails.roundMatch.player1Id == roundMatchDetails.roundMatch.winnerId) {
+                    // Player 1 Winner
+                    dr1 += "<td " + styleTd + "><strong>" + roundMatchDetails.player1Name + "<font color='#33691E'> (Winner)</font></strong></td>";
+                    dr2 += "<td " + styleTd + "><strike>" + roundMatchDetails.player2Name + "</strike></td>";
+                } else if (roundMatchDetails.roundMatch.player2Id == roundMatchDetails.roundMatch.winnerId) {
+                    // Player 1 Winner
+                    dr1 += "<td " + styleTd + "><strike>" + roundMatchDetails.player1Name + "</strike></td>";
+                    dr2 += "<td " + styleTd + "><strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong></td>";
+                } else {
+                    dr1 += "<td " + styleTd + ">" + roundMatchDetails.player1Name + "</td>";
+                    dr2 += "<td " + styleTd + ">" + roundMatchDetails.player2Name + "</td>";
+                }
+
+                for (int m = 0; m < lstMatchGameDetails.size(); m++) {
+                    MatchGameDetails matchGameDetails = lstMatchGameDetails.get(m);
+
+                    if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
+                        dr1 += "<td "+styleTd+"><strong><font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font></strong></td>";
+                        dr2 += "<td "+styleTd+"><font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font></td>";
+                    } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
+                        dr1 += "<td "+styleTd+"><font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font></td>";
+                        dr2 += "<td "+styleTd+"><strong><font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font></strong></td>";
+
+                    } else {
+                        dr1 += "<td "+styleTd+">" + matchGameDetails.matchGame.player1Score + "</td>";
+                        dr2 += "<td "+styleTd+">" + matchGameDetails.matchGame.player2Score + "</td>";
+                    }
+                }
+
+                dr1+="</tr>";
+                dr2+="</tr>";
+                html += "<table style='border:1px solid black;'>" + dr1 + dr2 + "</table></br>";
+            }
+        }
+
+
+        html += "<br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
+        html += "</body></html>";
         return html;
     }
 }
