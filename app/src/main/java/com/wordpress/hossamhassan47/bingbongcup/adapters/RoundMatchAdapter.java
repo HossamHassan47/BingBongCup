@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Environment;
+import android.print.PdfConverter;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +25,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wordpress.hossamhassan47.bingbongcup.Helper.HtmlHelper;
 import com.wordpress.hossamhassan47.bingbongcup.Helper.RoundImage;
 import com.wordpress.hossamhassan47.bingbongcup.R;
 import com.wordpress.hossamhassan47.bingbongcup.activities.CupDetailsActivity;
@@ -42,6 +47,7 @@ import com.wordpress.hossamhassan47.bingbongcup.entities.RoundMatchDetails;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchDateFragment;
 import com.wordpress.hossamhassan47.bingbongcup.fragments.SetMatchTimeFragment;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -389,6 +395,18 @@ public class RoundMatchAdapter extends ArrayAdapter<RoundMatchDetails> {
                 i.putExtra(Intent.EXTRA_EMAIL, new String[]{currentItem.player1Email, currentItem.player2Email});
                 i.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
                 i.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(emailBody));
+
+                // Generate PDF
+                PdfConverter converter = PdfConverter.getInstance();
+                String pdfSummaryPath = getContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+                        + "/" + emailSubject + ".pdf";
+                File pdfFile = new File(pdfSummaryPath);
+                String htmlString = HtmlHelper.GetMatchResultForPDF(getContext(), currentItem);
+                converter.convert(getContext(), htmlString, pdfFile);
+
+                i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(pdfFile));
+
+                Log.i("pdf", "file:/" + pdfSummaryPath);
 
                 try {
                     getContext().startActivity(Intent.createChooser(i, title));

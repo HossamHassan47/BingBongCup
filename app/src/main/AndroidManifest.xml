@@ -45,7 +45,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.PlayerImageActivity"
-            android:label="Player Image"></activity>
+            android:label="Player Image" />
+        <activity
+            android:name=".activities.CupSummaryActivity"
+            android:label="Cup Summary"></activity>
     </application>
 
 </manifest>

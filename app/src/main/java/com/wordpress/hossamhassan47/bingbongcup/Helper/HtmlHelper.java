@@ -177,23 +177,112 @@ public class HtmlHelper {
                     MatchGameDetails matchGameDetails = lstMatchGameDetails.get(m);
 
                     if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
-                        dr1 += "<td "+styleTd+"><strong><font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font></strong></td>";
-                        dr2 += "<td "+styleTd+"><font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font></td>";
+                        dr1 += "<td " + styleTd + "><strong><font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font></strong></td>";
+                        dr2 += "<td " + styleTd + "><font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font></td>";
                     } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
-                        dr1 += "<td "+styleTd+"><font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font></td>";
-                        dr2 += "<td "+styleTd+"><strong><font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font></strong></td>";
+                        dr1 += "<td " + styleTd + "><font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font></td>";
+                        dr2 += "<td " + styleTd + "><strong><font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font></strong></td>";
 
                     } else {
-                        dr1 += "<td "+styleTd+">" + matchGameDetails.matchGame.player1Score + "</td>";
-                        dr2 += "<td "+styleTd+">" + matchGameDetails.matchGame.player2Score + "</td>";
+                        dr1 += "<td " + styleTd + ">" + matchGameDetails.matchGame.player1Score + "</td>";
+                        dr2 += "<td " + styleTd + ">" + matchGameDetails.matchGame.player2Score + "</td>";
                     }
                 }
 
-                dr1+="</tr>";
-                dr2+="</tr>";
+                dr1 += "</tr>";
+                dr2 += "</tr>";
                 html += "<table style='border:1px solid black;'>" + dr1 + dr2 + "</table></br>";
             }
         }
+
+        html += "<br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
+        html += "</body></html>";
+        return html;
+    }
+
+    public static String GetMatchResultForPDF(Context context, RoundMatchDetails roundMatchDetails) {
+        AppDatabase db = AppDatabase.getAppDatabase(context);
+
+        // Cup Details
+        String html = "<html><body>";
+        html += "<h2>Bing Bong Cup - Match Result</h2>";
+
+        if (roundMatchDetails.roundMatch.fk_roundId > 0) {
+            html += "<h3>:: Match Details ::</h3>";
+
+            html += "<ul><li>Cup Name: " + roundMatchDetails.cupName + "</li>";
+
+            String roundNo = "";
+            if (roundMatchDetails.roundNo == 2) {
+                roundNo = "3rd";
+            } else if (roundMatchDetails.roundNo == 1) {
+                roundNo = "Final";
+            } else {
+                roundNo = "#" + roundMatchDetails.roundNo;
+            }
+
+            html += "<li>Round: " + roundNo + "</li>";
+            if (roundMatchDetails.roundNo > 2) {
+                html += "<li>Match: #" + roundMatchDetails.roundMatch.matchNo + "</li>";
+            }
+        } else {
+            html += "<h3>:: Friendly Match Details ::</h3>";
+            html += "<ul>";
+        }
+
+        if (roundMatchDetails.roundMatch.matchDate != null) {
+            DateFormat df = new SimpleDateFormat("E, dd-MMM-yyyy hh:mm a");
+            html += "<li>Match Date: " + df.format(roundMatchDetails.roundMatch.matchDate) + "</li>";
+        }
+
+            html += "<li>Player 1: " + roundMatchDetails.player1Name + "</li>";
+            html += "<li>Player 2: " + roundMatchDetails.player2Name + "</li></ul>";
+
+
+
+        String styleTd = " style='padding:4px; border: 1px solid black;'";
+        List<MatchGameDetails> lstMatchGameDetails = db.matchGameDao()
+                .loadMatchGameDetailsByRoundMatchId(roundMatchDetails.roundMatch.roundMatchId);
+
+        String dr1 = "<tr>";
+        String dr2 = "<tr>";
+
+        if (roundMatchDetails.player1Name == null || roundMatchDetails.player2Name == null) {
+            dr1 += "<td " + styleTd + ">" + (roundMatchDetails.player1Name == null ? "[TBD]" : roundMatchDetails.player1Name) + "</td>";
+            dr2 += "<td " + styleTd + ">" + (roundMatchDetails.player2Name == null ? "[TBD]" : roundMatchDetails.player2Name) + "</td>";
+        } else if (roundMatchDetails.roundMatch.player1Id == roundMatchDetails.roundMatch.winnerId) {
+            // Player 1 Winner
+            dr1 += "<td " + styleTd + "><strong>" + roundMatchDetails.player1Name + "<font color='#33691E'> (Winner)</font></strong></td>";
+            dr2 += "<td " + styleTd + "><strike>" + roundMatchDetails.player2Name + "</strike></td>";
+        } else if (roundMatchDetails.roundMatch.player2Id == roundMatchDetails.roundMatch.winnerId) {
+            // Player 1 Winner
+            dr1 += "<td " + styleTd + "><strike>" + roundMatchDetails.player1Name + "</strike></td>";
+            dr2 += "<td " + styleTd + "><strong>" + roundMatchDetails.player2Name + "<font color='#33691E'> (Winner)</font></strong></td>";
+        } else {
+            dr1 += "<td " + styleTd + ">" + roundMatchDetails.player1Name + "</td>";
+            dr2 += "<td " + styleTd + ">" + roundMatchDetails.player2Name + "</td>";
+        }
+
+        for (int m = 0; m < lstMatchGameDetails.size(); m++) {
+            MatchGameDetails matchGameDetails = lstMatchGameDetails.get(m);
+
+            if (matchGameDetails.matchGame.player1Score > matchGameDetails.matchGame.player2Score) {
+                dr1 += "<td " + styleTd + "><strong><font color='#33691E'>" + matchGameDetails.matchGame.player1Score + "</font></strong></td>";
+                dr2 += "<td " + styleTd + "><font color='#C62828'>" + matchGameDetails.matchGame.player2Score + "</font></td>";
+            } else if (matchGameDetails.matchGame.player2Score > matchGameDetails.matchGame.player1Score) {
+                dr1 += "<td " + styleTd + "><font color='#C62828'>" + matchGameDetails.matchGame.player1Score + "</font></td>";
+                dr2 += "<td " + styleTd + "><strong><font color='#33691E'>" + matchGameDetails.matchGame.player2Score + "</font></strong></td>";
+
+            } else {
+                dr1 += "<td " + styleTd + ">" + matchGameDetails.matchGame.player1Score + "</td>";
+                dr2 += "<td " + styleTd + ">" + matchGameDetails.matchGame.player2Score + "</td>";
+            }
+        }
+
+        dr1 += "</tr>";
+        dr2 += "</tr>";
+        html += "<table style='border:1px solid black;'>" + dr1 + dr2 + "</table></br>";
+
 
         html += "<br>Good Luck!<br>Bing Bong Cup<br>KEEP CALM & FAIR PLAY";
         html += "</body></html>";

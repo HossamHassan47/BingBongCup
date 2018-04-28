@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 import com.wordpress.hossamhassan47.bingbongcup.Helper.HtmlHelper;
 import com.wordpress.hossamhassan47.bingbongcup.R;
+import com.wordpress.hossamhassan47.bingbongcup.activities.CupSummaryActivity;
+import com.wordpress.hossamhassan47.bingbongcup.activities.PlayerImageActivity;
 import com.wordpress.hossamhassan47.bingbongcup.dao.AppDatabase;
 import com.wordpress.hossamhassan47.bingbongcup.entities.Cup;
 import com.wordpress.hossamhassan47.bingbongcup.entities.CupPlayerDetails;
@@ -148,6 +150,17 @@ public class CupAdapter extends ArrayAdapter<Cup> {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
+            }
+        });
+
+        ImageView btnCupSummary = listItemView.findViewById(R.id.image_view_cup_summary);
+        btnCupSummary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), CupSummaryActivity.class);
+                i.putExtra("cupSummary", HtmlHelper.GetCupSummaryForPDF(getContext(), currentItem));
+
+                getContext().startActivity(i);
             }
         });
 
